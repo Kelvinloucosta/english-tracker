@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#080808;min-height:100vh;display:flex;justify-content:center;padding:2rem 1rem;color:#c8c4be}
+.wrap{width:100%;max-width:580px}
+
+.card{background:#0f0f0f;border:0.5px solid #1e1e1e;border-radius:20px;padding:1.75rem;margin-bottom:12px}
+
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.75rem;gap:12px}
+.h1{font-size:20px;font-weight:600;color:#f0ede8;letter-spacing:-.02em}
+.h2{font-size:12px;color:#555;margin-top:3px}
+.progress-row{display:flex;align-items:center;gap:10px;margin-top:12px}
+.progress-bar-wrap{flex:1;height:3px;background:#1e1e1e;border-radius:2px;overflow:hidden}
+.progress-bar{height:100%;background:#4ade80;border-radius:2px;transition:width .4s ease}
+.progress-label{font-size:12px;color:#4ade80;min-width:32px;text-align:right;font-weight:600}
+.reset-btn{font-size:11px;padding:6px 12px;border:0.5px solid #222;border-radius:8px;background:#141414;color:#555;cursor:pointer;transition:all .15s;white-space:nowrap}
+.reset-btn:hover{background:#1e1e1e;color:#888;border-color:#333}
+
+.now-card{background:#111;border:0.5px solid #1e1e1e;border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;cursor:pointer;transition:border-color .2s}
+.now-card:hover{border-color:#2a2a2a}
+.now-label{font-size:10px;font-weight:600;color:#3a3a3a;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center}
+.now-label span{color:#333;font-size:10px;text-transform:none;letter-spacing:0;font-weight:400}
+.now-title{font-size:17px;font-weight:600;color:#f0ede8;margin-bottom:3px;line-height:1.3}
+.now-sub{font-size:12px;color:#555;margin-bottom:.75rem}
+.now-bar-wrap{height:3px;background:#1a1a1a;border-radius:2px;overflow:hidden}
+.now-bar{height:100%;background:#f59e0b;border-radius:2px;transition:width .5s ease}
+.now-empty{font-size:13px;color:#333;font-style:italic}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;justify-content:center;align-items:flex-start;padding:2rem 1rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:#0f0f0f;border:0.5px solid #2a2a2a;border-radius:20px;padding:1.75rem;width:100%;max-width:540px;margin:auto;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:#1a1a1a;border:none;color:#555;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.modal-close:hover{background:#222;color:#888}
+.modal-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:.75rem}
+.modal-title{font-size:18px;font-weight:600;color:#f0ede8;margin-bottom:.4rem;padding-right:2rem}
+.modal-time{font-size:12px;color:#555;margin-bottom:1.25rem}
+.modal-section{margin-bottom:1.25rem}
+.modal-section-title{font-size:10px;font-weight:600;color:#3a3a3a;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.modal-body{font-size:13px;color:#888;line-height:1.7}
+.modal-body b{color:#c8c4be;font-weight:500}
+.modal-steps{list-style:none;padding:0}
+.modal-steps li{font-size:13px;color:#888;line-height:1.6;padding:.4rem 0;border-bottom:0.5px solid #1a1a1a;display:flex;gap:10px}
+.modal-steps li:last-child{border-bottom:none}
+.modal-steps li .step-num{color:#3a3a3a;font-size:11px;min-width:18px;padding-top:1px}
+.prompt-box{background:#141414;border:0.5px solid #1e1e1e;border-radius:10px;padding:1rem;font-size:12px;color:#666;font-family:'SF Mono',Monaco,monospace;line-height:1.7;white-space:pre-wrap;word-break:break-word;margin-top:.5rem}
+.copy-btn{display:inline-block;font-size:11px;padding:4px 10px;border:0.5px solid #222;border-radius:6px;background:#1a1a1a;color:#555;cursor:pointer;margin-top:.5rem;transition:all .15s}
+.copy-btn:hover{background:#222;color:#888}
+.copy-btn.copied{color:#4ade80;border-color:#166534}
+
+.streak-row{display:flex;gap:6px;margin-bottom:1.5rem}
+.streak-dot{width:30px;height:30px;border-radius:50%;border:0.5px solid #1e1e1e;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#333;background:#111;cursor:pointer;transition:all .2s;user-select:none}
+.streak-dot:hover{border-color:#333;color:#555}
+.streak-dot.done{background:#0a1f10;border-color:#166534;color:#4ade80}
+.streak-dot.active{border-color:#f0ede8;color:#f0ede8}
+.streak-dot.active.done{background:#0a1f10;border-color:#4ade80;color:#4ade80}
+
+.days-nav{display:flex;gap:5px;margin-bottom:1.5rem;flex-wrap:wrap}
+.day-pill{padding:7px 14px;border:0.5px solid #1e1e1e;border-radius:20px;font-size:12px;font-weight:500;color:#555;cursor:pointer;transition:all .2s;background:#111;white-space:nowrap}
+.day-pill:hover{border-color:#2e2e2e;color:#888}
+.day-pill.active{background:#f0ede8;color:#0f0f0f;border-color:#f0ede8}
+.day-pill.done{border-color:#166534;color:#4ade80;background:#0a1f10}
+.day-pill.active.done{background:#4ade80;border-color:#4ade80;color:#0a1f10}
+
+.section-label{font-size:10px;font-weight:600;color:#3a3a3a;letter-spacing:.08em;text-transform:uppercase;margin:1.25rem 0 .6rem;padding-left:2px}
+.task-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border:0.5px solid #1a1a1a;border-radius:12px;margin-bottom:6px;cursor:pointer;transition:all .15s;background:#111}
+.task-row:hover{background:#161616;border-color:#252525}
+.task-row.checked{background:#0d0d0d;border-color:#161616}
+.check-box{width:20px;height:20px;border:1.5px solid #2a2a2a;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.task-row:hover .check-box{border-color:#3a3a3a}
+.task-row.checked .check-box{background:#166534;border-color:#166834}
+.check-icon{font-size:11px;color:#4ade80;opacity:0;transition:opacity .2s;font-weight:700}
+.task-row.checked .check-icon{opacity:1}
+.task-info{flex:1;min-width:0}
+.task-name{font-size:14px;color:#c8c4be;transition:color .15s;line-height:1.3}
+.task-row.checked .task-name{color:#333;text-decoration:line-through}
+.task-time{font-size:11px;color:#3a3a3a;margin-top:3px}
+.task-row.checked .task-time{color:#252525}
+.info-btn{font-size:11px;color:#2e2e2e;padding:3px 8px;border:0.5px solid #1e1e1e;border-radius:6px;background:transparent;cursor:pointer;flex-shrink:0;transition:all .15s}
+.info-btn:hover{color:#666;border-color:#333}
+.task-row.checked .info-btn{opacity:.3}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;margin-left:7px;vertical-align:middle}
+.tag-s{background:#2d1f00;color:#f59e0b}
+.tag-w{background:#0a1929;color:#60a5fa}
+.tag-l{background:#0a1f10;color:#4ade80}
+.tag-a{background:#1f0a0a;color:#f87171}
+.tag-r{background:#1a1a1a;color:#666}
+
+.day-summary{font-size:12px;color:#3a3a3a;margin-bottom:.75rem;padding-left:2px}
+.day-summary.complete{color:#4ade80}
+.footer{margin-top:1rem;font-size:11px;color:#2a2a2a;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+  <div class="header">
+    <div style="flex:1">
+      <div class="h1">English tracker</div>
+      <div class="h2" id="week-label"></div>
+      <div class="progress-row">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+        <div class="progress-label" id="prog-label">0%</div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetWeek()">↺ Reset semana</button>
+  </div>
+
+  <div class="now-card" id="now-card" onclick="openNowModal()">
+    <div class="now-label">Agora <span>clique para ver detalhes →</span></div>
+    <div id="now-content"></div>
+  </div>
+
+  <div class="streak-row" id="streak-row"></div>
+  <div class="days-nav" id="days-nav"></div>
+  <div class="day-summary" id="day-summary"></div>
+  <div id="tasks-container"></div>
+  <div class="footer">Checks salvos no navegador · Reset manual toda semana</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<script>
+const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+
+const TASK_DETAIL={
+  monologue:{
+    name:'Episoden ou monologue',
+    time:'10 min · 7h–7h10',
+    tag:'tag-s',tagLabel:'Speaking',
+    steps:[
+      'Antes de abrir qualquer app — celular, Slack, e-mail.',
+      'Opção A — Episoden: abre o app, escolhe qualquer parceiro e começa a falar. Sem roteiro, sem preparação.',
+      'Opção B — Monologue (fallback): fala sozinho em voz alta no banheiro ou tomando café.',
+      'Conta como foi ontem, o que vai fazer hoje, como foi o fim de semana.',
+      'Não corrige. Não pausa. Se travar, respira e continua.',
+    ],
+    prompt:null,
+    example:'So yesterday was pretty intense. We had this alert firing non-stop in Wazuh, spent like two hours on it. Turned out to be a misconfigured rule. Kind of annoying but at least it wasn\'t an actual incident.',
+  },
+  aula:{
+    name:'Aula de inglês',
+    time:'Seg 7h · Ter 8h · Qui 8h',
+    tag:'tag-s',tagLabel:'Speaking',
+    steps:[
+      'Professor de business (Seg 7h): leva uma frase do Granola + uma mensagem de Slack reescrita. Trabalha em cima do seu contexto — não no livro.',
+      'Professor de conversação (Ter e Qui 8h): pede para ele te interromper com perguntas inesperadas no meio da sua fala.',
+      'Frase para pedir: "Can you interrupt me randomly while I\'m talking and ask something I\'m not expecting? That\'s exactly what happens in my meetings."',
+    ],
+    prompt:null,
+    example:null,
+  },
+  anki:{
+    name:'Anki — 5 cards em voz alta',
+    time:'10 min · 7h10–7h20',
+    tag:'tag-a',tagLabel:'Anki',
+    steps:[
+      'Máximo 5 cards novos por dia.',
+      'Fala em voz alta ao revisar — nunca só lê.',
+      'Cada card = frase completa, nunca palavra solta.',
+      'Cards vêm do Granola da reunião anterior ou do livro/filme da noite.',
+      'Ao revisar, troca uma palavra do card para praticar o padrão.',
+    ],
+    prompt:null,
+    example:'Frente: "Let me walk you through what I found."\nVerso: Quando usar + 1 variação do padrão.',
+  },
+  slack:{
+    name:'Slack direto em inglês',
+    time:'o dia todo',
+    tag:'tag-w',tagLabel:'Writing',
+    steps:[
+      'Nunca em português primeiro. Nem rascunho.',
+      'Uma vez por dia: pega a mensagem que ficou mais inseguro e cola no AI.',
+      'Compara a sua versão com a do AI — não substitui, aprende a diferença.',
+    ],
+    prompt:`Rewrite this the way a senior US engineer would.
+Short, natural, direct. Not corporate.
+
+My message: [cole aqui]`,
+    promptLabel:'Prompt para o AI',
+    example:'Sua versão: "I am investigating now."\nVersão nativa: "On it — will update shortly."',
+  },
+  granola:{
+    name:'Granola → prompt no AI → card no Anki',
+    time:'5 min pós-reunião',
+    tag:'tag-a',tagLabel:'Anki',
+    steps:[
+      'Pega qualquer frase da reunião que não entendeu ou que soou interessante.',
+      'Cola no prompt abaixo.',
+      'Cria o card no Anki só se o AI confirmar que é útil no dia a dia.',
+    ],
+    prompt:`I'm a Platform Security Engineer at a US company.
+I heard this phrase in a meeting:
+
+"[cole a frase aqui]"
+
+1. Explain the real meaning — not dictionary style.
+2. Tell me the tone (casual, formal, sarcastic?).
+3. Give me 3 examples I'd use in a security meeting or on Slack.
+4. Give me ONE Anki card ready to use.
+   front = the pattern, back = when to use it + 1 variation.`,
+    promptLabel:'Prompt para o Granola',
+    example:null,
+  },
+  leitura:{
+    name:'Leitura em inglês — regra dos 3',
+    time:'20 min',
+    tag:'tag-r',tagLabel:'Leitura',
+    steps:[
+      'Qualquer livro que você queira ler — ficção, cyber, técnico.',
+      'Lê sem parar por 20 minutos. Não abre dicionário.',
+      'Palavra estranha 1x → ignora. 2x → ignora. 3x → usa o prompt abaixo.',
+      'Cria card no Anki só se o AI disser que é útil no dia a dia.',
+      'Se não pegar o contexto de uma página inteira, liga o audiobook no mesmo trecho.',
+    ],
+    prompt:`I'm reading a book in English and didn't understand this part:
+
+"[cole o trecho aqui]"
+
+1. Explain what it means in plain English — no dictionary style.
+2. Is this an expression, idiom, or just uncommon vocabulary?
+3. Would a native speaker use this in conversation or is it literary only?
+4. Only if it's useful in real life: give me ONE Anki card ready to use.
+   front = the pattern, back = meaning + 1 example I'd actually say.
+   If it's not useful in real life, just say "skip — literary only".`,
+    promptLabel:'Prompt para quando não entender',
+    example:null,
+  },
+  filme:{
+    name:'Filme — repetir frase em voz alta',
+    time:'30 min',
+    tag:'tag-l',tagLabel:'Listening',
+    steps:[
+      'Áudio e legenda em inglês — você já faz isso.',
+      'Prefira filmes que você já assistiu — o cérebro fica livre para absorver a linguagem.',
+      'Quando ouvir uma frase que usaria no trabalho ou numa conversa: pausa, repete em voz alta uma vez.',
+      'Não anota. Não para toda hora. Só quando chamar atenção naturalmente.',
+    ],
+    prompt:null,
+    example:'"That\'s not gonna fly." / "Let\'s circle back on this." / "I\'ll take a stab at it."',
+  },
+  gravacao:{
+    name:'Gravação + correção + regravação',
+    time:'20 min',
+    tag:'tag-s',tagLabel:'Speaking',
+    steps:[
+      '1. Grava 2–3 min explicando algo do trabalho. Sem roteiro.',
+      '2. Cola a transcrição no prompt abaixo.',
+      '3. Lê as correções. Entende os padrões — não apenas aceita.',
+      '4. Grava de novo o mesmo tema sem olhar o texto corrigido.',
+    ],
+    prompt:`I'm a Platform Security Engineer at a US company.
+This is a transcription of me speaking in English.
+
+1. Point out where I sound unnatural or vague.
+2. Give me the native version of those specific phrases.
+3. Do NOT rewrite the whole thing — only fix what's broken.
+4. List max 3 patterns I should fix and memorize.
+
+Transcription: [cole aqui]`,
+    promptLabel:'Prompt para o AI',
+    example:'Temas: regras do Wazuh · update de incidente · apresentar dashboard · conversa informal de segunda.',
+  },
+  sab_gravacao:{
+    name:'Gravação + correção + regravação',time:'20 min',tag:'tag-s',tagLabel:'Speaking',
+    steps:['Mesmo ciclo da semana: grava → corrige → grava de novo.','Tema livre — escolhe o que quiser falar.'],
+    prompt:`I'm a Platform Security Engineer at a US company.
+This is a transcription of me speaking in English.
+
+1. Point out where I sound unnatural or vague.
+2. Give me the native version of those specific phrases.
+3. Do NOT rewrite the whole thing — only fix what's broken.
+4. List max 3 patterns I should fix and memorize.
+
+Transcription: [cole aqui]`,
+    promptLabel:'Prompt para o AI',example:null,
+  },
+  sab_filme:{name:'Filme — áudio e legenda em inglês',time:'30 min',tag:'tag-l',tagLabel:'Listening',steps:['Modo light — sem obrigação de anotar nada.','Só exposição. Repete uma frase em voz alta se chamar atenção.'],prompt:null,example:null},
+  sab_leitura:{name:'Leitura em inglês',time:'à vontade',tag:'tag-r',tagLabel:'Leitura',steps:['Sem obrigação de tempo.','Lê quanto quiser. Regra dos 3 se quiser — mas sem pressão.'],prompt:null,example:null},
+  dom_anki:{name:'Anki — só revisão',time:'10 min',tag:'tag-a',tagLabel:'Anki',steps:['Só revisão dos cards existentes — sem cards novos.','Fala em voz alta ao revisar.'],prompt:null,example:null},
+  dom_yt:{name:'YouTube, podcast ou série em inglês',time:'à vontade',tag:'tag-l',tagLabel:'Listening',steps:['Qualquer conteúdo que você já consumiria.','Sem pressão de produção — só exposição passiva.'],prompt:null,example:null},
+};
+
+const TASKS={
+  manha:{label:'Manhã',items:[
+    {id:'monologue'},{id:'anki'},
+  ]},
+  aula_seg:{label:'Aula',items:[{id:'aula'}],days:[0]},
+  aula_ter_qui:{label:'Aula',items:[{id:'aula'}],days:[1,3]},
+  trabalho:{label:'Durante o trabalho',items:[
+    {id:'slack'},{id:'granola'},
+  ]},
+  noite:{label:'Noite',items:[
+    {id:'leitura'},{id:'filme'},
+  ]},
+  extra:{label:'Simulação',items:[{id:'gravacao'}],days:[1,3,5]}
+};
+const WEEKEND={
+  sabado:{label:'Sábado — modo light',items:[{id:'sab_gravacao'},{id:'sab_filme'},{id:'sab_leitura'}]},
+  domingo:{label:'Domingo — exposição passiva',items:[{id:'dom_anki'},{id:'dom_yt'}]}
+};
+
+const NOW_BY_DAY={
+  0:[
+    {start:7,end:8,id:'aula'},
+    {start:8,end:8.17,id:'anki'},
+    {start:9,end:18,id:'slack'},
+    {start:20,end:20.33,id:'leitura'},
+    {start:20.33,end:21,id:'filme'},
+  ],
+  1:[
+    {start:7,end:7.17,id:'monologue'},
+    {start:7.17,end:7.33,id:'anki'},
+    {start:8,end:9,id:'aula'},
+    {start:9,end:18,id:'slack'},
+    {start:20,end:20.33,id:'leitura'},
+    {start:20.33,end:21,id:'filme'},
+  ],
+  2:[
+    {start:7,end:7.17,id:'monologue'},
+    {start:7.17,end:7.33,id:'anki'},
+    {start:9,end:18,id:'slack'},
+    {start:20,end:20.33,id:'leitura'},
+    {start:20.33,end:21,id:'filme'},
+  ],
+  3:[
+    {start:7,end:7.17,id:'monologue'},
+    {start:7.17,end:7.33,id:'anki'},
+    {start:8,end:9,id:'aula'},
+    {start:9,end:18,id:'slack'},
+    {start:20,end:20.33,id:'leitura'},
+    {start:20.33,end:21,id:'filme'},
+  ],
+  4:[
+    {start:7,end:7.17,id:'monologue'},
+    {start:7.17,end:7.33,id:'anki'},
+    {start:9,end:18,id:'slack'},
+    {start:20,end:20.33,id:'leitura'},
+    {start:20.33,end:21,id:'filme'},
+  ],
+  5:[
+    {start:7,end:7.17,id:'monologue'},
+    {start:7.17,end:7.33,id:'anki'},
+    {start:20,end:20.33,id:'sab_leitura'},
+    {start:20.33,end:21,id:'sab_filme'},
+  ],
+  6:[
+    {start:10,end:10.17,id:'dom_anki'},
+    {start:20,end:21,id:'dom_yt'},
+  ],
+};
+function getNowSchedule(){return NOW_BY_DAY[new Date().getDay()]||NOW_BY_DAY[0];}
+
+let state={};
+let currentDay=new Date().getDay();
+currentDay=currentDay===0?6:currentDay-1;
+
+function getWeekKey(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'week_'+s.toISOString().slice(0,10);}
+function loadState(){try{state=JSON.parse(localStorage.getItem(getWeekKey())||'{}');}catch(e){state={};}}
+function saveState(){try{localStorage.setItem(getWeekKey(),JSON.stringify(state));}catch(e){}}
+function resetWeek(){if(confirm('Zerar a semana?')){state={};saveState();render();}}
+function toggleTask(d,id,e){e.stopPropagation();state[d+'_'+id]=!state[d+'_'+id];saveState();render();}
+function isChecked(d,id){return!!state[d+'_'+id];}
+
+function getDayTasks(di){
+  const s=[];
+  if(di<=4){
+    Object.entries(TASKS).forEach(([k,sec])=>{
+      if(k==='extra'){if(sec.days.includes(di))s.push({...sec,key:k});}
+      else if(k==='aula_seg'){if(di===0)s.push({label:'Aula',items:[{id:'aula'}],key:k});}
+      else if(k==='aula_ter_qui'){if(di===1||di===3)s.push({label:'Aula',items:[{id:'aula'}],key:k});}
+      else s.push({...sec,key:k});
+    });
+  } else if(di===5){
+    s.push({...WEEKEND.sabado,key:'sabado'});
+    s.push({...TASKS.extra,key:'extra'});
+  } else {
+    s.push({...WEEKEND.domingo,key:'domingo'});
+  }
+  return s;
+}
+
+function getDayTotal(di){
+  let total=0,checked=0;
+  getDayTasks(di).forEach(s=>s.items.forEach(item=>{total++;if(isChecked(di,item.id))checked++;}));
+  return{total,checked};
+}
+function getWeekProgress(){
+  let total=0,checked=0;
+  DAYS.forEach((_,di)=>{const t=getDayTotal(di);total+=t.total;checked+=t.checked;});
+  return total>0?Math.round((checked/total)*100):0;
+}
+function isDayComplete(di){const{total,checked}=getDayTotal(di);return total>0&&checked===total;}
+
+function buildModalContent(detail){
+  let html=`
+    <span class="modal-tag ${detail.tag}">${detail.tagLabel}</span>
+    <div class="modal-title">${detail.name}</div>
+    <div class="modal-time">${detail.time}</div>`;
+  if(detail.steps&&detail.steps.length){
+    html+=`<div class="modal-section">
+      <div class="modal-section-title">Como fazer</div>
+      <ul class="modal-steps">`;
+    detail.steps.forEach((s,i)=>{
+      html+=`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`;
+    });
+    html+=`</ul></div>`;
+  }
+  if(detail.prompt){
+    html+=`<div class="modal-section">
+      <div class="modal-section-title">${detail.promptLabel||'Prompt'}</div>
+      <div class="prompt-box" id="prompt-txt">${detail.prompt}</div>
+      <button class="copy-btn" onclick="copyPrompt(this,'${encodeURIComponent(detail.prompt)}')">Copiar prompt</button>
+    </div>`;
+  }
+  if(detail.example){
+    html+=`<div class="modal-section">
+      <div class="modal-section-title">Exemplo</div>
+      <div class="modal-body" style="background:#141414;border:0.5px solid #1e1e1e;border-radius:10px;padding:1rem;font-style:italic;color:#666">${detail.example}</div>
+    </div>`;
+  }
+  return html;
+}
+
+function openModal(id){
+  const detail=TASK_DETAIL[id];
+  if(!detail)return;
+  document.getElementById('modal-inner').innerHTML=buildModalContent(detail);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openNowModal(){
+  const now=new Date();
+  const h=now.getHours()+now.getMinutes()/60;
+  const schedule=getNowSchedule();
+  const current=schedule.find(s=>h>=s.start&&h<s.end);
+  if(current){openModal(current.id);}
+  else{const next=schedule.find(s=>h<s.start);if(next)openModal(next.id);}
+}
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+
+function copyPrompt(btn,encoded){
+  const text=decodeURIComponent(encoded);
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copiado ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar prompt';btn.classList.remove('copied');},2000);
+  });
+}
+
+function renderNow(){
+  const now=new Date();
+  const h=now.getHours()+now.getMinutes()/60;
+  const el=document.getElementById('now-content');
+  const schedule=getNowSchedule();
+  const current=schedule.find(s=>h>=s.start&&h<s.end);
+  if(current){
+    const d=TASK_DETAIL[current.id];
+    if(!d){el.innerHTML=`<div class="now-empty">Atividade não mapeada.</div>`;return;}
+    const pct=Math.round(((h-current.start)/(current.end-current.start))*100);
+    el.innerHTML=`
+      <div class="now-title">${d.name}</div>
+      <div class="now-sub">${d.time}</div>
+      <div class="now-bar-wrap"><div class="now-bar" style="width:${pct}%"></div></div>`;
+  } else {
+    const next=schedule.find(s=>h<s.start);
+    if(next){
+      const d=TASK_DETAIL[next.id];
+      const mins=Math.round((next.start-h)*60);
+      el.innerHTML=`<div class="now-empty">Próxima em ${mins} min — ${d?d.name:''}</div>`;
+    } else {
+      el.innerHTML=`<div class="now-empty">Dia completo. Bom descanso.</div>`;
+    }
+  }
+}
+
+function render(){
+  const now=new Date();
+  const ws=new Date(now);ws.setDate(now.getDate()-((now.getDay()+6)%7));
+  const we=new Date(ws);we.setDate(ws.getDate()+6);
+  const fmt=d=>d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+  document.getElementById('week-label').textContent=`Semana ${fmt(ws)} – ${fmt(we)}`;
+
+  const prog=getWeekProgress();
+  document.getElementById('prog-bar').style.width=prog+'%';
+  document.getElementById('prog-label').textContent=prog+'%';
+
+  renderNow();
+
+  const streak=document.getElementById('streak-row');
+  streak.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const dot=document.createElement('div');
+    let cls='streak-dot';
+    if(isDayComplete(i))cls+=' done';
+    if(i===currentDay)cls+=' active';
+    dot.className=cls;dot.textContent=d.slice(0,1);dot.title=d;
+    dot.onclick=()=>{currentDay=i;render();};
+    streak.appendChild(dot);
+  });
+
+  const nav=document.getElementById('days-nav');
+  nav.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const pill=document.createElement('button');
+    let cls='day-pill';
+    if(i===currentDay)cls+=' active';
+    if(isDayComplete(i))cls+=' done';
+    pill.className=cls;pill.textContent=d;
+    pill.onclick=()=>{currentDay=i;render();};
+    nav.appendChild(pill);
+  });
+
+  const{total,checked}=getDayTotal(currentDay);
+  const sumEl=document.getElementById('day-summary');
+  const complete=checked===total&&total>0;
+  sumEl.className='day-summary'+(complete?' complete':'');
+  sumEl.textContent=complete?`Dia completo — ${checked}/${total} tarefas ✓`:`${checked} de ${total} tarefas concluídas`;
+
+  const container=document.getElementById('tasks-container');
+  container.innerHTML='';
+  getDayTasks(currentDay).forEach(section=>{
+    const lbl=document.createElement('div');
+    lbl.className='section-label';lbl.textContent=section.label;
+    container.appendChild(lbl);
+    section.items.forEach(item=>{
+      const d=TASK_DETAIL[item.id];
+      if(!d)return;
+      const chk=isChecked(currentDay,item.id);
+      const row=document.createElement('div');
+      row.className='task-row'+(chk?' checked':'');
+      row.innerHTML=`
+        <div class="check-box" onclick="toggleTask(${currentDay},'${item.id}',event)"><span class="check-icon">✓</span></div>
+        <div class="task-info" onclick="openModal('${item.id}')">
+          <div class="task-name">${d.name}<span class="tag ${d.tag}">${d.tagLabel}</span></div>
+          <div class="task-time">${d.time}</div>
+        </div>
+        <button class="info-btn" onclick="openModal('${item.id}')">ver →</button>`;
+      container.appendChild(row);
+    });
+  });
+}
+
+loadState();render();
+setInterval(renderNow,60000);
+</script>
+</body>
+</html>
