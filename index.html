@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>English Fluency Tracker — Poliglota v3</title>
+<title>English Fluency Tracker — Core Separado v6</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#080808;min-height:100vh;display:flex;justify-content:center;padding:2rem 1rem;color:#c8c4be}.wrap{width:100%;max-width:650px}.card{background:#0f0f0f;border:.5px solid #1e1e1e;border-radius:20px;padding:1.5rem;margin-bottom:12px}.header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:1.25rem}.h1{font-size:21px;font-weight:650;color:#f0ede8;letter-spacing:-.03em}.h2{font-size:12px;color:#555;margin-top:4px;line-height:1.45}.reset-btn{font-size:11px;padding:6px 12px;border:.5px solid #222;border-radius:8px;background:#141414;color:#555;cursor:pointer;white-space:nowrap}.reset-btn:hover{background:#1e1e1e;color:#888}.progress-row{display:flex;align-items:center;gap:10px;margin-top:12px}.progress-bar-wrap{flex:1;height:3px;background:#1e1e1e;border-radius:2px;overflow:hidden}.progress-bar{height:100%;background:#4ade80;border-radius:2px;transition:width .3s}.progress-label{font-size:12px;color:#4ade80;min-width:34px;text-align:right;font-weight:700}.principle{background:#111;border:.5px solid #1e1e1e;border-radius:16px;padding:1rem 1.1rem;margin-bottom:1rem}.principle-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#3a3a3a;font-weight:700;margin-bottom:.45rem}.principle-body{font-size:13px;color:#888;line-height:1.65}.principle-body b{color:#d9d4cc}.days-nav{display:flex;gap:5px;margin:1rem 0 1.2rem;flex-wrap:wrap}.day-pill{padding:7px 13px;border:.5px solid #1e1e1e;border-radius:20px;font-size:12px;color:#555;cursor:pointer;background:#111}.day-pill:hover{border-color:#333;color:#888}.day-pill.active{background:#f0ede8;color:#0f0f0f;border-color:#f0ede8}.day-pill.done{border-color:#166534;color:#4ade80;background:#0a1f10}.day-pill.active.done{background:#4ade80;color:#0a1f10;border-color:#4ade80}.summary{font-size:12px;color:#3a3a3a;margin-bottom:.75rem}.summary.complete{color:#4ade80}.section-label{font-size:10px;font-weight:700;color:#3a3a3a;letter-spacing:.09em;text-transform:uppercase;margin:1.1rem 0 .6rem}.task-row{display:flex;gap:12px;align-items:center;padding:13px 14px;border:.5px solid #1a1a1a;border-radius:12px;margin-bottom:7px;background:#111;cursor:pointer;transition:.15s}.task-row:hover{background:#161616;border-color:#252525}.task-row.checked{background:#0d0d0d;border-color:#161616}.check-box{width:20px;height:20px;border:1.5px solid #2a2a2a;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.task-row.checked .check-box{background:#166534;border-color:#166534}.check-icon{font-size:11px;color:#4ade80;opacity:0;font-weight:800}.task-row.checked .check-icon{opacity:1}.task-info{flex:1;min-width:0}.task-name{font-size:14px;color:#c8c4be;line-height:1.35}.task-row.checked .task-name{color:#333;text-decoration:line-through}.task-time{font-size:11px;color:#3a3a3a;margin-top:3px}.info-btn{font-size:11px;color:#2e2e2e;padding:3px 8px;border:.5px solid #1e1e1e;border-radius:6px;background:transparent;cursor:pointer;flex-shrink:0}.info-btn:hover{color:#666;border-color:#333}.tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:7px;vertical-align:middle}.tag-core{background:#2d1f00;color:#f59e0b}.tag-s{background:#2d1f00;color:#f59e0b}.tag-w{background:#0a1929;color:#60a5fa}.tag-l{background:#0a1f10;color:#4ade80}.tag-a{background:#1f0a0a;color:#f87171}.tag-r{background:#1a1a1a;color:#777}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:100;justify-content:center;align-items:flex-start;padding:2rem 1rem;overflow-y:auto}.modal-overlay.open{display:flex}.modal{background:#0f0f0f;border:.5px solid #2a2a2a;border-radius:20px;padding:1.5rem;width:100%;max-width:610px;margin:auto;position:relative}.modal-close{position:absolute;top:1rem;right:1rem;background:#1a1a1a;border:0;color:#555;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px}.modal-title{font-size:18px;font-weight:650;color:#f0ede8;margin-bottom:.35rem;padding-right:2rem}.modal-time{font-size:12px;color:#555;margin-bottom:1.1rem}.modal-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:.75rem}.modal-section{margin-bottom:1.15rem}.modal-section-title{font-size:10px;font-weight:800;color:#3a3a3a;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.5rem}.modal-steps{list-style:none}.modal-steps li{font-size:13px;color:#888;line-height:1.62;padding:.43rem 0;border-bottom:.5px solid #1a1a1a;display:flex;gap:10px}.modal-steps li:last-child{border-bottom:0}.step-num{color:#3a3a3a;font-size:11px;min-width:18px;padding-top:1px}.prompt-box{background:#141414;border:.5px solid #1e1e1e;border-radius:10px;padding:1rem;font-size:12px;color:#777;font-family:'SF Mono',Monaco,Consolas,monospace;line-height:1.65;white-space:pre-wrap;word-break:break-word}.copy-btn{font-size:11px;padding:5px 10px;border:.5px solid #222;border-radius:6px;background:#1a1a1a;color:#555;cursor:pointer;margin-top:.55rem}.copy-btn:hover{background:#222;color:#888}.copy-btn.copied{color:#4ade80;border-color:#166534}.example{background:#141414;border:.5px solid #1e1e1e;border-radius:10px;padding:1rem;font-size:13px;line-height:1.65;color:#777;font-style:italic}.footer{margin-top:1rem;font-size:11px;color:#2a2a2a;text-align:center;line-height:1.5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#080808;min-height:100vh;display:flex;justify-content:center;padding:2rem 1rem;color:#c8c4be}
+.wrap{width:100%;max-width:640px}.card{background:#0f0f0f;border:0.5px solid #1e1e1e;border-radius:20px;padding:1.75rem;margin-bottom:12px}.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.1rem;gap:12px}.h1{font-size:20px;font-weight:650;color:#f0ede8;letter-spacing:-.02em}.h2{font-size:12px;color:#666;margin-top:4px;line-height:1.5}.reset-btn{font-size:11px;padding:6px 12px;border:0.5px solid #222;border-radius:8px;background:#141414;color:#666;cursor:pointer;white-space:nowrap}.reset-btn:hover{background:#1e1e1e;color:#999}.mode-box{background:#111;border:.5px solid #242424;border-radius:14px;padding:14px;margin-bottom:1.2rem}.mode-title{font-size:10px;font-weight:700;color:#f59e0b;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}.mode-list{display:grid;gap:6px}.mode-item{font-size:13px;color:#aaa;line-height:1.45}.mode-item b{color:#f0ede8;font-weight:550}.progress-row{display:flex;align-items:center;gap:10px;margin-top:12px}.progress-bar-wrap{flex:1;height:3px;background:#1e1e1e;border-radius:2px;overflow:hidden}.progress-bar{height:100%;background:#4ade80;border-radius:2px;transition:width .4s ease}.progress-label{font-size:12px;color:#4ade80;min-width:32px;text-align:right;font-weight:650}.days-nav{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}.day-pill{padding:8px 14px;border:.5px solid #1e1e1e;border-radius:20px;font-size:12px;font-weight:550;color:#666;cursor:pointer;background:#111}.day-pill:hover{border-color:#333;color:#999}.day-pill.active{background:#f0ede8;color:#0f0f0f;border-color:#f0ede8}.day-pill.done{border-color:#166534;color:#4ade80;background:#0a1f10}.day-summary{font-size:12px;color:#444;margin-bottom:.75rem;padding-left:2px}.day-summary.complete{color:#4ade80}.section-label{font-size:10px;font-weight:700;color:#3d3d3d;letter-spacing:.08em;text-transform:uppercase;margin:1.2rem 0 .6rem;padding-left:2px}.task-row{display:flex;align-items:center;gap:12px;padding:14px;border:.5px solid #1a1a1a;border-radius:13px;margin-bottom:7px;cursor:pointer;background:#111;transition:all .15s}.task-row:hover{background:#161616;border-color:#2b2b2b}.task-row.checked{background:#0d0d0d;border-color:#161616}.check-box{width:20px;height:20px;border:1.5px solid #2a2a2a;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.task-row.checked .check-box{background:#166534;border-color:#166534}.check-icon{font-size:11px;color:#4ade80;opacity:0;font-weight:700}.task-row.checked .check-icon{opacity:1}.task-info{flex:1;min-width:0}.task-name{font-size:14px;color:#d6d2cc;line-height:1.35}.task-row.checked .task-name{color:#333;text-decoration:line-through}.task-time{font-size:11px;color:#444;margin-top:3px}.task-row.checked .task-time{color:#252525}.info-btn{font-size:11px;color:#333;padding:4px 9px;border:.5px solid #1e1e1e;border-radius:6px;background:transparent;cursor:pointer;flex-shrink:0}.info-btn:hover{color:#777;border-color:#333}.tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:7px;vertical-align:middle}.tag-core{background:#2d1f00;color:#f59e0b}.tag-s{background:#2d1f00;color:#f59e0b}.tag-w{background:#0a1929;color:#60a5fa}.tag-l{background:#0a1f10;color:#4ade80}.tag-a{background:#1f0a0a;color:#f87171}.tag-r{background:#1a1a1a;color:#888}.tag-c{background:#1d1230;color:#c084fc}.footer{margin-top:1.25rem;font-size:11px;color:#333;text-align:center;line-height:1.5}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:100;justify-content:center;align-items:flex-start;padding:2rem 1rem;overflow-y:auto}.modal-overlay.open{display:flex}.modal{background:#0f0f0f;border:.5px solid #2a2a2a;border-radius:20px;padding:1.75rem;width:100%;max-width:580px;margin:auto;position:relative}.modal-close{position:absolute;top:1rem;right:1rem;background:#1a1a1a;border:none;color:#666;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:#222;color:#999}.modal-title{font-size:18px;font-weight:650;color:#f0ede8;margin-bottom:.35rem;padding-right:2rem}.modal-time{font-size:12px;color:#666;margin-bottom:1.1rem}.modal-section{margin-bottom:1.2rem}.modal-section-title{font-size:10px;font-weight:700;color:#444;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem}.modal-steps{list-style:none;padding:0}.modal-steps li{font-size:13px;color:#999;line-height:1.6;padding:.42rem 0;border-bottom:.5px solid #1a1a1a;display:flex;gap:10px}.modal-steps li:last-child{border-bottom:none}.step-num{color:#444;font-size:11px;min-width:18px;padding-top:1px}.prompt-box{background:#141414;border:.5px solid #1e1e1e;border-radius:10px;padding:1rem;font-size:12px;color:#777;font-family:'SF Mono',Monaco,monospace;line-height:1.65;white-space:pre-wrap;word-break:break-word}.copy-btn{display:inline-block;font-size:11px;padding:5px 10px;border:.5px solid #222;border-radius:6px;background:#1a1a1a;color:#666;cursor:pointer;margin-top:.55rem}.copy-btn:hover{background:#222;color:#999}.copy-btn.copied{color:#4ade80;border-color:#166534}.note{font-size:13px;color:#aaa;line-height:1.6;background:#121212;border:.5px solid #202020;border-radius:10px;padding:1rem}
 </style>
 </head>
 <body>
@@ -13,20 +15,27 @@
   <div class="card">
     <div class="header">
       <div style="flex:1">
-        <div class="h1">English Fluency Tracker — Poliglota v3</div>
-        <div class="h2" id="week-label"></div><div class="h2" style="color:#4ade80;margin-top:6px">Episoden todos os dias · Livro técnico 2x/semana · Core 30 de segunda a sexta</div>
+        <div class="h1">English Fluency Tracker</div>
+        <div class="h2" id="week-label">Core separado v6 · Episoden todo dia · Livro técnico 2x/semana</div>
         <div class="progress-row"><div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar"></div></div><div class="progress-label" id="prog-label">0%</div></div>
       </div>
-      <button class="reset-btn" onclick="resetWeek()">↺ Reset semana</button>
+      <button class="reset-btn" onclick="resetWeek()">↺ Reset</button>
     </div>
-    <div class="principle">
-      <div class="principle-title">Modo poliglota</div>
-      <div class="principle-body"><b>30 min de treino intencional + inglês misturado no dia.</b><br/>Não é estudar mais. É usar inglês para falar, escrever, entender e pensar no trabalho com menos tradução mental.</div>
+
+    <div class="mode-box">
+      <div class="mode-title">Modo do dia — sem checklist</div>
+      <div class="mode-list">
+        <div class="mode-item"><b>Slack:</b> primeira versão sempre em inglês.</div>
+        <div class="mode-item"><b>Trabalho:</b> diga 1 frase curta em inglês sobre o que está fazendo.</div>
+        <div class="mode-item"><b>Reunião:</b> se não entender, use uma frase de clarificação.</div>
+        <div class="mode-item"><b>Padrão do dia:</b> use 1 vez no Slack, Episoden, reunião ou falando sozinho.</div>
+      </div>
     </div>
+
     <div class="days-nav" id="days-nav"></div>
-    <div class="summary" id="day-summary"></div>
+    <div class="day-summary" id="day-summary"></div>
     <div id="tasks-container"></div>
-    <div class="footer">Checks salvos no navegador · O objetivo é fluência operacional: Slack, reuniões, coworkers e conversas do dia a dia.</div>
+    <div class="footer">Objetivo: inglês operacional no dia a dia — falar, escrever e conversar com coworkers sem travar.</div>
   </div>
 </div>
 
@@ -36,39 +45,102 @@
 
 <script>
 const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const TASK_DETAIL={
+  pattern:{name:'Padrão do dia — escolher 1 estrutura',time:'5 min · começo do treino',tag:'tag-core',tagLabel:'Core',steps:[
+    'Escolha 1 padrão para o dia. Ex: have been, as...as, it looks like, I was able to.',
+    'Não escolha vários. O objetivo é automatizar 1 coisa por vez.',
+    'Crie ou peça 3 frases que você realmente usaria no trabalho, Slack ou conversa casual.',
+    'Durante o dia, tente usar esse padrão pelo menos 1 vez fora do treino.'
+  ],prompt:`I'm choosing my English pattern of the day.
 
-const PROMPTS={
-  episoden:`I'm practicing English speaking before joining Episoden.
+Context:
+I work as a Platform Security Engineer at a remote US company.
+My goal is to make English feel more automatic in daily work and coworker conversations.
 
-My goal is to sound more natural in daily conversations and at work. I work as a Platform Security Engineer at a remote US company.
-
-Today I want to practice this pattern:
-
-[PASTE THE PATTERN HERE — example: "have been", "as...as", "it looks like", "I was able to"]
+Pattern I want to practice:
+[PASTE PATTERN HERE]
 
 Give me:
+1. A simple explanation of when to use it.
+2. 5 natural sentences I could actually say.
+3. 3 work/Slack examples.
+4. 3 casual coworker examples.
+5. One small challenge for today.
 
-1. A simple conversation topic I can use with a stranger.
+Keep it natural, simple, and not textbook-like.`,promptLabel:'Prompt — padrão do dia'},
+  episoden:{name:'Episoden diário — fixar padrão',time:'5–7 min · todos os dias · 1 pessoa',tag:'tag-s',tagLabel:'Speaking',steps:[
+    'Entre com 1 missão: usar o padrão do dia 3 vezes.',
+    'Fale com 1 pessoa só. Não precisa mais que isso.',
+    'Não decore texto. Use frases parecidas em contextos diferentes.',
+    'Depois, anote apenas 1 frase que saiu ruim ou que você queria falar melhor.',
+    'Cole essa frase na IA e transforme em 1 padrão útil.'
+  ],prompt:`I'm about to join Episoden for a 5–7 minute conversation.
+
+Context:
+I work as a Platform Security Engineer at a remote US company.
+My goal is to speak naturally with coworkers, not sound like a textbook.
+
+Pattern I want to practice today:
+[PASTE PATTERN HERE]
+
+Give me:
+1. One simple conversation topic.
 2. 5 natural sentences using this pattern.
 3. 3 follow-up questions I can ask the other person.
 4. 3 backup sentences in case I get stuck.
-5. One small speaking challenge for this 5–7 minute conversation.
+5. One small challenge: use the pattern 3 times naturally.
 
-Make it natural, simple, and useful for real conversations. Don't make it sound like a textbook.`,
-  speaking:`I'm a Platform Security Engineer at a remote US company.
-This is a transcription of me speaking in English.
+Keep it simple and conversational.`,promptLabel:'Prompt — antes do Episoden'},
+  ai_fix:{name:'Correção IA — corrigir só 1 trecho',time:'8 min · depois de falar/escrever',tag:'tag-core',tagLabel:'Core',steps:[
+    'Escolha só 1 coisa: uma frase do Episoden, uma fala gravada ou uma mensagem do Slack.',
+    'Cole na IA e peça correção curta. Não corrija tudo.',
+    'Pegue no máximo 1–2 padrões úteis.',
+    'Fale a versão corrigida em voz alta 3 vezes, mas sem decorar texto inteiro.'
+  ],prompt:`I tried to say/write this in English:
 
-Please help me improve my spoken English:
+"[PASTE HERE]"
 
-1. Point out only the parts that sound unnatural, unclear, or too translated from Portuguese.
+Context:
+I work as a Platform Security Engineer at a remote US company.
+
+Please:
+1. Correct only what sounds unnatural or unclear.
 2. Give me the natural American English version.
-3. Do NOT rewrite the whole thing.
-4. Give me max 3 patterns I should reuse.
-5. Give me 3 new example sentences using those patterns in my work context.
+3. Explain the most important change in simple terms.
+4. Give me 2 similar examples I could use at work or with coworkers.
+5. Give me ONE reusable pattern for Anki.
 
-Transcription:
-[PASTE HERE]`,
-  slack:`Rewrite my Slack message in natural American English.
+Do not rewrite everything. Focus on what I should reuse.`,promptLabel:'Prompt — correção curta'},
+  reuse:{name:'Reusar padrão — 3 frases novas',time:'5 min · fixação ativa',tag:'tag-core',tagLabel:'Core',steps:[
+    'Pegue o padrão corrigido ou escolhido no começo do dia.',
+    'Crie 3 frases novas com o mesmo padrão.',
+    'Faça 1 frase de trabalho, 1 frase de Slack e 1 frase casual.',
+    'Fale as 3 em voz alta. O objetivo é flexibilidade, não decoreba.'
+  ],prompt:`Help me reuse this English pattern until it feels more automatic.
+
+Pattern:
+[PASTE PATTERN]
+
+Create:
+1. 3 work examples for platform/security engineering.
+2. 3 Slack examples.
+3. 3 casual coworker examples.
+4. A quick mini-drill where I complete the sentence myself.
+
+Keep everything short, natural, and realistic.`,promptLabel:'Prompt — reusar padrão'},
+  anki:{name:'Anki ativo — produção, não leitura',time:'10 min · parar quando der 10 min',tag:'tag-a',tagLabel:'Anki',steps:[
+    'Olhe a frente do card e tente falar antes de virar.',
+    'Vire o card e repita a frase correta em voz alta.',
+    'Crie 1 variação com a mesma estrutura.',
+    'Escolha 1 frase vencedora do dia.',
+    'Tente usar essa frase no Slack, Episoden ou falando sozinho.'
+  ],prompt:null},
+  slack:{name:'Slack Writing Loop — 1 mensagem sua',time:'10 min · 3x/semana',tag:'tag-w',tagLabel:'Writing',steps:[
+    'Pegue 1 mensagem sua do Slack que ficou lenta ou insegura.',
+    'Cole no prompt e peça 2 versões: natural direta e um pouco mais polida.',
+    'Compare sua versão com a versão natural.',
+    'Salve só 1 padrão reutilizável. Não salve o texto inteiro.'
+  ],prompt:`Rewrite my Slack message in natural American English.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
@@ -82,12 +154,17 @@ Rules:
 - Give me 2 versions:
   1. Natural and direct
   2. Slightly more polished
-- Then explain the 2 or 3 changes that matter most.
+- Explain the 2 or 3 changes that matter most.
 - Give me one reusable pattern from the message.
 
 My message:
-[PASTE MY MESSAGE HERE]`,
-  nativeSlack:`I'm collecting natural English patterns from native speakers at work.
+[PASTE MY MESSAGE HERE]`,promptLabel:'Prompt — melhorar Slack'},
+  native_slack:{name:'Slack nativo — copiar padrão real',time:'5 min · quando encontrar frase boa',tag:'tag-w',tagLabel:'Writing',steps:[
+    'Pegue 1 frase natural de um coworker no Slack.',
+    'Remova nomes, dados internos, clientes, tokens ou qualquer coisa sensível.',
+    'Cole no prompt para entender tom e padrões.',
+    'Salve só 1 frase ou estrutura que você usaria de verdade.'
+  ],prompt:`I'm collecting natural English patterns from native speakers at work.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
@@ -97,7 +174,6 @@ Here is a Slack message from a coworker:
 "[PASTE THE MESSAGE HERE]"
 
 Please analyze it for me:
-
 1. What does it mean in plain English?
 2. What is the tone? Casual, direct, polite, firm, etc.
 3. Which phrases are useful for me to reuse?
@@ -106,8 +182,13 @@ Please analyze it for me:
    Front = situation/context
    Back = natural phrase + one variation
 
-Only include phrases that are actually useful in real work conversations.`,
-  granola:`I'm reviewing a meeting transcript from work.
+Only include phrases that are actually useful in real work conversations.`,promptLabel:'Prompt — frase de nativo'},
+  granola:{name:'Granola — transcrição, não listening',time:'5 min · depois de reunião importante',tag:'tag-c',tagLabel:'Meeting',steps:[
+    'Escolha só um trecho onde você ficou perdido.',
+    'Use para entender a reunião e pegar inglês real dos coworkers.',
+    'Não tente revisar a reunião inteira.',
+    'Salve no máximo 1 padrão útil.'
+  ],prompt:`I'm reviewing a meeting transcript from work.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
@@ -118,7 +199,6 @@ Here is the transcript section:
 "[PASTE HERE]"
 
 Help me:
-
 1. Explain the main point in simple English.
 2. Tell me what I should have understood during the meeting.
 3. Identify natural workplace phrases I can reuse.
@@ -128,9 +208,14 @@ Help me:
    Front = situation/context
    Back = natural phrase + one variation.
 
-Don't translate word by word.
-Focus on real workplace English.`,
-  listening:`I'm training my listening for work.
+Don't translate word by word. Focus on real workplace English.`,promptLabel:'Prompt — Granola sem áudio'},
+  listening:{name:'Listening curto — áudio real',time:'10 min · vídeo/áudio curto',tag:'tag-l',tagLabel:'Listening',steps:[
+    'Escolha 2 minutos de vídeo/podcast técnico ou conversa clara.',
+    'Primeira vez: sem legenda.',
+    'Segunda vez: com legenda em inglês.',
+    'Terceira vez: sem legenda de novo.',
+    'Faça um resumo de 20 segundos em voz alta: The main point was that...'
+  ],prompt:`I'm training my listening for work.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
@@ -140,13 +225,61 @@ I watched a short video/clip and this is the transcript or part I didn't fully u
 "[PASTE HERE]"
 
 Help me:
-
 1. Explain the main idea in simple English.
 2. Point out phrases that are common in real spoken English.
 3. Explain anything that sounds reduced, vague, or fast.
 4. Give me 3 useful phrases I could reuse at work.
-5. Give me a 20-second spoken summary I can practice out loud.`,
-  technicalBook:`I'm reading a technical book in English.
+5. Give me a 20-second spoken summary I can practice out loud.`,promptLabel:'Prompt — listening'},
+  class_mon:{name:'Aula de segunda — seguir modelo do professor',time:'Seg 7h',tag:'tag-s',tagLabel:'Aula',steps:[
+    'Não precisa pedir nada diferente. Ele já corrige naturalmente.',
+    'Antes da aula ou no domingo: grave 1 min sobre semana/fim de semana.',
+    'Corrija com IA e fale de novo sem decorar.',
+    'Na aula, use a conversa inicial normalmente e siga o livro.',
+    'Depois, salve 1 ou 2 frases úteis. Não mais que isso.'
+  ],prompt:`I'm preparing for my Monday English class.
+
+I don't want to memorize a script. I just want to warm up and sound more natural.
+
+Topic:
+[PASTE TOPIC: weekend, week, family, work, etc.]
+
+My rough version:
+[PASTE WHAT I SAID OR WANT TO SAY]
+
+Please:
+1. Make it sound natural and conversational.
+2. Keep it simple.
+3. Give me 3 flexible phrases I can reuse.
+4. Don't make it sound scripted.`,promptLabel:'Prompt — preparar segunda'},
+  class_work:{name:'Aula terça/quinta — tema de trabalho',time:'Ter/Qui',tag:'tag-s',tagLabel:'Aula',steps:[
+    'Leve 1 tema real do trabalho.',
+    'Antes da aula: grave 1–2 min explicando o tema.',
+    'Corrija com IA e fale de novo sem decorar.',
+    'Na aula, pratique explicar e responder perguntas.',
+    'Depois, salve 2 frases úteis.'
+  ],prompt:`I'm preparing for an English class using a real work topic.
+
+Context:
+I work as a Platform Security Engineer at a remote US company.
+
+Work topic:
+[PASTE TOPIC]
+
+My rough explanation:
+[PASTE WHAT I SAID OR WANT TO SAY]
+
+Please:
+1. Make it sound natural for a work meeting.
+2. Keep my meaning, but make it clearer.
+3. Give me 3 likely follow-up questions someone could ask.
+4. Give me 3 reusable phrases for meetings.`,promptLabel:'Prompt — aula com tema de trabalho'},
+  book:{name:'Livro técnico — entender e explicar',time:'20 min · 2x/semana',tag:'tag-r',tagLabel:'Reading',steps:[
+    'Leia por 20 min sem tentar traduzir tudo.',
+    'Objetivo: entender a ideia principal.',
+    'Regra dos 3: só pesquise uma palavra se aparecer 3 vezes ou for essencial.',
+    'Depois fale 1 minuto em inglês explicando o que entendeu.',
+    'Crie no máximo 1 card se a frase for útil para o trabalho.'
+  ],prompt:`I'm reading a technical book in English.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
@@ -156,7 +289,6 @@ Here is the paragraph I didn't fully understand:
 "[PASTE THE PARAGRAPH HERE]"
 
 Please help me:
-
 1. Explain the main idea in simple English.
 2. Explain any technical terms that matter.
 3. Tell me which words or phrases are worth learning for work.
@@ -165,178 +297,58 @@ Please help me:
    Front = work situation
    Back = natural phrase + one variation.
 
-Do not translate word by word.
-Do not create cards for rare or unnecessary words.`,
-  workUpdate:`I want to write a short weekly work update in natural American English.
+Do not translate word by word. Do not create cards for rare or unnecessary words.`,promptLabel:'Prompt — livro técnico'},
+  monday_update:{name:'Mini work update para professor',time:'15 min · 1x/semana',tag:'tag-w',tagLabel:'Writing',steps:[
+    'Escreva 8–12 linhas sobre sua semana de trabalho.',
+    'Mande para o professor de segunda corrigir quando fizer sentido.',
+    'Use para melhorar relatório, update e escrita profissional.',
+    'Depois da correção, salve 1–2 padrões reutilizáveis.'
+  ],prompt:`I want to write a short weekly work update in English.
 
 Context:
 I work as a Platform Security Engineer at a remote US company.
 
-Please help me make this clear, natural, and professional, but not too formal.
+Please help me write it naturally, but keep it simple.
 
-My draft:
-[PASTE HERE]
+Use this structure:
+1. This week, I worked on...
+2. One thing I investigated was...
+3. The main issue was...
+4. I’m still trying to improve...
+5. Next week, I’ll focus on...
 
-Please:
-1. Correct unnatural sentences.
-2. Keep my meaning.
-3. Give me a more natural version.
-4. List 3 reusable phrases I can use in Slack or meetings.`
+My notes:
+[PASTE NOTES HERE]`,promptLabel:'Prompt — mini work update'}
 };
-
-const TASK_DETAIL={
-  dailyMode:{name:'English Daily Mode',time:'o dia todo · micro-hábito',tag:'tag-core',tagLabel:'Mode',steps:[
-    'Português só para entender. Inglês para produzir.',
-    'Slack: escreva primeiro em inglês, mesmo simples. Depois use IA para melhorar.',
-    'Trabalho: quando for pensar em uma tarefa, tente narrar uma frase em inglês: "I need to check the logs."',
-    'Reunião: quando não entender, use frases de clarificação: "Just to make sure I understood..."',
-    'Meta do dia: 1 frase que ficou mais automática do que ontem.'
-  ],prompt:null,example:'I’m still looking into it. / It looks like this is related to the WAF rule. / I’ll update the team after I confirm it.'},
-  core30:{name:'Core 30 — treino intencional',time:'30 min · Seg–Sex',tag:'tag-core',tagLabel:'Core',steps:[
-    '5 min — escolha o padrão do dia: have been, as...as, it looks like, I was able to, etc.',
-    '7 min — Episoden usando esse padrão. Se não der, faça fala gravada como fallback.',
-    '8 min — corrija só 1 trecho com IA. Não corrija tudo.',
-    '5 min — reutilize o padrão em 3 frases novas.',
-    '5 min — áudio curto real: sem legenda → com legenda → sem legenda.',
-    'Mesmo em dia de aula, mantenha o Episoden curto se possível: ele é a fixação do padrão do dia.'
-  ],prompt:null,example:'Padrão: have been → I’ve been checking the logs. / I’ve been working on that WAF rule. / I’ve been trying to write better Slack updates.'},
-  episoden:{name:'Episoden diário — fixar padrão',time:'5–7 min · todos os dias',tag:'tag-s',tagLabel:'Speaking',steps:[
-    'Antes de entrar, cole o prompt na IA e escolha 1 padrão do dia.',
-    'Fale com 1 pessoa. Uma conversa de 5–7 min é suficiente.',
-    'Missão: usar o padrão do dia 3 vezes naturalmente, sem parecer robô.',
-    'Não tente falar perfeito. Tente manter a conversa viva.',
-    'Depois, anote só 1 frase que saiu estranha e corrija com IA.',
-    'Fim de semana: faça leve. Se estiver cansado, use tema casual e só tente 1–2 vezes o padrão.'
-  ],prompt:PROMPTS.episoden,promptLabel:'Prompt antes do Episoden',example:'Padrão: have been → I’ve been working on my English because I work for a US company. / Padrão: as...as → My speaking is not as natural as I want it to be yet.'},
-  mondayPrep:{name:'Preparação para aula de segunda',time:'10 min domingo ou 3 min antes',tag:'tag-s',tagLabel:'Speaking',steps:[
-    'Escolha um assunto simples: week, weekend, family, rotina, algo que aconteceu.',
-    'Grave 1 minuto falando em inglês.',
-    'Cole a transcrição no prompt de speaking.',
-    'Fale de novo a mesma ideia sem decorar.',
-    'Na aula, siga o professor normalmente. Ele já corrige você automaticamente.'
-  ],prompt:PROMPTS.speaking,promptLabel:'Prompt de correção de speaking',example:'My weekend was pretty calm. I stayed home with my family and spent some time reviewing English.'},
-  classWork:{name:'Preparação para aula de terça/quinta',time:'10 min antes ou no dia anterior',tag:'tag-s',tagLabel:'Class',steps:[
-    'Escolha 1 tema real do trabalho.',
-    'Grave 1–2 minutos explicando o tema sem roteiro.',
-    'Corrija com IA e fale de novo sem decorar.',
-    'Leve o tema para o professor praticar.',
-    'Depois da aula, salve só 1–2 frases reutilizáveis.'
-  ],prompt:PROMPTS.speaking,promptLabel:'Prompt de correção de speaking',example:'Today I want to practice explaining a work situation. I checked the WAF logs, and it looks like the request is being blocked by our Geo Policy.'},
-  slackLoop:{name:'Slack Writing Loop',time:'10 min · 2–3x por semana',tag:'tag-w',tagLabel:'Writing',steps:[
-    'Pegue uma mensagem real sua do Slack.',
-    'Primeiro escreva em inglês do seu jeito. Não escreva em português para traduzir.',
-    'Cole no prompt e compare com a versão natural.',
-    'Salve só 1 padrão reutilizável.',
-    'Tente usar esse padrão em outra mensagem no mesmo dia.'
-  ],prompt:PROMPTS.slack,promptLabel:'Prompt para melhorar Slack',example:'Sua versão: I am investigating now. → Natural: On it — I’ll update you shortly.'},
-  nativeSlack:{name:'Frases de nativos no Slack',time:'5 min · quando aparecer uma frase boa',tag:'tag-w',tagLabel:'Input',steps:[
-    'Quando um coworker escrever algo natural, copie só a frase útil.',
-    'Remova nomes, dados sensíveis, clientes, tokens ou contexto privado.',
-    'Cole no prompt para entender tom e padrão.',
-    'Salve no Anki só se você realmente usaria no trabalho.'
-  ],prompt:PROMPTS.nativeSlack,promptLabel:'Prompt para frase de nativo',example:'Useful patterns: From what I can see... / I’ll take another look. / That should be fine for now.'},
-  granola:{name:'Granola — transcript review',time:'5 min pós-reunião',tag:'tag-l',tagLabel:'Meeting',steps:[
-    'Como você só tem transcrição, use Granola para entender reunião e coletar padrões, não para listening.',
-    'Escolha um trecho onde você ficou perdido.',
-    'Cole no prompt.',
-    'Pegue a ideia principal e 1 frase reutilizável.',
-    'Não revise a reunião inteira.'
-  ],prompt:PROMPTS.granola,promptLabel:'Prompt para Granola sem áudio',example:'What I should have understood: the team wants to keep the rule in count mode until logs confirm there are no false positives.'},
-  listening:{name:'Listening curto — áudio real',time:'10 min · dias sem reunião difícil',tag:'tag-l',tagLabel:'Listening',steps:[
-    'Escolha 2 minutos de vídeo técnico, entrevista, podcast ou talk em inglês.',
-    'Assista sem legenda.',
-    'Assista com legenda em inglês.',
-    'Assista o mesmo trecho sem legenda de novo.',
-    'Fale um resumo de 20 segundos: "The main point was that..."',
-    'Não use isso para colecionar palavras. Use para treinar ouvido.'
-  ],prompt:PROMPTS.listening,promptLabel:'Prompt para vídeo/áudio',example:'The main point was that we should monitor the logs before switching the rule to block mode.'},
-  anki:{name:'Anki ativo — produção, não leitura',time:'10 min · limite saudável',tag:'tag-a',tagLabel:'Anki',steps:[
-    'Use o preset English Speaking: poucos cards novos e limite de reviews.',
-    'Olhe a frente e tente falar a resposta antes de virar.',
-    'Vire, compare e repita a frase correta em voz alta.',
-    'Crie 1 variação em voz alta.',
-    'Escolha 1 frase vencedora do dia e tente usar no Slack, Episoden ou monologue.'
-  ],prompt:null,example:'Frente: Você quer dizer que ainda está investigando. → Back: I’m still looking into it. → Variação: I’m still looking into it, but I’ll update you shortly.'},
-  technicalReading:{name:'Livro técnico em inglês',time:'20 min · 2x por semana',tag:'tag-r',tagLabel:'Reading',steps:[
-    'Leia para entender a ideia principal, não para traduzir tudo.',
-    'Use a regra dos 3: palavra apareceu 3 vezes, aí sim pesquisa.',
-    'Depois de ler, explique em voz alta por 1 minuto o que entendeu.',
-    'Crie no máximo 1 card se a frase for útil para trabalho.',
-    'Faça só 2x por semana, de preferência quarta e sexta. O centro continua sendo speaking e Slack.'
-  ],prompt:PROMPTS.technicalBook,promptLabel:'Prompt para livro técnico',example:'This section explains how a WAF can block malicious requests before they reach the application.'},
-  workUpdate:{name:'Mini work update para professor',time:'15 min · 1x por semana',tag:'tag-w',tagLabel:'Writing',steps:[
-    'Escreva 8–12 linhas sobre sua semana de trabalho.',
-    'Mande para o professor de segunda corrigir quando fizer sentido.',
-    'Não precisa virar relatório formal. É treino de clareza.',
-    'Depois da correção, salve 2 frases reutilizáveis.'
-  ],prompt:PROMPTS.workUpdate,promptLabel:'Prompt para work update',example:'This week, I worked on a WAF rule and investigated a user who was being blocked by our Geo Policy.'},
-  weekendLight:{name:'Fim de semana leve',time:'opcional',tag:'tag-l',tagLabel:'Light',steps:[
-    'Sem pressão de checklist.',
-    'Episoden continua como fixação curta. O resto é opcional: série, áudio leve ou Anki curto.',
-    'O objetivo é manter o cérebro em modo inglês sem cansar.',
-    'Domingo: se tiver energia, prepare 1 minuto de fala para a aula de segunda.'
-  ],prompt:null,example:'Small talk topics: weekend, family, food, travel, remote work, plans for next week.'}
-};
-
 const PLAN={
-  0:[
-    {label:'Modo do dia',items:['dailyMode','core30']},
-    {label:'Fixação diária',items:['episoden']},
-    {label:'Aula de segunda',items:['mondayPrep']},
-    {label:'Uso real no trabalho',items:['slackLoop','granola']},
-    {label:'Memória',items:['anki']}
-  ],
-  1:[
-    {label:'Modo do dia',items:['dailyMode','core30']},
-    {label:'Fixação diária',items:['episoden']},
-    {label:'Aula / trabalho',items:['classWork']},
-    {label:'Uso real no trabalho',items:['slackLoop','nativeSlack','granola']},
-    {label:'Memória',items:['anki']}
-  ],
-  2:[
-    {label:'Modo do dia',items:['dailyMode','core30']},
-    {label:'Fixação diária',items:['episoden']},
-    {label:'Listening / trabalho',items:['listening','granola']},
-    {label:'Memória e leitura',items:['anki','technicalReading']}
-  ],
-  3:[
-    {label:'Modo do dia',items:['dailyMode','core30']},
-    {label:'Fixação diária',items:['episoden']},
-    {label:'Aula / trabalho',items:['classWork']},
-    {label:'Uso real no trabalho',items:['slackLoop','granola']},
-    {label:'Memória',items:['anki']}
-  ],
-  4:[
-    {label:'Modo do dia',items:['dailyMode','core30']},
-    {label:'Fixação diária',items:['episoden']},
-    {label:'Writing / input real',items:['nativeSlack','workUpdate']},
-    {label:'Listening e leitura',items:['listening','technicalReading']}
-  ],
-  5:[
-    {label:'Fixação leve',items:['episoden','weekendLight']}
-  ],
-  6:[
-    {label:'Fixação leve + preparação',items:['episoden','weekendLight','mondayPrep','anki']}
-  ]
+  0:[{label:'Core 30 separado',items:['pattern','episoden','ai_fix','reuse','listening']},{label:'Aula',items:['class_mon']},{label:'Retenção',items:['anki']},{label:'Writing real',items:['slack']}],
+  1:[{label:'Core 30 separado',items:['pattern','episoden','ai_fix','reuse','listening']},{label:'Aula',items:['class_work']},{label:'Retenção',items:['anki']},{label:'Reunião',items:['granola']}],
+  2:[{label:'Core 30 separado',items:['pattern','episoden','ai_fix','reuse','listening']},{label:'Retenção',items:['anki']},{label:'Writing real',items:['slack','native_slack']},{label:'Livro',items:['book']}],
+  3:[{label:'Core 30 separado',items:['pattern','episoden','ai_fix','reuse','listening']},{label:'Aula',items:['class_work']},{label:'Retenção',items:['anki']},{label:'Reunião',items:['granola']}],
+  4:[{label:'Core 30 separado',items:['pattern','episoden','ai_fix','reuse','listening']},{label:'Retenção',items:['anki']},{label:'Writing real',items:['slack']},{label:'Livro',items:['book']}],
+  5:[{label:'Fixação leve',items:['pattern','episoden','reuse']},{label:'Listening opcional',items:['listening']},{label:'Retenção',items:['anki']}],
+  6:[{label:'Fixação leve',items:['pattern','episoden']},{label:'Preparar semana',items:['class_mon','monday_update']},{label:'Retenção',items:['anki']}]
 };
-
 let state={};let currentDay=new Date().getDay();currentDay=currentDay===0?6:currentDay-1;
-function getWeekKey(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'fluency_week_'+s.toISOString().slice(0,10)}
+function getWeekKey(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'fluency_core_split_v6_'+s.toISOString().slice(0,10)}
 function loadState(){try{state=JSON.parse(localStorage.getItem(getWeekKey())||'{}')}catch(e){state={}}}
 function saveState(){localStorage.setItem(getWeekKey(),JSON.stringify(state))}
 function resetWeek(){if(confirm('Zerar a semana?')){state={};saveState();render()}}
 function isChecked(d,id){return!!state[d+'_'+id]}
 function toggleTask(d,id,e){e.stopPropagation();state[d+'_'+id]=!state[d+'_'+id];saveState();render()}
-function dayItems(di){return PLAN[di].flatMap(s=>s.items)}
-function dayStats(di){const ids=dayItems(di);const total=ids.length;const checked=ids.filter(id=>isChecked(di,id)).length;return{total,checked}}
-function weekProgress(){let total=0,checked=0;for(let i=0;i<7;i++){const s=dayStats(i);total+=s.total;checked+=s.checked}return total?Math.round(checked/total*100):0}
-function done(di){const s=dayStats(di);return s.total&&s.checked===s.total}
-function copyPrompt(btn,txt){navigator.clipboard.writeText(txt).then(()=>{btn.textContent='Copiado ✓';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copiar prompt';btn.classList.remove('copied')},1800)})}
-function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function openModal(id){const d=TASK_DETAIL[id];if(!d)return;let html=`<span class="modal-tag ${d.tag}">${d.tagLabel}</span><div class="modal-title">${d.name}</div><div class="modal-time">${d.time}</div>`;html+=`<div class="modal-section"><div class="modal-section-title">Como fazer</div><ul class="modal-steps">`;d.steps.forEach((s,i)=>html+=`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`);html+=`</ul></div>`;if(d.prompt){html+=`<div class="modal-section"><div class="modal-section-title">${d.promptLabel||'Prompt'}</div><div class="prompt-box">${esc(d.prompt)}</div><button class="copy-btn" onclick="copyPrompt(this, decodeURIComponent('${encodeURIComponent(d.prompt)}'))">Copiar prompt</button></div>`}if(d.example){html+=`<div class="modal-section"><div class="modal-section-title">Exemplo</div><div class="example">${esc(d.example)}</div></div>`}document.getElementById('modal-inner').innerHTML=html;document.getElementById('modal-overlay').classList.add('open')}
+function getDayTotal(di){let total=0,checked=0;(PLAN[di]||[]).forEach(s=>s.items.forEach(id=>{total++; if(isChecked(di,id))checked++}));return{total,checked}}
+function getWeekProgress(){let total=0,checked=0;DAYS.forEach((_,i)=>{const t=getDayTotal(i);total+=t.total;checked+=t.checked});return total?Math.round(checked/total*100):0}
+function isDayComplete(i){const t=getDayTotal(i);return t.total>0&&t.checked===t.total}
+function render(){const now=new Date(),ws=new Date(now);ws.setDate(now.getDate()-((now.getDay()+6)%7));const we=new Date(ws);we.setDate(ws.getDate()+6);const fmt=d=>d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});document.getElementById('week-label').textContent=`Core separado v6 · Semana ${fmt(ws)}–${fmt(we)} · Episoden todo dia · Livro técnico 2x/semana`;
+const prog=getWeekProgress();document.getElementById('prog-bar').style.width=prog+'%';document.getElementById('prog-label').textContent=prog+'%';
+const nav=document.getElementById('days-nav');nav.innerHTML='';DAYS.forEach((d,i)=>{const b=document.createElement('button');b.className='day-pill'+(i===currentDay?' active':'')+(isDayComplete(i)?' done':'');b.textContent=d;b.onclick=()=>{currentDay=i;render()};nav.appendChild(b)});
+const t=getDayTotal(currentDay),sum=document.getElementById('day-summary');sum.className='day-summary'+(t.total&&t.checked===t.total?' complete':'');sum.textContent=t.total&&t.checked===t.total?`Dia completo — ${t.checked}/${t.total} tarefas ✓`:`${t.checked} de ${t.total} tarefas concluídas`;
+const c=document.getElementById('tasks-container');c.innerHTML='';(PLAN[currentDay]||[]).forEach(sec=>{const lbl=document.createElement('div');lbl.className='section-label';lbl.textContent=sec.label;c.appendChild(lbl);sec.items.forEach(id=>{const d=TASK_DETAIL[id],chk=isChecked(currentDay,id);if(!d)return;const row=document.createElement('div');row.className='task-row'+(chk?' checked':'');row.innerHTML=`<div class="check-box" onclick="toggleTask(${currentDay},'${id}',event)"><span class="check-icon">✓</span></div><div class="task-info" onclick="openModal('${id}')"><div class="task-name">${d.name}<span class="tag ${d.tag}">${d.tagLabel}</span></div><div class="task-time">${d.time}</div></div><button class="info-btn" onclick="openModal('${id}')">ver →</button>`;c.appendChild(row)})})}
+function openModal(id){const d=TASK_DETAIL[id];if(!d)return;let html=`<div class="modal-title">${d.name}</div><div class="modal-time">${d.time}</div>`;html+=`<div class="modal-section"><div class="modal-section-title">Como fazer</div><ul class="modal-steps">`;d.steps.forEach((s,i)=>html+=`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`);html+=`</ul></div>`;if(d.prompt){html+=`<div class="modal-section"><div class="modal-section-title">${d.promptLabel||'Prompt'}</div><div class="prompt-box">${escapeHtml(d.prompt)}</div><button class="copy-btn" onclick="copyPrompt(this, ${JSON.stringify(d.prompt).replace(/</g,'\\u003c')})">Copiar prompt</button></div>`}document.getElementById('modal-inner').innerHTML=html;document.getElementById('modal-overlay').classList.add('open')}
+function escapeHtml(s){return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
 function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal()}
-function render(){const n=new Date(),ws=new Date(n);ws.setDate(n.getDate()-((n.getDay()+6)%7));const we=new Date(ws);we.setDate(ws.getDate()+6);const fmt=d=>d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});document.getElementById('week-label').textContent=`Semana ${fmt(ws)} – ${fmt(we)} · foco: inglês operacional, não checklist`;const p=weekProgress();document.getElementById('prog-bar').style.width=p+'%';document.getElementById('prog-label').textContent=p+'%';const nav=document.getElementById('days-nav');nav.innerHTML='';DAYS.forEach((d,i)=>{const b=document.createElement('button');b.className='day-pill'+(i===currentDay?' active':'')+(done(i)?' done':'');b.textContent=d;b.onclick=()=>{currentDay=i;render()};nav.appendChild(b)});const st=dayStats(currentDay);const sm=document.getElementById('day-summary');sm.className='summary'+(st.checked===st.total?' complete':'');sm.textContent=st.checked===st.total?`Dia completo — ${st.checked}/${st.total} ✓`:`${st.checked} de ${st.total} tarefas concluídas`;const c=document.getElementById('tasks-container');c.innerHTML='';PLAN[currentDay].forEach(sec=>{const lab=document.createElement('div');lab.className='section-label';lab.textContent=sec.label;c.appendChild(lab);sec.items.forEach(id=>{const d=TASK_DETAIL[id];const chk=isChecked(currentDay,id);const row=document.createElement('div');row.className='task-row'+(chk?' checked':'');row.innerHTML=`<div class="check-box" onclick="toggleTask(${currentDay},'${id}',event)"><span class="check-icon">✓</span></div><div class="task-info" onclick="openModal('${id}')"><div class="task-name">${d.name}<span class="tag ${d.tag}">${d.tagLabel}</span></div><div class="task-time">${d.time}</div></div><button class="info-btn" onclick="openModal('${id}')">ver →</button>`;c.appendChild(row)})})}
+function copyPrompt(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copiado ✓';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copiar prompt';btn.classList.remove('copied')},1800)})}
 loadState();render();
 </script>
 </body>
