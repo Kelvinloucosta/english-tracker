@@ -175,12 +175,11 @@ const TASKS = {
   capture:{
     name:'Registrar — o professor já corrigiu, agora fixa',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
     why:'O professor já fez o trabalho de correção. Sua única tarefa agora é não deixar isso cair no esquecimento: registrar a frase corrigida, criar 1 card no Anki e usar essa estrutura no Episoden de hoje.',
-    steps:['Anote a frase como o professor falou — a versão correta, não a sua.','Escreva 1 exemplo seu com a mesma estrutura. Diferente da frase dele.','Crie 1 card no Anki: frente = situação, verso = frase corrigida + sua variação.','No Episoden de hoje: missão extra — use essa frase corrigida pelo menos 1 vez.','Não peça para a IA corrigir de novo. Confie no professor.'],
-    prompt:`My English teacher just corrected me. I want to lock this in before I forget.
+    steps:['Anote só a versão correta — exatamente como o professor falou.','Escreva 1 exemplo seu com a mesma estrutura. Não olhe para o que você disse de errado.','Crie 1 card no Anki: frente = situação, verso = frase correta + sua variação.','No Episoden de hoje: use essa frase pelo menos 1 vez.','A versão errada não existe mais. Só a correta.'],
+    prompt:`My teacher just corrected me. I want to lock in the correct version.
 
-What the teacher corrected:
-My version: [WHAT I SAID]
-Correct version: [WHAT THE TEACHER SAID]
+Correct phrase (exactly as the teacher said):
+[PASTE HERE]
 
 Give me:
 1. Two more examples using the same structure — work or Slack context.
@@ -188,8 +187,8 @@ Give me:
    Front = situation where I'd use this
    Back = correct phrase + my new variation.
 
-Do NOT re-explain the grammar. Just give me more examples to practice.`,
-    pl:'Prompt — fixar correção do professor'
+Do NOT mention my wrong version. Only work with the correct one.`,
+    pl:'Prompt — fixar versão correta'
   },
   entry:{
     name:'Entrar na aula com tema real de trabalho',time:'2 min · antes de entrar',badge:'b-aula',bl:'Aula',cls:'t-aula',
