@@ -32,16 +32,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .wp-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease}
 .wp-pct{font-size:12px;font-weight:600;color:var(--green);min-width:30px;text-align:right}
 
-/* PATTERN DO DIA */
-.pattern-card{background:var(--surface);border:.5px solid var(--amber-border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.9rem}
-.pattern-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
-.pattern-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
-.pattern-nav{display:flex;gap:6px;align-items:center}
-.pnav-btn{background:transparent;border:.5px solid var(--border2);border-radius:5px;color:var(--muted);font-size:13px;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-.pnav-btn:hover{color:var(--text);border-color:var(--subdued)}
-.pattern-name{font-size:17px;font-weight:600;color:var(--amber);letter-spacing:.01em;margin-bottom:.25rem;font-family:'SF Mono',Monaco,monospace}
-.pattern-hint{font-size:12px;color:#888;line-height:1.45}
-.pattern-mission{font-size:11px;color:var(--amber);background:var(--amber-bg);border:.5px solid var(--amber-border);border-radius:6px;padding:.35rem .65rem;margin-top:.55rem;display:inline-block}
 
 /* REGRAS */
 .rules{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.9rem}
@@ -141,21 +131,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span class="wp-pct" id="wp-pct">0%</span>
   </div>
 
-  <!-- PADRÃO DO DIA -->
-  <div class="pattern-card">
-    <div class="pattern-header">
-      <span class="pattern-label">Padrão da semana — use em tudo</span>
-      <div class="pattern-nav">
-        <button class="pnav-btn" onclick="prevPattern()">‹</button>
-        <span style="font-size:10px;color:var(--muted)" id="pat-idx">1/8</span>
-        <button class="pnav-btn" onclick="nextPattern()">›</button>
-      </div>
-    </div>
-    <div class="pattern-name" id="pat-name"></div>
-    <div class="pattern-hint" id="pat-hint"></div>
-    <div class="pattern-mission" id="pat-mission"></div>
-  </div>
-
   <!-- REGRAS -->
   <div class="rules">
     <div class="rules-title">3 regras do dia</div>
@@ -189,29 +164,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 const DAYS = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const HAS_AULA = [true,true,false,true,false,false,false];
 
-// Padrões rotativos — navegar com ‹ ›
-const PATTERNS = [
-  { name:'have been + -ing', hint:'"I have been working on this for two days." — para ações que começaram e continuam.', mission:'Missão Episoden: use 3x falando sobre seu trabalho.' },
-  { name:'as ... as', hint:'"It\'s not as complex as it looks." — comparação direta, muito usada no trabalho.', mission:'Missão Episoden: compare 2 situações do trabalho com essa estrutura.' },
-  { name:'I was able to', hint:'"I was able to fix the issue before the meeting." — resultado concreto no passado.', mission:'Missão Episoden: conte 2 vitórias da semana usando essa estrutura.' },
-  { name:'It looks like', hint:'"It looks like the pipeline failed again." — muito usado em Slack e reuniões.', mission:'Missão Episoden: descreva 3 situações de trabalho com it looks like.' },
-  { name:"I'm not sure if / whether", hint:'"I\'m not sure if this is the right approach." — para expressar dúvida sem travar.', mission:'Missão Episoden: use 3x para expressar incerteza sobre algo real.' },
-  { name:'have you tried', hint:'"Have you tried restarting the service?" — perguntas práticas em reuniões e Slack.', mission:'Missão Episoden: faça 3 perguntas com have you tried para seu parceiro.' },
-  { name:'I ended up', hint:'"I ended up rewriting the whole thing." — resultado inesperado ou final de história.', mission:'Missão Episoden: conte 2 histórias do trabalho usando I ended up.' },
-  { name:'turns out', hint:'"Turns out the config was wrong all along." — revelação, muito natural em conversas.', mission:'Missão Episoden: use 3x contando algo que descobriu no trabalho.' },
-];
-
-let patIdx = 0;
-function renderPattern(){
-  const p = PATTERNS[patIdx];
-  document.getElementById('pat-name').textContent = p.name;
-  document.getElementById('pat-hint').textContent = p.hint;
-  document.getElementById('pat-mission').textContent = p.mission;
-  document.getElementById('pat-idx').textContent = (patIdx+1)+'/'+PATTERNS.length;
-}
-function nextPattern(){ patIdx=(patIdx+1)%PATTERNS.length; renderPattern(); }
-function prevPattern(){ patIdx=(patIdx-1+PATTERNS.length)%PATTERNS.length; renderPattern(); }
-
 // TAREFAS
 const TASKS = {
   warmup:{
@@ -221,23 +173,23 @@ const TASKS = {
     prompt:null
   },
   capture:{
-    name:'Captura — 5 min após a aula',time:'5 min · logo após sair da aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
-    why:'O que não for capturado em 1 hora após a aula some. 5 minutos agora valem mais do que 30 minutos amanhã.',
-    steps:['Abra o celular agora, não depois.','Expanda a 1 correção: o que foi corrigido e como ficou natural.','Escreva 1 exemplo seu com o mesmo padrão.','Crie 1 card no Anki.'],
-    prompt:`I just finished my English class. Help me capture before I forget.
+    name:'Registrar — o professor já corrigiu, agora fixa',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
+    why:'O professor já fez o trabalho de correção. Sua única tarefa agora é não deixar isso cair no esquecimento: registrar a frase corrigida, criar 1 card no Anki e usar essa estrutura no Episoden de hoje.',
+    steps:['Anote a frase como o professor falou — a versão correta, não a sua.','Escreva 1 exemplo seu com a mesma estrutura. Diferente da frase dele.','Crie 1 card no Anki: frente = situação, verso = frase corrigida + sua variação.','No Episoden de hoje: missão extra — use essa frase corrigida pelo menos 1 vez.','Não peça para a IA corrigir de novo. Confie no professor.'],
+    prompt:`My English teacher just corrected me. I want to lock this in before I forget.
 
-The main correction or phrase from today:
-[PASTE HERE]
+What the teacher corrected:
+My version: [WHAT I SAID]
+Correct version: [WHAT THE TEACHER SAID]
 
 Give me:
-1. Confirm the natural version in 1 sentence.
-2. Two examples I could use at work or Slack.
-3. Anki card:
+1. Two more examples using the same structure — work or Slack context.
+2. Anki card:
    Front = situation where I'd use this
-   Back = natural phrase + one variation.
+   Back = correct phrase + my new variation.
 
-Short. I have 5 minutes.`,
-    pl:'Prompt — captura pós-aula'
+Do NOT re-explain the grammar. Just give me more examples to practice.`,
+    pl:'Prompt — fixar correção do professor'
   },
   entry:{
     name:'Entrar na aula com tema real de trabalho',time:'2 min · antes de entrar',badge:'b-aula',bl:'Aula',cls:'t-aula',
@@ -405,20 +357,14 @@ let state={};
 let cur=(()=>{let d=new Date().getDay();return d===0?6:d-1;})();
 
 function key(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return 'et_v2_'+s.toISOString().slice(0,10);}
-function load(){try{state=JSON.parse(localStorage.getItem(key())||'{}');patIdx=parseInt(state.__pat||0);if(isNaN(patIdx))patIdx=0;}catch(e){state={};patIdx=0;}}
-function save(){state.__pat=patIdx;localStorage.setItem(key(),JSON.stringify(state));}
-function resetWeek(){if(confirm('Zerar a semana?')){const p=patIdx;state={};state.__pat=p;save();render();}}
+function load(){try{state=JSON.parse(localStorage.getItem(key())||'{}');}catch(e){state={};}}
+function save(){localStorage.setItem(key(),JSON.stringify(state));}
+function resetWeek(){if(confirm('Zerar a semana?')){state={};save();render();}}
 function chk(d,id){return!!state[d+'_'+id];}
 function toggle(d,id){state[d+'_'+id]=!state[d+'_'+id];save();render();}
 
 function ds(di){let t=0,c=0;(PLAN[di]||[]).forEach(s=>s.i.forEach(id=>{t++;if(chk(di,id))c++;}));return{t,c};}
 function wp(){let t=0,c=0;[0,1,2,3,4,5,6].forEach(i=>{const s=ds(i);t+=s.t;c+=s.c;});return t?Math.round(c/t*100):0;}
-
-const _nextPattern = nextPattern;
-const _prevPattern = prevPattern;
-
-function nextPattern(){patIdx=(patIdx+1)%PATTERNS.length;save();renderPattern();}
-function prevPattern(){patIdx=(patIdx-1+PATTERNS.length)%PATTERNS.length;save();renderPattern();}
 
 function render(){
   const pct=wp();
@@ -490,7 +436,7 @@ function cp(id){
 function closeModal(){document.getElementById('overlay').classList.remove('open');}
 function closeOut(e){if(e.target===document.getElementById('overlay'))closeModal();}
 
-load();renderPattern();render();
+load();render();
 </script>
 </body>
 </html>
