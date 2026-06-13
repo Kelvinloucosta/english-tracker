@@ -15,68 +15,84 @@
   --purple:#a78bfa;--purple-bg:#130d24;--purple-border:#2d1f52;
   --red:#f87171;--red-bg:#1a0808;
   --teal:#2dd4bf;--teal-bg:#041a18;--teal-border:#0f3530;
+  --pink:#f472b6;--pink-bg:#1a0812;--pink-border:#4a1530;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1rem}
 .wrap{max-width:600px;margin:0 auto}
 
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
 .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em}
 .logo span{color:var(--muted);font-weight:400;font-size:13px}
 .reset{font-size:11px;padding:5px 10px;border:.5px solid var(--border2);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}
 .reset:hover{color:var(--text)}
 
-/* PROGRESS */
-.week-prog{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.9rem;display:flex;align-items:center;gap:12px}
+.week-prog{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem;display:flex;align-items:center;gap:12px}
 .wp-label{font-size:11px;color:var(--muted);white-space:nowrap}
 .wp-track{flex:1;height:3px;background:var(--border2);border-radius:3px;overflow:hidden}
 .wp-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease}
 .wp-pct{font-size:12px;font-weight:600;color:var(--green);min-width:30px;text-align:right}
 
+/* ESCADA DE CONFIANÇA */
+.escada{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.85rem}
+.escada-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.degrau{display:flex;gap:10px;align-items:flex-start;margin-bottom:.5rem;cursor:pointer}
+.degrau:last-child{margin-bottom:0}
+.degrau-num{font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.degrau.ativo .degrau-num{background:var(--amber);color:#000}
+.degrau.feito .degrau-num{background:var(--green);color:#000}
+.degrau.bloq .degrau-num{background:var(--dim);color:var(--muted)}
+.degrau-text{font-size:12px;line-height:1.4}
+.degrau.ativo .degrau-text{color:var(--text)}
+.degrau.feito .degrau-text{color:var(--subdued);text-decoration:line-through}
+.degrau.bloq .degrau-text{color:var(--muted)}
+.degrau-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
+.tag-ativo{background:var(--amber-bg);color:var(--amber)}
+.tag-feito{background:var(--green-bg);color:var(--green)}
+.tag-bloq{background:var(--dim);color:var(--muted)}
 
 /* REGRAS */
-.rules{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.9rem}
-.rules-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
-.rule-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:.4rem}
+.rules{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem}
+.rules-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem}
+.rule-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:.35rem}
 .rule-row:last-child{margin-bottom:0}
 .rule-num{font-size:10px;font-weight:700;color:var(--amber);min-width:14px;padding-top:1px}
-.rule-text{font-size:12px;color:#888;line-height:1.45}
+.rule-text{font-size:12px;color:#888;line-height:1.4}
 .rule-text strong{color:var(--text);font-weight:500}
 
-/* DAY TABS */
-.day-tabs{display:flex;gap:5px;margin-bottom:.75rem;flex-wrap:wrap}
+/* TABS */
+.day-tabs{display:flex;gap:5px;margin-bottom:.7rem;flex-wrap:wrap}
 .dt{padding:6px 12px;border:.5px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;position:relative}
 .dt:hover{border-color:var(--border2);color:#999}
 .dt.active{background:var(--text);color:var(--bg);border-color:var(--text)}
 .dt.done{border-color:var(--green-border);color:var(--green);background:var(--green-bg)}
 .aula-dot{width:4px;height:4px;border-radius:50%;background:var(--amber);position:absolute;top:4px;right:4px}
 
-/* DAY CARD */
 .day-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.75rem}
-.day-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.day-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
 .day-meta-name{font-size:12px;font-weight:600;color:var(--text)}
-.day-meta-status{font-size:11px;color:var(--muted)}
-.day-meta-status.done{color:var(--green)}
+.day-meta-st{font-size:11px;color:var(--muted)}
+.day-meta-st.done{color:var(--green)}
 
-/* SECTION */
 .sec{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:1rem 0 .4rem;padding-left:2px}
 .sec:first-of-type{margin-top:0}
 
-/* TASK */
 .task{display:flex;align-items:center;gap:10px;padding:10px 11px;border:.5px solid var(--border);border-radius:10px;margin-bottom:5px;background:var(--surface2);transition:all .12s;user-select:none}
 .task:hover{border-color:var(--border2)}
 .task.checked{background:var(--green-bg);border-color:var(--green-border)}
 .task.t-aula{border-left:2px solid var(--amber-border)}
-.task.t-episoden{border-left:2px solid var(--blue-border)}
-.task.t-imersao{border-left:2px solid var(--purple-border)}
-.task.t-anki{border-left:2px solid var(--red-bg)}
+.task.t-ep{border-left:2px solid var(--blue-border)}
+.task.t-shadow{border-left:2px solid var(--pink-border)}
+.task.t-im{border-left:2px solid var(--purple-border)}
 .task.checked.t-aula{background:var(--amber-bg);border-color:var(--amber-border)}
-.task.checked.t-episoden{background:var(--blue-bg);border-color:var(--blue-border)}
-.task.checked.t-imersao{background:var(--purple-bg);border-color:var(--purple-border)}
+.task.checked.t-ep{background:var(--blue-bg);border-color:var(--blue-border)}
+.task.checked.t-shadow{background:var(--pink-bg);border-color:var(--pink-border)}
+.task.checked.t-im{background:var(--purple-bg);border-color:var(--purple-border)}
 .chk{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
 .task.checked .chk{background:var(--green);border-color:var(--green)}
 .task.checked.t-aula .chk{background:var(--amber);border-color:var(--amber)}
-.task.checked.t-episoden .chk{background:var(--blue);border-color:var(--blue)}
-.task.checked.t-imersao .chk{background:var(--purple);border-color:var(--purple)}
+.task.checked.t-ep .chk{background:var(--blue);border-color:var(--blue)}
+.task.checked.t-shadow .chk{background:var(--pink);border-color:var(--pink)}
+.task.checked.t-im .chk{background:var(--purple);border-color:var(--purple)}
 .chk svg{opacity:0;width:10px;height:10px;stroke:#0a0a0a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .task.checked .chk svg{opacity:1}
 .task-info{flex:1;min-width:0;cursor:pointer}
@@ -85,17 +101,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .task-time{font-size:10px;color:var(--muted);margin-top:2px}
 .task.checked .task-time{color:var(--dim)}
 .badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:20px;margin-left:5px;vertical-align:middle}
-.b-output{background:var(--amber-bg);color:var(--amber)}
-.b-aula{background:var(--blue-bg);color:var(--blue)}
+.b-aula{background:var(--amber-bg);color:var(--amber)}
 .b-anki{background:var(--red-bg);color:var(--red)}
-.b-capture{background:var(--green-bg);color:var(--green)}
-.b-episoden{background:var(--blue-bg);color:var(--blue)}
-.b-imersao{background:var(--purple-bg);color:var(--purple)}
+.b-ep{background:var(--blue-bg);color:var(--blue)}
+.b-shadow{background:var(--pink-bg);color:var(--pink)}
+.b-im{background:var(--purple-bg);color:var(--purple)}
 .b-livro{background:var(--teal-bg);color:var(--teal)}
+.b-capture{background:var(--green-bg);color:var(--green)}
 .info-btn{font-size:10px;color:var(--dim);padding:3px 7px;border:.5px solid var(--border);border-radius:5px;background:transparent;cursor:pointer;flex-shrink:0}
 .info-btn:hover{color:var(--muted);border-color:var(--border2)}
 
-/* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .overlay.open{display:flex}
 .modal{background:#111;border:.5px solid #2a2a2a;border-radius:16px;padding:1.4rem;width:100%;max-width:520px;margin:auto;position:relative}
@@ -109,6 +124,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .m-steps li{font-size:12px;color:#888;line-height:1.55;padding:.28rem 0;border-bottom:.5px solid #1a1a1a;display:flex;gap:8px}
 .m-steps li:last-child{border-bottom:none}
 .m-n{color:var(--dim);font-size:10px;min-width:14px;padding-top:2px;flex-shrink:0}
+.canais{margin-top:.5rem;display:flex;flex-direction:column;gap:5px}
+.canal{background:#0d0d0d;border:.5px solid #1a1a1a;border-radius:7px;padding:.55rem .75rem}
+.canal-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.canal-desc{font-size:11px;color:#666;line-height:1.4}
 .prompt-box{background:#0d0d0d;border:.5px solid #1a1a1a;border-radius:8px;padding:.75rem .9rem;font-size:11px;color:#777;font-family:'SF Mono',Monaco,monospace;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin-bottom:.4rem;margin-top:.15rem}
 .copy-btn{font-size:10px;padding:4px 9px;border:.5px solid #222;border-radius:5px;background:#161616;color:var(--muted);cursor:pointer}
 .copy-btn:hover{color:var(--text)}
@@ -121,7 +140,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="wrap">
 
   <div class="top">
-    <div class="logo">English Tracker <span>· imersão</span></div>
+    <div class="logo">English Tracker <span>· confiança operacional</span></div>
     <button class="reset" onclick="resetWeek()">↺ reset</button>
   </div>
 
@@ -131,10 +150,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span class="wp-pct" id="wp-pct">0%</span>
   </div>
 
+  <!-- ESCADA DE CONFIANÇA -->
+  <div class="escada">
+    <div class="escada-title">Escada de confiança — onde você está agora</div>
+    <div class="degrau feito" onclick="setDegrau(0)">
+      <div class="degrau-num">1</div>
+      <div class="degrau-text">Falar com pessoas conhecidas no trabalho <span class="degrau-tag tag-feito">feito</span></div>
+    </div>
+    <div class="degrau" id="deg1" onclick="setDegrau(1)">
+      <div class="degrau-num">2</div>
+      <div class="degrau-text">Episoden sem preparação — entrar frio, falar sem filtro</div>
+    </div>
+    <div class="degrau" id="deg2" onclick="setDegrau(2)">
+      <div class="degrau-num">3</div>
+      <div class="degrau-text">Discord/meetup técnico em inglês com desconhecidos</div>
+    </div>
+    <div class="degrau" id="deg3" onclick="setDegrau(3)">
+      <div class="degrau-num">4</div>
+      <div class="degrau-text">Ouvinte em calls internas que você normalmente não participa</div>
+    </div>
+    <div class="degrau" id="deg4" onclick="setDegrau(4)">
+      <div class="degrau-num">5</div>
+      <div class="degrau-text">1 pergunta por call — qualquer pergunta, mesmo simples</div>
+    </div>
+    <div class="degrau" id="deg5" onclick="setDegrau(5)">
+      <div class="degrau-num">6</div>
+      <div class="degrau-text">War room — entrar, reagir, debater em tempo real</div>
+    </div>
+  </div>
+
   <!-- REGRAS -->
   <div class="rules">
     <div class="rules-title">3 regras do dia</div>
-    <div class="rule-row"><span class="rule-num">1</span><span class="rule-text"><strong>Zero tradutor no Slack</strong> — leia uma vez, responda com 70% de entendimento.</span></div>
+    <div class="rule-row"><span class="rule-num">1</span><span class="rule-text"><strong>Zero tradutor no Slack</strong> — leia uma vez, responda com o que entendeu.</span></div>
     <div class="rule-row"><span class="rule-num">2</span><span class="rule-text"><strong>Escreva em inglês antes de pensar em português</strong> — Slack, qualquer mensagem.</span></div>
     <div class="rule-row"><span class="rule-num">3</span><span class="rule-text"><strong>Série/filme: legenda em inglês</strong> — inclusive ao dormir.</span></div>
   </div>
@@ -144,15 +192,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="day-card">
     <div class="day-meta">
       <span class="day-meta-name" id="day-label"></span>
-      <span class="day-meta-status" id="day-status"></span>
+      <span class="day-meta-st" id="day-status"></span>
     </div>
     <div id="tasks-container"></div>
   </div>
 
-  <div class="footer">● = dia com aula · estudo ativo ~20 min/dia · passivo você já faz</div>
+  <div class="footer">● = dia com aula · passivo (série, podcast) você já faz</div>
 </div>
 
-<!-- MODAL -->
 <div class="overlay" id="overlay" onclick="closeOut(event)">
   <div class="modal">
     <button class="modal-x" onclick="closeModal()">✕</button>
@@ -161,21 +208,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <script>
-const DAYS = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-const HAS_AULA = [true,true,false,true,false,false,false];
+const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const HAS_AULA=[true,true,false,true,false,false,false];
 
-// TAREFAS
-const TASKS = {
-  warmup:{
-    name:'Aquecimento — grave 2 min antes da aula',time:'5 min · 06h55',badge:'b-output',bl:'Output',cls:'t-aula',
-    why:'Você entra na aula frio. A gravação aquece a voz e gera um exemplo real de onde você trava — material direto para o professor.',
-    steps:['Grave 2 min falando sobre sua semana. Sem preparar texto.','Ouça uma vez. Anote 1 coisa torta.','Leve esse exemplo para a aula como situação real.'],
-    prompt:null
-  },
+const TASKS={
   capture:{
-    name:'Registrar — o professor já corrigiu, agora fixa',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
-    why:'O professor já fez o trabalho de correção. Sua única tarefa agora é não deixar isso cair no esquecimento: registrar a frase corrigida, criar 1 card no Anki e usar essa estrutura no Episoden de hoje.',
-    steps:['Anote só a versão correta — exatamente como o professor falou.','Escreva 1 exemplo seu com a mesma estrutura. Não olhe para o que você disse de errado.','Crie 1 card no Anki: frente = situação, verso = frase correta + sua variação.','No Episoden de hoje: use essa frase pelo menos 1 vez.','A versão errada não existe mais. Só a correta.'],
+    name:'Registrar — só a versão correta',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
+    why:'O professor já corrigiu. Sua única tarefa é não deixar isso cair no esquecimento. A versão errada não existe mais — só a correta.',
+    steps:['Anote só a versão correta — exatamente como o professor falou.','Escreva 1 exemplo seu com a mesma estrutura.','Crie 1 card no Anki: frente = situação, verso = frase correta + sua variação.','No Episoden de hoje: use essa frase pelo menos 1 vez.'],
     prompt:`My teacher just corrected me. I want to lock in the correct version.
 
 Correct phrase (exactly as the teacher said):
@@ -187,13 +227,13 @@ Give me:
    Front = situation where I'd use this
    Back = correct phrase + my new variation.
 
-Do NOT mention my wrong version. Only work with the correct one.`,
+Only work with the correct version. Do not mention any wrong version.`,
     pl:'Prompt — fixar versão correta'
   },
   entry:{
     name:'Entrar na aula com tema real de trabalho',time:'2 min · antes de entrar',badge:'b-aula',bl:'Aula',cls:'t-aula',
-    why:'O Professor 2 só faz conversação livre. Sem tema real a hora passa bem mas sem direção.',
-    steps:['Pense: o que precisei ou vou precisar explicar em inglês no trabalho essa semana?','Diga ao professor logo no início: "I had to explain X and I got stuck on Y."','Se não tiver tema de trabalho: use uma reunião onde não entendeu algo.'],
+    why:'O Professor 2 só faz conversação. Sem tema real a hora passa bem mas sem direção. 1 frase de entrada muda tudo.',
+    steps:['O que aconteceu no trabalho essa semana que você precisou ou vai precisar explicar em inglês?','Diga ao professor logo no início: "I had to explain X and I got stuck on Y."','Se não tiver tema: use uma reunião onde não entendeu algo.'],
     prompt:`English conversation class in a few minutes.
 
 Work situation I want to practice:
@@ -206,107 +246,84 @@ Give me:
     pl:'Prompt — preparar aula'
   },
   episoden:{
-    name:'Episoden — 3 pessoas, 1 padrão, missão',time:'10–15 min · todo dia',badge:'b-episoden',bl:'Episoden',cls:'t-episoden',
-    why:'Episoden não é conversa livre — é cirurgia. Você entra com 1 padrão e sai tendo usado ele 3 vezes naturalmente com pessoas reais. Falar com 3 pessoas diferentes força você a adaptar o padrão em contextos variados, o que é exatamente como o cérebro automatiza.',
-    steps:['Veja o padrão da semana no topo do tracker.','Entre no Episoden com a missão: usar esse padrão 3 vezes naturalmente.','Fale com 3 pessoas diferentes, ~3–4 min cada. Troque quando a missão estiver cumprida.','Não se corrija enquanto fala. Fluidez primeiro, correção depois.','Ao final: anote 1 frase que saiu bem e 1 que ainda travou. Leve para o fix.'],
-    prompt:`I'm about to join Episoden. My mission today:
+    name:'Episoden — 3 pessoas, sem preparação na quinta-feira',time:'10–15 min · todo dia',badge:'b-ep',bl:'Episoden',cls:'t-ep',
+    why:'Episoden com missão: usar o padrão que você está treinando 3 vezes com 3 pessoas diferentes. Quinta-feira é o dia de entrar completamente frio — sem preparar nada. Isso treina o músculo de falar sem filtro, que é exatamente o que um war room exige.',
+    steps:['Defina o padrão da semana com a IA antes de entrar.','Missão: usar esse padrão naturalmente com 3 pessoas diferentes, ~4 min cada.','Na quinta-feira: entre sem preparar nada. Fale a primeira coisa que vier.','Não se corrija enquanto fala. O erro faz parte do treino.','Ao final: 1 frase que saiu bem, 1 que travou. Leva para o Anki.'],
+    prompt:`I'm about to join Episoden.
 
-Pattern to practice: [PASTE THE PATTERN FROM THE TRACKER]
+Pattern I'm practicing this week: [PASTE YOUR PATTERN]
 Goal: use it naturally at least 3 times across 3 different conversations.
 
 Give me:
-1. Three different conversation starters — one for each person I'll talk to.
+1. Three different conversation starters — one for each person.
 2. Five natural sentences using this pattern in work/tech contexts.
 3. Three follow-up questions to keep each conversation going.
-4. Two emergency phrases if I freeze completely.
-
-Context: Platform Security Engineer, remote US company, American and Pakistani coworkers.
-Keep it natural. Not textbook.`,
-    pl:'Prompt — entrar no Episoden'
-  },
-  anchor:{
-    name:'Âncora — grave, ouça, corrija 1 coisa',time:'10 min · após primeira reunião',badge:'b-output',bl:'Output',cls:'',
-    why:'Único estudo estruturado do dia fora das aulas. Gravação é diagnóstico, não performance. O objetivo é 1 problema identificado e corrigido antes de esquecer.',
-    steps:['Grave 3 min sobre algo real do trabalho. Sem preparar texto.','Ouça uma vez. Só uma. Anote 1 problema específico.','Cole no prompt e peça a versão natural.','Leia a versão corrigida em voz alta 3 vezes.','Crie 1 card no Anki com o padrão.'],
-    prompt:`I recorded myself speaking English for 3 minutes.
-
-Problem I found:
-"[PASTE THE SENTENCE OR DESCRIBE THE ISSUE]"
+4. Two emergency phrases if I freeze.
 
 Context: Platform Security Engineer, remote US company.
-
-Give me:
-1. The natural version.
-2. Main issue in 1 sentence.
-3. Three similar sentences to practice.
-4. Reusable pattern: PATTERN: ___`,
-    pl:'Prompt — corrigir gravação'
+Natural English only. Not textbook.`,
+    pl:'Prompt — entrar no Episoden'
+  },
+  shadow:{
+    name:'Shadowing — fale junto, sem parar',time:'10 min · todo dia',badge:'b-shadow',bl:'Shadowing',cls:'t-shadow',
+    why:'Shadowing treina velocidade de acesso — não conhecimento. Você sabe as palavras mas na pressão demora para acessá-las. 10 min de shadowing por dia durante 30 dias muda isso. É o que separa B1 travado de B1 fluente.',
+    steps:['Escolha 2–3 min de áudio de um dos canais recomendados.','Primeira vez: só ouça. Entenda o contexto.','Segunda vez: fale junto em voz alta, 1–2 segundos atrás do falante. Não pare quando perder palavras — continue.','Terceira vez: fale junto de novo. Vai sair melhor sem você ter memorizado nada.','Pare em 10 min. Consistência diária bate sessão longa.'],
+    canais:[
+      {name:'Darknet Diaries',desc:'Histórias reais de hacking e incidentes. 1 apresentador, dicção clara. Perfeito para seu contexto de security.'},
+      {name:'LiveOverflow — YouTube',desc:'Engenheiro de segurança explicando vulnerabilidades. Técnico, direto, vocabulário do seu trabalho.'},
+      {name:'Software Engineering Daily',desc:'Engenheiros em conversas reais sobre sistemas. Ritmo médio, ideal para shadowing.'},
+      {name:'Huberman Lab',desc:'Não é tech mas fala devagar e articulado. Ótimo para começar — ritmo controlado.'},
+      {name:'ThePrimeagen — YouTube',desc:'Engenheiro opinando sobre tech em tempo real. Fala rápido, usa gírias americanas reais. Para quando quiser desafio.'},
+    ],
+    prompt:null,
+    pl:null
   },
   anki:{
     name:'Anki — 5 min de revisão ativa',time:'5 min · qualquer pausa',badge:'b-anki',bl:'Anki',cls:'',
-    why:'Sem revisão espaçada o que você captura nas aulas some em dias. 5 min diários batem 1 sessão longa por semana.',
-    steps:['Olhe a frente do card e tente falar antes de virar.','Vire e repita em voz alta.','Crie 1 variação com a mesma estrutura.','Pare em 5 min. Todos os dias bate sessão longa.'],
-    prompt:null
-  },
-  meeting:{
-    name:'Reunião — 1 frase preparada antes de entrar',time:'2 min · antes da reunião',badge:'b-output',bl:'Output',cls:'',
-    why:'Você fala pouco nas reuniões por falta de confiança. A meta não é falar muito — é 1 frase por reunião. Prepare antes. Com o tempo, 1 vira 3.',
-    steps:['Antes de entrar: o que provavelmente vou precisar dizer?','Prepare 1 frase usando o padrão da semana se possível.','Fale essa frase em voz alta uma vez antes de entrar.','Na reunião, diga ela. Mesmo que seja a única coisa que você diga.','Se não entender algo: "Sorry, could you say that again?"'],
-    prompt:`Work meeting soon. I want to say at least 1 sentence confidently.
-
-Topic: [DESCRIBE BRIEFLY]
-Pattern I want to use if possible: [PASTE PATTERN]
-
-Give me:
-1. Three natural phrases, simplest to more complex.
-2. Two clarification phrases if I don't understand.
-3. One phrase to buy time.`,
-    pl:'Prompt — preparar reunião'
+    why:'Sem revisão espaçada o que você captura some em dias. 5 min diários batem 1 sessão longa por semana.',
+    steps:['Olhe a frente do card e tente falar antes de virar.','Vire e repita em voz alta.','Crie 1 variação com a mesma estrutura.','Pare em 5 min. Todo dia bate sessão longa.'],
+    prompt:null,pl:null
   },
   livro:{
-    name:'Livro técnico — 20 min sem traduzir tudo',time:'20 min · 3x por semana',badge:'b-livro',bl:'Leitura',cls:'t-imersao',
-    why:'Leitura técnica em inglês constrói chunking — a capacidade de processar frases inteiras sem traduzir palavra por palavra. 20 min é o limite: mais que isso sem consistência não adianta.',
-    steps:['Leia por 20 min sem tentar traduzir cada palavra.','Regra dos 3: só pesquise uma palavra se aparecer 3 vezes ou for essencial.','Ao final, fale 1 minuto em voz alta explicando o que entendeu — em inglês.','Se encontrar uma frase útil para o trabalho, crie 1 card no Anki.','Pare em 20 min. Consistência bate volume.'],
-    prompt:`I'm reading a technical book in English and didn't fully understand this:
+    name:'Livro técnico — 20 min sem traduzir',time:'20 min · 3x por semana',badge:'b-livro',bl:'Leitura',cls:'t-im',
+    why:'Leitura técnica constrói chunking — processar frases inteiras sem traduzir palavra por palavra. 20 min é o limite: mais sem consistência não funciona.',
+    steps:['Leia 20 min sem traduzir cada palavra.','Regra dos 3: só pesquise uma palavra se aparecer 3 vezes.','Ao final, fale 1 min em inglês explicando o que entendeu.','Se encontrar frase útil: 1 card no Anki.','Pare em 20 min.'],
+    prompt:`I'm reading a technical book and didn't understand this:
 
 "[PASTE PARAGRAPH]"
 
 Context: Platform Security Engineer, remote US company.
 
-Help me:
 1. Explain the main idea simply.
 2. Explain terms that matter for my work.
-3. Three natural sentences I could say in a security/engineering context.
+3. Three natural sentences I could say in a security context.
 4. Anki card only if genuinely useful:
-   Front = work situation
-   Back = natural phrase + variation.`,
+   Front = work situation / Back = phrase + variation.`,
     pl:'Prompt — livro técnico'
   },
   filme:{
-    name:'Série/filme ao dormir — legenda em inglês',time:'Ao dormir · todo dia',badge:'b-imersao',bl:'Imersão',cls:'t-imersao',
-    why:'Input passivo de alta qualidade. Seu cérebro continua processando padrões mesmo em estado relaxado. A única regra: legenda em inglês, não português. É a única mudança necessária no que você já faz.',
-    steps:['Coloque qualquer série ou filme que você queira assistir.','Legenda em inglês — não português. Sempre.','Não precisa entender 100%. O cérebro absorve ritmo e padrões automaticamente.','Se ouvir o padrão da semana sendo usado, preste atenção — é o mesmo que você está treinando.','Não force ficar acordado para estudar. O objetivo é input relaxado.'],
-    prompt:`I'm watching [SERIES/MOVIE] and heard this phrase I want to understand better:
+    name:'Série/filme — legenda em inglês ao dormir',time:'Ao dormir · todo dia',badge:'b-im',bl:'Imersão',cls:'t-im',
+    why:'Input passivo de alta qualidade. A única mudança no que você já faz: legenda em inglês, não português. Sempre.',
+    steps:['Qualquer série ou filme que queira assistir.','Legenda em inglês — sempre.','Se ouvir uma frase boa: anote e cole no prompt.','Não force ficar acordado para estudar. O objetivo é input relaxado.'],
+    prompt:`I was watching [SERIES/MOVIE] and heard this phrase:
 
 "[PASTE HERE]"
 
-Give me:
 1. What it means in plain English.
-2. The tone — casual, direct, sarcastic, formal?
-3. Two similar phrases I could use at work or with coworkers.
-4. Is this worth adding to Anki? If yes, give me the card.`,
+2. The tone — casual, direct, sarcastic?
+3. Two similar phrases I could use at work.
+4. Worth adding to Anki? If yes, give me the card.`,
     pl:'Prompt — frase do filme/série'
   },
   sunday:{
     name:'Domingo — prepare o tema da semana',time:'10 min · à noite',badge:'b-aula',bl:'Aula',cls:'t-aula',
-    why:'10 minutos de preparação no domingo transformam a qualidade das duas aulas com o Professor 2. Sem tema real a hora passa bem mas sem foco.',
-    steps:['O que aconteceu no trabalho essa semana que você precisaria explicar em inglês?','Escreva 2–3 frases sobre isso em inglês. Não decore — organize o pensamento.','Esse tema alimenta as aulas de terça e quinta.','Se não tiver tema: use uma reunião onde não entendeu algo.'],
+    why:'10 min no domingo transformam as duas aulas do Professor 2. Sem tema real a hora passa bem mas sem direção.',
+    steps:['O que aconteceu no trabalho essa semana que você precisaria explicar em inglês?','Escreva 2–3 frases sobre isso. Não decore — organize o pensamento.','Esse tema alimenta as aulas de terça e quinta.'],
     prompt:`Preparing for English conversation classes this week.
 
 Work situation to practice:
-[DESCRIBE WHAT HAPPENED]
+[DESCRIBE]
 
-Give me:
 1. How to introduce this to the teacher naturally.
 2. Five sentences I'll likely need.
 3. Three questions the teacher might ask.`,
@@ -314,61 +331,90 @@ Give me:
   }
 };
 
-const PLAN = {
+const PLAN={
   0:[
-    {s:'Aula Professor 1 · 7h',      i:['warmup','capture']},
-    {s:'Estudo ativo',               i:['episoden','anki']},
-    {s:'Imersão',                    i:['filme']}
+    {s:'Aula Professor 1 · 7h',  i:['capture']},
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['filme']}
   ],
   1:[
-    {s:'Aula Professor 2 · 8h',      i:['entry','capture']},
-    {s:'Estudo ativo',               i:['anchor','episoden','anki']},
-    {s:'Reunião',                    i:['meeting']},
-    {s:'Imersão',                    i:['livro','filme']}
+    {s:'Aula Professor 2 · 8h',  i:['entry','capture']},
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
   ],
   2:[
-    {s:'Estudo ativo',               i:['anchor','episoden','anki']},
-    {s:'Reunião',                    i:['meeting']},
-    {s:'Imersão',                    i:['livro','filme']}
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
   ],
   3:[
-    {s:'Aula Professor 2 · 8h',      i:['entry','capture']},
-    {s:'Estudo ativo',               i:['episoden','anki']},
-    {s:'Reunião',                    i:['meeting']},
-    {s:'Imersão',                    i:['filme']}
+    {s:'Aula Professor 2 · 8h',  i:['entry','capture']},
+    {s:'Estudo ativo — Episoden SEM preparação hoje',i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['filme']}
   ],
   4:[
-    {s:'Estudo ativo',               i:['anchor','episoden','anki']},
-    {s:'Imersão',                    i:['livro','filme']}
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
   ],
   5:[
-    {s:'Estudo ativo',               i:['episoden','anki']},
-    {s:'Imersão',                    i:['livro','filme']}
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
   ],
   6:[
-    {s:'Preparar semana',            i:['sunday']},
-    {s:'Estudo ativo',               i:['anki']},
-    {s:'Imersão',                    i:['filme']}
+    {s:'Preparar semana',        i:['sunday']},
+    {s:'Estudo ativo',           i:['anki']},
+    {s:'Imersão',               i:['filme']}
   ]
 };
 
 let state={};
 let cur=(()=>{let d=new Date().getDay();return d===0?6:d-1;})();
 
-function key(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return 'et_v2_'+s.toISOString().slice(0,10);}
+function key(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'et_v3_'+s.toISOString().slice(0,10);}
 function load(){try{state=JSON.parse(localStorage.getItem(key())||'{}');}catch(e){state={};}}
 function save(){localStorage.setItem(key(),JSON.stringify(state));}
-function resetWeek(){if(confirm('Zerar a semana?')){state={};save();render();}}
+function resetWeek(){if(confirm('Zerar a semana?')){const d=state.__deg||1;state={};state.__deg=d;save();render();}}
 function chk(d,id){return!!state[d+'_'+id];}
 function toggle(d,id){state[d+'_'+id]=!state[d+'_'+id];save();render();}
 
 function ds(di){let t=0,c=0;(PLAN[di]||[]).forEach(s=>s.i.forEach(id=>{t++;if(chk(di,id))c++;}));return{t,c};}
 function wp(){let t=0,c=0;[0,1,2,3,4,5,6].forEach(i=>{const s=ds(i);t+=s.t;c+=s.c;});return t?Math.round(c/t*100):0;}
 
+// Escada de confiança
+function setDegrau(n){
+  if(n===0)return; // degrau 1 sempre feito
+  state.__deg=n;save();renderEscada();
+}
+function renderEscada(){
+  const cur=state.__deg||1;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('deg'+i);
+    if(!el)continue;
+    const tags={feito:'tag-feito',ativo:'tag-ativo',bloq:'tag-bloq'};
+    let estado,tag,tagLabel;
+    if(i<cur){estado='feito';tag='tag-feito';tagLabel='feito';}
+    else if(i===cur){estado='ativo';tag='tag-ativo';tagLabel='agora';}
+    else{estado='bloq';tag='tag-bloq';tagLabel='próximo';}
+    el.className='degrau '+estado;
+    el.querySelector('.degrau-num').style.background=estado==='feito'?'var(--green)':estado==='ativo'?'var(--amber)':'var(--dim)';
+    el.querySelector('.degrau-num').style.color=estado==='bloq'?'var(--muted)':'#000';
+    // remove tag antiga e adiciona nova só se for feito ou ativo
+    const txt=el.querySelector('.degrau-text');
+    const oldTag=txt.querySelector('.degrau-tag');
+    if(oldTag)oldTag.remove();
+    if(estado!=='bloq'){
+      const span=document.createElement('span');
+      span.className='degrau-tag '+tag;
+      span.textContent=tagLabel;
+      txt.appendChild(span);
+    }
+  }
+}
+
 function render(){
   const pct=wp();
   document.getElementById('wp-fill').style.width=pct+'%';
   document.getElementById('wp-pct').textContent=pct+'%';
+  renderEscada();
 
   const nav=document.getElementById('day-tabs');nav.innerHTML='';
   DAYS.forEach((d,i)=>{
@@ -383,8 +429,8 @@ function render(){
   const s=ds(cur);
   document.getElementById('day-label').textContent=DAYS[cur]+(HAS_AULA[cur]?' · aula':'');
   const st=document.getElementById('day-status');
-  if(s.t>0&&s.c===s.t){st.textContent='completo ✓';st.className='day-meta-status done';}
-  else{st.textContent=s.c+'/'+s.t;st.className='day-meta-status';}
+  if(s.t>0&&s.c===s.t){st.textContent='completo ✓';st.className='day-meta-st done';}
+  else{st.textContent=s.c+'/'+s.t;st.className='day-meta-st';}
 
   const cont=document.getElementById('tasks-container');cont.innerHTML='';
   (PLAN[cur]||[]).forEach(sec=>{
@@ -415,6 +461,11 @@ function openM(id){
   h+=`<div class="m-label">Como fazer</div><ul class="m-steps">`;
   t.steps.forEach((s,i)=>h+=`<li><span class="m-n">${i+1}</span><span>${s}</span></li>`);
   h+=`</ul>`;
+  if(t.canais){
+    h+=`<div class="m-label">Canais para shadowing</div><div class="canais">`;
+    t.canais.forEach(c=>h+=`<div class="canal"><div class="canal-name">${c.name}</div><div class="canal-desc">${c.desc}</div></div>`);
+    h+=`</div>`;
+  }
   if(t.prompt){
     h+=`<div class="m-label">${t.pl}</div>`;
     h+=`<div class="prompt-box">${t.prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
