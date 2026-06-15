@@ -1,981 +1,492 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevOps on macOS M5 — Study Guide</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>English Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--surface:#111;--surface2:#161616;--border:#1f1f1f;--border2:#2a2a2a;
+  --text:#e8e4de;--muted:#666;--dim:#2e2e2e;--subdued:#444;
+  --green:#22c55e;--green-bg:#0a1f10;--green-border:#14532d;
+  --amber:#f59e0b;--amber-bg:#1c1100;--amber-border:#3d2a00;
+  --blue:#60a5fa;--blue-bg:#0a1628;--blue-border:#1e3a5f;
+  --purple:#a78bfa;--purple-bg:#130d24;--purple-border:#2d1f52;
+  --red:#f87171;--red-bg:#1a0808;
+  --teal:#2dd4bf;--teal-bg:#041a18;--teal-border:#0f3530;
+  --pink:#f472b6;--pink-bg:#1a0812;--pink-border:#4a1530;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1rem}
+.wrap{max-width:600px;margin:0 auto}
 
-    :root {
-      --bg:      #0e1117;
-      --bg2:     #161b22;
-      --bg3:     #1f2937;
-      --border:  rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.15);
-      --text:    #e6edf3;
-      --muted:   #8b949e;
-      --accent:  #58a6ff;
-      --green:   #3fb950;
-      --red:     #f85149;
-      --amber:   #d29922;
-      --purple:  #bc8cff;
-      --mono:    'IBM Plex Mono', monospace;
-      --sans:    'Inter', system-ui, sans-serif;
-      --radius:  10px;
-    }
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.logo span{color:var(--muted);font-weight:400;font-size:13px}
+.reset{font-size:11px;padding:5px 10px;border:.5px solid var(--border2);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}
+.reset:hover{color:var(--text)}
 
-    html { scroll-behavior: smooth; }
+.week-prog{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem;display:flex;align-items:center;gap:12px}
+.wp-label{font-size:11px;color:var(--muted);white-space:nowrap}
+.wp-track{flex:1;height:3px;background:var(--border2);border-radius:3px;overflow:hidden}
+.wp-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease}
+.wp-pct{font-size:12px;font-weight:600;color:var(--green);min-width:30px;text-align:right}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.7;
-    }
+/* ESCADA DE CONFIANÇA */
+.escada{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.85rem}
+.escada-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.degrau{display:flex;gap:10px;align-items:flex-start;margin-bottom:.5rem;cursor:pointer}
+.degrau:last-child{margin-bottom:0}
+.degrau-num{font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.degrau.ativo .degrau-num{background:var(--amber);color:#000}
+.degrau.feito .degrau-num{background:var(--green);color:#000}
+.degrau.bloq .degrau-num{background:var(--dim);color:var(--muted)}
+.degrau-text{font-size:12px;line-height:1.4}
+.degrau.ativo .degrau-text{color:var(--text)}
+.degrau.feito .degrau-text{color:var(--subdued);text-decoration:line-through}
+.degrau.bloq .degrau-text{color:var(--muted)}
+.degrau-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
+.tag-ativo{background:var(--amber-bg);color:var(--amber)}
+.tag-feito{background:var(--green-bg);color:var(--green)}
+.tag-bloq{background:var(--dim);color:var(--muted)}
 
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(14,17,23,0.94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      height: 52px;
-      display: flex; align-items: center;
-      padding: 0 1.5rem;
-      gap: 4px;
-      overflow-x: auto;
-    }
-    .nav-logo {
-      font-family: var(--mono); font-size: 12px;
-      color: var(--green); margin-right: 12px;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    nav a {
-      font-size: 12.5px; color: var(--muted);
-      text-decoration: none;
-      padding: 5px 10px; border-radius: 6px;
-      white-space: nowrap; flex-shrink: 0;
-      transition: background 0.15s, color 0.15s;
-    }
-    nav a:hover { background: var(--bg3); color: var(--text); }
-    nav a.active { background: var(--bg3); color: var(--accent); }
+/* REGRAS */
+.rules{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem}
+.rules-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem}
+.rule-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:.35rem}
+.rule-row:last-child{margin-bottom:0}
+.rule-num{font-size:10px;font-weight:700;color:var(--amber);min-width:14px;padding-top:1px}
+.rule-text{font-size:12px;color:#888;line-height:1.4}
+.rule-text strong{color:var(--text);font-weight:500}
 
-    /* ── LAYOUT ── */
-    .page { max-width: 820px; margin: 0 auto; padding: 0 1.5rem 6rem; }
+/* TABS */
+.day-tabs{display:flex;gap:5px;margin-bottom:.7rem;flex-wrap:wrap}
+.dt{padding:6px 12px;border:.5px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;position:relative}
+.dt:hover{border-color:var(--border2);color:#999}
+.dt.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.dt.done{border-color:var(--green-border);color:var(--green);background:var(--green-bg)}
+.aula-dot{width:4px;height:4px;border-radius:50%;background:var(--amber);position:absolute;top:4px;right:4px}
 
-    /* ── HERO ── */
-    .hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--border); }
-    .hero-eye {
-      font-family: var(--mono); font-size: 11px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--green); margin-bottom: 0.75rem;
-    }
-    .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 600; letter-spacing: -0.02em;
-      line-height: 1.2; margin-bottom: 0.75rem;
-    }
-    .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { font-size: 15px; color: var(--muted); max-width: 520px; }
+.day-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.75rem}
+.day-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.day-meta-name{font-size:12px;font-weight:600;color:var(--text)}
+.day-meta-st{font-size:11px;color:var(--muted)}
+.day-meta-st.done{color:var(--green)}
 
-    /* ── TOOL SECTION ── */
-    .tool-section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
-    .tool-section:last-child { border-bottom: none; }
+.sec{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:1rem 0 .4rem;padding-left:2px}
+.sec:first-of-type{margin-top:0}
 
-    .tool-header {
-      display: flex; align-items: center;
-      gap: 14px; margin-bottom: 0.4rem;
-    }
-    .tool-emoji {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: var(--bg2); border: 1px solid var(--border2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
-    }
-    .tool-title { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.01em; }
-    .tool-badge {
-      font-family: var(--mono); font-size: 10px;
-      padding: 2px 8px; border-radius: 20px;
-      margin-left: 4px;
-    }
-    .badge-free   { background: rgba(63,185,80,0.12);  color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
-    .badge-choose { background: rgba(88,166,255,0.12); color: var(--accent); border: 1px solid rgba(88,166,255,0.25); }
-    .badge-req    { background: rgba(188,140,255,0.12);color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+.task{display:flex;align-items:center;gap:10px;padding:10px 11px;border:.5px solid var(--border);border-radius:10px;margin-bottom:5px;background:var(--surface2);transition:all .12s;user-select:none}
+.task:hover{border-color:var(--border2)}
+.task.checked{background:var(--green-bg);border-color:var(--green-border)}
+.task.t-aula{border-left:2px solid var(--amber-border)}
+.task.t-ep{border-left:2px solid var(--blue-border)}
+.task.t-shadow{border-left:2px solid var(--pink-border)}
+.task.t-im{border-left:2px solid var(--purple-border)}
+.task.checked.t-aula{background:var(--amber-bg);border-color:var(--amber-border)}
+.task.checked.t-ep{background:var(--blue-bg);border-color:var(--blue-border)}
+.task.checked.t-shadow{background:var(--pink-bg);border-color:var(--pink-border)}
+.task.checked.t-im{background:var(--purple-bg);border-color:var(--purple-border)}
+.chk{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.task.checked .chk{background:var(--green);border-color:var(--green)}
+.task.checked.t-aula .chk{background:var(--amber);border-color:var(--amber)}
+.task.checked.t-ep .chk{background:var(--blue);border-color:var(--blue)}
+.task.checked.t-shadow .chk{background:var(--pink);border-color:var(--pink)}
+.task.checked.t-im .chk{background:var(--purple);border-color:var(--purple)}
+.chk svg{opacity:0;width:10px;height:10px;stroke:#0a0a0a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.task.checked .chk svg{opacity:1}
+.task-info{flex:1;min-width:0;cursor:pointer}
+.task-name{font-size:12px;color:var(--text);line-height:1.3}
+.task.checked .task-name{color:var(--subdued);text-decoration:line-through}
+.task-time{font-size:10px;color:var(--muted);margin-top:2px}
+.task.checked .task-time{color:var(--dim)}
+.badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:20px;margin-left:5px;vertical-align:middle}
+.b-aula{background:var(--amber-bg);color:var(--amber)}
+.b-anki{background:var(--red-bg);color:var(--red)}
+.b-ep{background:var(--blue-bg);color:var(--blue)}
+.b-shadow{background:var(--pink-bg);color:var(--pink)}
+.b-im{background:var(--purple-bg);color:var(--purple)}
+.b-livro{background:var(--teal-bg);color:var(--teal)}
+.b-capture{background:var(--green-bg);color:var(--green)}
+.info-btn{font-size:10px;color:var(--dim);padding:3px 7px;border:.5px solid var(--border);border-radius:5px;background:transparent;cursor:pointer;flex-shrink:0}
+.info-btn:hover{color:var(--muted);border-color:var(--border2)}
 
-    .tool-what {
-      font-size: 14px; color: var(--muted);
-      margin-bottom: 2rem; max-width: 580px;
-      padding-left: 56px;
-    }
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#111;border:.5px solid #2a2a2a;border-radius:16px;padding:1.4rem;width:100%;max-width:520px;margin:auto;position:relative}
+.modal-x{position:absolute;top:.9rem;right:.9rem;background:#1a1a1a;border:none;color:var(--muted);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{color:var(--text)}
+.m-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;padding-right:2rem;line-height:1.35}
+.m-sub{font-size:11px;color:var(--muted);margin-bottom:.85rem}
+.m-why{font-size:12px;color:#888;line-height:1.5;background:#0d0d0d;border:.5px solid #1a1a1a;border-radius:8px;padding:.65rem .85rem;margin-bottom:.75rem}
+.m-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subdued);margin:.75rem 0 .35rem}
+.m-steps{list-style:none}
+.m-steps li{font-size:12px;color:#888;line-height:1.55;padding:.28rem 0;border-bottom:.5px solid #1a1a1a;display:flex;gap:8px}
+.m-steps li:last-child{border-bottom:none}
+.m-n{color:var(--dim);font-size:10px;min-width:14px;padding-top:2px;flex-shrink:0}
+.canais{margin-top:.5rem;display:flex;flex-direction:column;gap:5px}
+.canal{background:#0d0d0d;border:.5px solid #1a1a1a;border-radius:7px;padding:.55rem .75rem}
+.canal-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.canal-desc{font-size:11px;color:#666;line-height:1.4}
+.prompt-box{background:#0d0d0d;border:.5px solid #1a1a1a;border-radius:8px;padding:.75rem .9rem;font-size:11px;color:#777;font-family:'SF Mono',Monaco,monospace;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin-bottom:.4rem;margin-top:.15rem}
+.copy-btn{font-size:10px;padding:4px 9px;border:.5px solid #222;border-radius:5px;background:#161616;color:var(--muted);cursor:pointer}
+.copy-btn:hover{color:var(--text)}
+.copy-btn.ok{color:var(--green);border-color:var(--green-border)}
 
-    /* ── TAB SYSTEM ── */
-    .tabs { margin-bottom: 0; }
-    .tab-nav {
-      display: flex; gap: 0;
-      border-bottom: 1px solid var(--border2);
-      margin-bottom: 1.5rem;
-    }
-    .tab-btn {
-      font-size: 13px; font-weight: 500;
-      padding: 8px 18px;
-      border: none; background: transparent;
-      color: var(--muted); cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active-install { color: var(--green);  border-bottom-color: var(--green); }
-    .tab-btn.active-use     { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-btn.active-remove  { color: var(--red);    border-bottom-color: var(--red); }
-    .tab-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-    }
-    .dot-install { background: var(--green); }
-    .dot-use     { background: var(--accent); }
-    .dot-remove  { background: var(--red); }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── EXPLAIN BLOCK ── */
-    .explain {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem; margin-bottom: 1rem;
-      font-size: 14px; color: var(--muted); line-height: 1.6;
-    }
-    .explain strong { color: var(--text); }
-
-    /* ── CODE BLOCK ── */
-    .code-wrap { position: relative; margin: 10px 0; }
-    pre {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 3rem 1rem 1.125rem;
-      font-family: var(--mono); font-size: 12.5px;
-      line-height: 1.75; overflow-x: auto; color: var(--text);
-    }
-    .cm { color: var(--muted); }
-    .kw { color: var(--purple); }
-    .st { color: var(--green); }
-    .copy-btn {
-      position: absolute; top: 9px; right: 10px;
-      font-family: var(--mono); font-size: 11px;
-      padding: 3px 9px; border-radius: 6px;
-      border: 1px solid var(--border2);
-      background: var(--bg3); color: var(--muted);
-      cursor: pointer; transition: color 0.15s;
-    }
-    .copy-btn:hover { color: var(--text); }
-
-    /* ── LABEL ── */
-    .cmd-label {
-      font-family: var(--mono); font-size: 11px;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--muted); margin: 1.25rem 0 4px;
-    }
-    .cmd-label:first-child { margin-top: 0; }
-
-    /* ── NOTES ── */
-    .note {
-      font-size: 13px; padding: 9px 13px;
-      border-radius: 7px; margin: 10px 0;
-      border-left: 3px solid; line-height: 1.55;
-    }
-    .note-info    { background: rgba(88,166,255,0.07);  border-color: var(--accent); color: #93c5fd; }
-    .note-success { background: rgba(63,185,80,0.07);   border-color: var(--green);  color: #86efac; }
-    .note-warn    { background: rgba(210,153,34,0.07);  border-color: var(--amber);  color: #fcd34d; }
-    .note-danger  { background: rgba(248,81,73,0.07);   border-color: var(--red);    color: #fca5a5; }
-    .note code, .explain code {
-      font-family: var(--mono); font-size: 11.5px;
-      background: var(--bg3); padding: 1px 5px;
-      border-radius: 4px; color: var(--text);
-    }
-
-    /* ── OPTION CARDS (for choose-one tools) ── */
-    .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-    @media (max-width: 560px) { .option-grid { grid-template-columns: 1fr; } }
-    .option-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1rem 1.125rem;
-      cursor: pointer; transition: border-color 0.15s;
-    }
-    .option-card:hover { border-color: var(--border2); }
-    .option-card.selected-a { border-color: var(--green); }
-    .option-card.selected-b { border-color: var(--accent); }
-    .option-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-    .option-rec {
-      font-family: var(--mono); font-size: 10px;
-      padding: 1px 7px; border-radius: 10px;
-      background: rgba(63,185,80,0.12); color: var(--green);
-    }
-    .option-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
-    .option-content { display: none; }
-    .option-content.visible { display: block; margin-top: 1rem; }
-
-    /* ── USE STEPS ── */
-    .use-step {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
-    }
-    .use-step:last-child { border-bottom: none; }
-    .use-num {
-      width: 26px; height: 26px; border-radius: 50%;
-      border: 1px solid var(--border2);
-      font-family: var(--mono); font-size: 11px;
-      color: var(--muted); display: flex;
-      align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 3px;
-    }
-    .use-body { flex: 1; }
-    .use-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-    .use-desc  { font-size: 13px; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
-
-    /* ── REMOVE LIST ── */
-    .remove-step {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .remove-step:last-child { border-bottom: none; }
-    .remove-step-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: var(--text); }
-    .remove-step-desc  { font-size: 13px; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
-
-    /* ── FOOTER ── */
-    footer {
-      text-align: center; padding: 2.5rem 0;
-      font-size: 13px; color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-    footer a { color: var(--accent); text-decoration: none; }
-  </style>
+.footer{text-align:center;font-size:11px;color:var(--dim);margin-top:1rem;line-height:1.6}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-<nav>
-  <span class="nav-logo">~/devops-mac $</span>
-  <a href="#homebrew">Homebrew</a>
-  <a href="#docker">Docker</a>
-  <a href="#utm">UTM</a>
-  <a href="#mise">mise</a>
-  <a href="#direnv">direnv</a>
-  <a href="#act">act</a>
-</nav>
-
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <p class="hero-eye">macOS M5 · Apple Silicon</p>
-    <h1>DevOps study environment<br /><em>simple and isolated</em></h1>
-    <p>One guide per tool — install, use, and remove. Your work setup stays untouched.</p>
+  <div class="top">
+    <div class="logo">English Tracker <span>· confiança operacional</span></div>
+    <button class="reset" onclick="resetWeek()">↺ reset</button>
   </div>
 
-  <!-- ══════════════════════════════════════
-       1. HOMEBREW
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="homebrew">
-    <div class="tool-header">
-      <div class="tool-emoji">🍺</div>
-      <div>
-        <span class="tool-title">Homebrew</span>
-        <span class="tool-badge badge-req">install first</span>
-      </div>
+  <div class="week-prog">
+    <span class="wp-label">Semana</span>
+    <div class="wp-track"><div class="wp-fill" id="wp-fill" style="width:0%"></div></div>
+    <span class="wp-pct" id="wp-pct">0%</span>
+  </div>
+
+  <!-- ESCADA DE CONFIANÇA -->
+  <div class="escada">
+    <div class="escada-title">Escada de confiança — onde você está agora</div>
+    <div class="degrau feito" onclick="setDegrau(0)">
+      <div class="degrau-num">1</div>
+      <div class="degrau-text">Falar com pessoas conhecidas no trabalho <span class="degrau-tag tag-feito">feito</span></div>
     </div>
-    <p class="tool-what">
-      Homebrew is the package manager for macOS — think of it as an App Store for developer tools, but from the terminal.
-      Every other tool in this guide installs and uninstalls through Homebrew. Install this before anything else.
-    </p>
-
-    <div class="tabs" id="tabs-homebrew">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('homebrew','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('homebrew','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('homebrew','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="homebrew-install">
-        <p class="cmd-label">Run this in Terminal</p>
-        <div class="code-wrap">
-          <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">After install — add Homebrew to your PATH</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># The installer will show you this command — run it:</span>
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-source ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Verify it works</p>
-        <div class="code-wrap">
-          <pre>brew --version<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="homebrew-use">
-        <div class="explain">
-          You mostly won't use Homebrew directly — it runs in the background when you install other tools.
-          But here are the commands you'll occasionally need:
-        </div>
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Install any tool</div>
-            <div class="use-desc">Add <code>--cask</code> for apps with a GUI (like Docker Desktop or UTM). Without it, for CLI tools.</div>
-            <div class="code-wrap"><pre>brew install &lt;tool&gt;        <span class="cm"># CLI tools</span>
-brew install --cask &lt;app&gt;  <span class="cm"># GUI apps</span><button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">Update everything</div>
-            <div class="use-desc">Fetches the latest versions of all installed tools.</div>
-            <div class="code-wrap"><pre>brew update && brew upgrade<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">See what's installed</div>
-            <div class="code-wrap"><pre>brew list<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="homebrew-remove">
-        <div class="note note-warn">Remove Homebrew <strong>last</strong>, after uninstalling everything else through it.</div>
-        <p class="cmd-label">Remove Homebrew completely</p>
-        <div class="code-wrap">
-          <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Also remove from your shell config</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># Open ~/.zshrc and delete this line:</span>
-<span class="cm"># eval "$(/opt/homebrew/bin/brew shellenv)"</span>
-nano ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
+    <div class="degrau" id="deg1" onclick="setDegrau(1)">
+      <div class="degrau-num">2</div>
+      <div class="degrau-text">Episoden sem preparação — entrar frio, falar sem filtro</div>
     </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       2. DOCKER (Colima or Docker Desktop)
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="docker">
-    <div class="tool-header">
-      <div class="tool-emoji">🐳</div>
-      <div>
-        <span class="tool-title">Docker</span>
-        <span class="tool-badge badge-choose">pick one</span>
-      </div>
+    <div class="degrau" id="deg2" onclick="setDegrau(2)">
+      <div class="degrau-num">3</div>
+      <div class="degrau-text">Discord/meetup técnico em inglês com desconhecidos</div>
     </div>
-    <p class="tool-what">
-      Docker lets you run isolated Linux containers on your Mac — like lightweight virtual machines that start in seconds.
-      You use them to run apps, practice with databases, simulate servers, and test deployments without affecting your Mac.
-      <strong>Pick one option below:</strong> Colima (free, terminal-based) or Docker Desktop (free for personal use, has a GUI).
-    </p>
-
-    <div class="tabs" id="tabs-docker">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('docker','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('docker','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('docker','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="docker-install">
-        <div class="option-grid">
-          <div class="option-card selected-a" onclick="selectOption('docker','a')">
-            <div class="option-title">Colima <span class="option-rec">recommended</span></div>
-            <div class="option-desc">Terminal-based, lightweight, 100% free forever. No GUI, no account needed.</div>
-          </div>
-          <div class="option-card" onclick="selectOption('docker','b')">
-            <div class="option-title">Docker Desktop</div>
-            <div class="option-desc">Has a visual dashboard to see containers. Free for personal/study use. Requires a free account.</div>
-          </div>
-        </div>
-
-        <div class="option-content visible" id="docker-opt-a">
-          <p class="cmd-label">Install Colima + Docker CLI</p>
-          <div class="code-wrap">
-            <pre>brew install colima docker docker-compose<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-          </div>
-          <div class="note note-info"><strong>That's it for installation.</strong> You start Colima when you want to use Docker (see the Use tab).</div>
-        </div>
-
-        <div class="option-content" id="docker-opt-b">
-          <p class="cmd-label">Install Docker Desktop</p>
-          <div class="code-wrap">
-            <pre>brew install --cask docker<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-          </div>
-          <div class="note note-info">After install, open <strong>Docker</strong> from Applications and sign in with a free Docker account. The daemon starts automatically.</div>
-        </div>
-
-        <p class="cmd-label" style="margin-top:1.25rem">Verify Docker is working (both options)</p>
-        <div class="code-wrap">
-          <pre>docker version<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="docker-use">
-        <div class="explain">
-          <strong>Think of Docker like this:</strong> an <em>image</em> is a recipe (e.g. "Ubuntu Linux"), and a <em>container</em> is a running instance of that recipe. You can spin up and throw away containers freely — they don't affect your Mac at all.
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Start Docker (Colima users only)</div>
-            <div class="use-desc">Run this before using any Docker command. Docker Desktop starts automatically when you open the app.</div>
-            <div class="code-wrap"><pre>colima start<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">Run a Linux container interactively</div>
-            <div class="use-desc">This drops you into a real Ubuntu shell. You can install packages, run commands — all isolated. Type <code>exit</code> to leave.</div>
-            <div class="code-wrap"><pre>docker run -it ubuntu bash<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">See running containers</div>
-            <div class="code-wrap"><pre>docker ps<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">4</div>
-          <div class="use-body">
-            <div class="use-title">Stop a container</div>
-            <div class="code-wrap"><pre>docker stop &lt;container-name&gt;<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">5</div>
-          <div class="use-body">
-            <div class="use-title">Build your own image from a Dockerfile</div>
-            <div class="code-wrap"><pre>docker build -t myapp .
-docker run myapp<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">6</div>
-          <div class="use-body">
-            <div class="use-title">Run multiple services together (compose)</div>
-            <div class="use-desc">Useful for app + database setups. Put a <code>compose.yaml</code> in your project folder, then:</div>
-            <div class="code-wrap"><pre>docker compose up -d    <span class="cm"># start in background</span>
-docker compose down     <span class="cm"># stop and remove</span><button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">7</div>
-          <div class="use-body">
-            <div class="use-title">Stop Docker when done studying (Colima)</div>
-            <div class="use-desc">Frees up RAM immediately. Your containers are saved and resume next time.</div>
-            <div class="code-wrap"><pre>colima stop<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="docker-remove">
-        <div class="remove-step">
-          <div class="remove-step-title">Option A — Remove Colima</div>
-          <div class="remove-step-desc">Uninstalls Colima and the Docker CLI tools.</div>
-          <div class="code-wrap"><pre>brew uninstall colima docker docker-compose<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          <p class="cmd-label">Remove leftover data (images, containers)</p>
-          <div class="code-wrap"><pre>rm -rf ~/.colima<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-        </div>
-        <div class="remove-step">
-          <div class="remove-step-title">Option B — Remove Docker Desktop</div>
-          <div class="code-wrap"><pre>brew uninstall --cask docker<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          <p class="cmd-label">Remove leftover data</p>
-          <div class="code-wrap"><pre>rm -rf ~/Library/Group\ Containers/group.com.docker
-rm -rf ~/Library/Containers/com.docker.docker<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-        </div>
-        <div class="note note-warn">Removing Docker also removes all images and containers. This can free up several GB of disk space.</div>
-      </div>
+    <div class="degrau" id="deg3" onclick="setDegrau(3)">
+      <div class="degrau-num">4</div>
+      <div class="degrau-text">Ouvinte em calls internas que você normalmente não participa</div>
     </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       3. UTM
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="utm">
-    <div class="tool-header">
-      <div class="tool-emoji">🖥</div>
-      <div>
-        <span class="tool-title">UTM</span>
-        <span class="tool-badge badge-free">free</span>
-      </div>
+    <div class="degrau" id="deg4" onclick="setDegrau(4)">
+      <div class="degrau-num">5</div>
+      <div class="degrau-text">1 pergunta por call — qualquer pergunta, mesmo simples</div>
     </div>
-    <p class="tool-what">
-      UTM lets you run full Linux virtual machines (VMs) on your Mac — like having a real separate computer running Ubuntu or Debian.
-      Use it when Docker containers aren't enough: for practicing with systemd services, setting up SSH servers, networking configs, or anything that needs a complete OS.
-    </p>
-
-    <div class="tabs" id="tabs-utm">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('utm','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('utm','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('utm','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="utm-install">
-        <p class="cmd-label">Install UTM</p>
-        <div class="code-wrap">
-          <pre>brew install --cask utm<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Download a Linux image (ARM64 only for M-series)</p>
-        <div class="note note-info">
-          Open UTM → click <strong>+</strong> → <strong>Browse UTM Gallery</strong> — it has ready-to-go Ubuntu and Debian images for Apple Silicon. No manual download needed.
-          <br/><br/>Or download manually: <strong>ubuntu.com/download/server/arm</strong> (choose the ARM64 .iso)
-        </div>
-      </div>
-
-      <div class="tab-panel" id="utm-use">
-        <div class="explain">
-          <strong>Think of UTM VMs like a separate computer inside your Mac.</strong> It boots Linux, you use it, then suspend or shut it down. Your Mac is unaffected.
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Start your VM</div>
-            <div class="use-desc">Open UTM from Applications, select your VM and click the play button ▶</div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">SSH into it from your Mac terminal</div>
-            <div class="use-desc">More comfortable than typing in the UTM window. Find the VM's IP in UTM's network tab.</div>
-            <div class="code-wrap"><pre>ssh youruser@192.168.64.x<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">Use it like a real Linux server</div>
-            <div class="use-desc">Install packages, configure services, practice anything you'd do on a remote server.</div>
-            <div class="code-wrap"><pre>sudo apt update && sudo apt install nginx
-systemctl status nginx<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">4</div>
-          <div class="use-body">
-            <div class="use-title">Suspend when done (saves the VM state)</div>
-            <div class="use-desc">In UTM: <strong>Machine → Suspend</strong>. Saves everything to disk instantly and frees RAM. Resumes in seconds next time.</div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">5</div>
-          <div class="use-body">
-            <div class="use-title">Or shut down fully from inside the VM</div>
-            <div class="code-wrap"><pre>sudo shutdown now<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="utm-remove">
-        <p class="cmd-label">Remove the UTM app</p>
-        <div class="code-wrap">
-          <pre>brew uninstall --cask utm<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove VM data (this is where disk space lives)</p>
-        <div class="code-wrap">
-          <pre>rm -rf ~/Library/Containers/com.utmapp.UTM
-rm -rf ~/Documents/UTM<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <div class="note note-danger"><strong>Warning:</strong> this permanently deletes all your VMs and their data. Make sure you don't need them anymore.</div>
-      </div>
+    <div class="degrau" id="deg5" onclick="setDegrau(5)">
+      <div class="degrau-num">6</div>
+      <div class="degrau-text">War room — entrar, reagir, debater em tempo real</div>
     </div>
-  </section>
+  </div>
 
-  <!-- ══════════════════════════════════════
-       4. MISE
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="mise">
-    <div class="tool-header">
-      <div class="tool-emoji">🔀</div>
-      <div>
-        <span class="tool-title">mise</span>
-        <span class="tool-badge badge-free">free · open source</span>
-      </div>
+  <!-- REGRAS -->
+  <div class="rules">
+    <div class="rules-title">3 regras do dia</div>
+    <div class="rule-row"><span class="rule-num">1</span><span class="rule-text"><strong>Zero tradutor no Slack</strong> — leia uma vez, responda com o que entendeu.</span></div>
+    <div class="rule-row"><span class="rule-num">2</span><span class="rule-text"><strong>Escreva em inglês antes de pensar em português</strong> — Slack, qualquer mensagem.</span></div>
+    <div class="rule-row"><span class="rule-num">3</span><span class="rule-text"><strong>Série/filme: legenda em inglês</strong> — inclusive ao dormir.</span></div>
+  </div>
+
+  <div class="day-tabs" id="day-tabs"></div>
+
+  <div class="day-card">
+    <div class="day-meta">
+      <span class="day-meta-name" id="day-label"></span>
+      <span class="day-meta-st" id="day-status"></span>
     </div>
-    <p class="tool-what">
-      mise manages versions of DevOps tools like <code style="font-family:var(--mono);font-size:12px">kubectl</code>, <code style="font-family:var(--mono);font-size:12px">terraform</code>, and <code style="font-family:var(--mono);font-size:12px">helm</code> — per project folder.
-      This means your study folder can use kubectl v1.29 while your work folder uses a different version. They never conflict.
-    </p>
+    <div id="tasks-container"></div>
+  </div>
 
-    <div class="tabs" id="tabs-mise">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('mise','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('mise','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('mise','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="mise-install">
-        <p class="cmd-label">Install mise</p>
-        <div class="code-wrap">
-          <pre>brew install mise<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Activate it in your shell</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># Add to ~/.zshrc so it loads on every terminal session</span>
-echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
-source ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Verify</p>
-        <div class="code-wrap"><pre>mise --version<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-      </div>
-
-      <div class="tab-panel" id="mise-use">
-        <div class="explain">
-          <strong>How it works:</strong> when you run <code>mise use kubectl@1.29</code> inside a folder, mise creates a <code>.mise.toml</code> file there. Every time you enter that folder, that version of kubectl becomes active. Leave the folder — it goes back to whatever version your work setup uses.
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Go to your study folder and pin tool versions</div>
-            <div class="code-wrap"><pre>cd ~/studies/k8s
-mise use kubectl@1.29
-mise use helm@3.14
-mise use terraform@1.7<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-            <div class="note note-success" style="margin-top:6px">This creates a <code>.mise.toml</code> file. Commit it to git so teammates get the same versions automatically.</div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">Install the pinned tools (in a fresh clone)</div>
-            <div class="code-wrap"><pre>mise install<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">Check which version is active right now</div>
-            <div class="code-wrap"><pre>mise list
-kubectl version --client<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">4</div>
-          <div class="use-body">
-            <div class="use-title">Clean up unused versions</div>
-            <div class="code-wrap"><pre>mise prune<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="mise-remove">
-        <p class="cmd-label">Uninstall mise</p>
-        <div class="code-wrap">
-          <pre>brew uninstall mise<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove all downloaded tool versions and config</p>
-        <div class="code-wrap">
-          <pre>rm -rf ~/.local/share/mise
-rm -rf ~/.config/mise<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove from shell config</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># Open ~/.zshrc and delete this line:</span>
-<span class="cm"># eval "$(mise activate zsh)"</span>
-nano ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       5. DIRENV
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="direnv">
-    <div class="tool-header">
-      <div class="tool-emoji">📁</div>
-      <div>
-        <span class="tool-title">direnv</span>
-        <span class="tool-badge badge-free">free · open source</span>
-      </div>
-    </div>
-    <p class="tool-what">
-      direnv automatically loads and unloads environment variables when you enter or leave a folder.
-      For example: your study folder loads <code style="font-family:var(--mono);font-size:12px">KUBECONFIG=~/.kube/config-lab</code> automatically when you cd into it — and removes it when you leave.
-      Your work cluster config is never accidentally touched.
-    </p>
-
-    <div class="tabs" id="tabs-direnv">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('direnv','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('direnv','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('direnv','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="direnv-install">
-        <p class="cmd-label">Install direnv</p>
-        <div class="code-wrap">
-          <pre>brew install direnv<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Hook it into your shell</p>
-        <div class="code-wrap">
-          <pre>echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc
-source ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="direnv-use">
-        <div class="explain">
-          <strong>How it works:</strong> you create a file called <code>.envrc</code> in your project folder with the env vars you want. direnv loads them when you enter the folder and removes them when you leave. No manual export/unset needed.
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Create a .envrc in your study folder</div>
-            <div class="code-wrap"><pre><span class="cm"># Example for a k8s study folder</span>
-cat > ~/studies/k8s/.envrc &lt;&lt; 'EOF'
-export KUBECONFIG=~/.kube/config-lab
-export AWS_PROFILE=lab
-export ENVIRONMENT=dev
-EOF<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">Allow direnv to load it (one-time per file)</div>
-            <div class="use-desc">For security, direnv asks you to approve each .envrc before loading it.</div>
-            <div class="code-wrap"><pre>cd ~/studies/k8s
-direnv allow<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">Watch the magic happen</div>
-            <div class="code-wrap"><pre><span class="cm"># Enter the folder — vars load automatically</span>
-cd ~/studies/k8s
-<span class="st">direnv: loading ~/studies/k8s/.envrc</span>
-<span class="st">direnv: export +KUBECONFIG +AWS_PROFILE +ENVIRONMENT</span>
-
-<span class="cm"># Leave the folder — vars unload automatically</span>
-cd ~
-<span class="st">direnv: unloading</span><button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">4</div>
-          <div class="use-body">
-            <div class="use-title">Edit the .envrc later</div>
-            <div class="code-wrap"><pre>direnv edit .<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="direnv-remove">
-        <p class="cmd-label">Uninstall direnv</p>
-        <div class="code-wrap">
-          <pre>brew uninstall direnv<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove config</p>
-        <div class="code-wrap">
-          <pre>rm -rf ~/.config/direnv<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove from shell config</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># Open ~/.zshrc and delete this line:</span>
-<span class="cm"># eval "$(direnv hook zsh)"</span>
-nano ~/.zshrc<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       6. ACT
-  ══════════════════════════════════════ -->
-  <section class="tool-section" id="act">
-    <div class="tool-header">
-      <div class="tool-emoji">▶</div>
-      <div>
-        <span class="tool-title">act</span>
-        <span class="tool-badge badge-free">free · open source</span>
-      </div>
-    </div>
-    <p class="tool-what">
-      act runs your GitHub Actions workflows locally using Docker — without pushing to GitHub.
-      Perfect for learning CI/CD: you write a workflow, test it instantly on your Mac, fix it, and only push when it's working.
-      No wasted build minutes, no waiting for GitHub runners.
-    </p>
-
-    <div class="tabs" id="tabs-act">
-      <div class="tab-nav">
-        <button class="tab-btn active-install" onclick="switchTab('act','install',this)"><span class="tab-dot dot-install"></span>Install</button>
-        <button class="tab-btn" onclick="switchTab('act','use',this)"><span class="tab-dot dot-use"></span>Use</button>
-        <button class="tab-btn" onclick="switchTab('act','remove',this)"><span class="tab-dot dot-remove"></span>Remove</button>
-      </div>
-
-      <div class="tab-panel active" id="act-install">
-        <p class="cmd-label">Install act</p>
-        <div class="code-wrap">
-          <pre>brew install act<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <div class="note note-info">act requires Docker to run. Make sure you have Colima running (<code>colima start</code>) or Docker Desktop open before using act.</div>
-      </div>
-
-      <div class="tab-panel" id="act-use">
-        <div class="explain">
-          <strong>How it works:</strong> act reads the <code>.github/workflows/</code> folder in your repo and runs the workflows inside Docker containers — exactly like GitHub's servers would, but on your Mac.
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">1</div>
-          <div class="use-body">
-            <div class="use-title">Go to a repo that has GitHub Actions workflows</div>
-            <div class="code-wrap"><pre>cd ~/studies/github-actions/my-repo<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">2</div>
-          <div class="use-body">
-            <div class="use-title">List all available workflows</div>
-            <div class="code-wrap"><pre>act -l<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">3</div>
-          <div class="use-body">
-            <div class="use-title">Run the workflow that triggers on push</div>
-            <div class="use-desc">First run downloads a Linux Docker image (~500MB). Subsequent runs are instant.</div>
-            <div class="code-wrap"><pre>act push<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">4</div>
-          <div class="use-body">
-            <div class="use-title">Run only a specific job</div>
-            <div class="code-wrap"><pre>act -j build
-act -j test<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-
-        <div class="use-step">
-          <div class="use-num">5</div>
-          <div class="use-body">
-            <div class="use-title">Preview what would run without actually running it</div>
-            <div class="code-wrap"><pre>act --dry-run<button class="copy-btn" onclick="cp(this)">copy</button></pre></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="act-remove">
-        <p class="cmd-label">Uninstall act</p>
-        <div class="code-wrap">
-          <pre>brew uninstall act<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-        <p class="cmd-label">Remove Docker images downloaded by act</p>
-        <div class="code-wrap">
-          <pre><span class="cm"># List act-related images</span>
-docker images | grep act
-
-<span class="cm"># Remove them</span>
-docker images | grep act | awk '{print $3}' | xargs docker rmi<button class="copy-btn" onclick="cp(this)">copy</button></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <div class="footer">● = dia com aula · passivo (série, podcast) você já faz</div>
 </div>
 
-<footer>
-  <div class="page" style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    Built with plain HTML · No dependencies · Push to GitHub Pages to publish ·
-    <a href="https://github.com/abiosoft/colima" target="_blank" rel="noopener">Colima</a> ·
-    <a href="https://mac.getutm.app" target="_blank" rel="noopener">UTM</a> ·
-    <a href="https://mise.jdx.dev" target="_blank" rel="noopener">mise</a> ·
-    <a href="https://github.com/nektos/act" target="_blank" rel="noopener">act</a>
+<div class="overlay" id="overlay" onclick="closeOut(event)">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div id="modal-inner"></div>
   </div>
-</footer>
+</div>
 
 <script>
-  /* ── Tab switching ── */
-  function switchTab(tool, tab, btn) {
-    const section = document.getElementById('tabs-' + tool);
-    section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    section.querySelectorAll('.tab-btn').forEach(b => {
-      b.classList.remove('active-install', 'active-use', 'active-remove');
-    });
-    document.getElementById(tool + '-' + tab).classList.add('active');
-    btn.classList.add('active-' + tab);
-  }
+const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const HAS_AULA=[true,true,false,true,false,false,false];
 
-  /* ── Option selector (Docker) ── */
-  function selectOption(tool, opt) {
-    const cards = document.querySelectorAll(`#${tool} .option-card`);
-    cards.forEach((c, i) => {
-      c.classList.remove('selected-a', 'selected-b');
-      if ((opt === 'a' && i === 0) || (opt === 'b' && i === 1)) {
-        c.classList.add('selected-' + opt);
-      }
-    });
-    document.getElementById(tool + '-opt-a').classList.toggle('visible', opt === 'a');
-    document.getElementById(tool + '-opt-b').classList.toggle('visible', opt === 'b');
-  }
+const TASKS={
+  capture:{
+    name:'Registrar — só a versão correta',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
+    why:'O professor já corrigiu. Sua única tarefa é não deixar isso cair no esquecimento. A versão errada não existe mais — só a correta.',
+    steps:['Anote só a versão correta — exatamente como o professor falou.','Escreva 1 exemplo seu com a mesma estrutura.','Crie 1 card no Anki: frente = situação, verso = frase correta + sua variação.','No Episoden de hoje: use essa frase pelo menos 1 vez.'],
+    prompt:`My teacher just corrected me. I want to lock in the correct version.
 
-  /* ── Copy button ── */
-  function cp(btn) {
-    const pre = btn.closest('pre');
-    const text = Array.from(pre.childNodes)
-      .map(n => n.textContent)
-      .join('')
-      .replace(/copy$/, '')
-      .trim();
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = 'copied!';
-      setTimeout(() => btn.textContent = 'copy', 1600);
-    });
-  }
+Correct phrase (exactly as the teacher said):
+[PASTE HERE]
 
-  /* ── Active nav on scroll ── */
-  const sections = document.querySelectorAll('.tool-section[id]');
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
-      }
+Give me:
+1. Two more examples using the same structure — work or Slack context.
+2. Anki card:
+   Front = situation where I'd use this
+   Back = correct phrase + my new variation.
+
+Only work with the correct version. Do not mention any wrong version.`,
+    pl:'Prompt — fixar versão correta'
+  },
+  entry:{
+    name:'Entrar na aula com tema real de trabalho',time:'2 min · antes de entrar',badge:'b-aula',bl:'Aula',cls:'t-aula',
+    why:'O Professor 2 só faz conversação. Sem tema real a hora passa bem mas sem direção. 1 frase de entrada muda tudo.',
+    steps:['O que aconteceu no trabalho essa semana que você precisou ou vai precisar explicar em inglês?','Diga ao professor logo no início: "I had to explain X and I got stuck on Y."','Se não tiver tema: use uma reunião onde não entendeu algo.'],
+    prompt:`English conversation class in a few minutes.
+
+Work situation I want to practice:
+[DESCRIBE BRIEFLY]
+
+Give me:
+1. How to introduce this to the teacher naturally.
+2. Five sentences I might need.
+3. Three questions the teacher might ask.`,
+    pl:'Prompt — preparar aula'
+  },
+  episoden:{
+    name:'Episoden — 3 pessoas, sem preparação na quinta-feira',time:'10–15 min · todo dia',badge:'b-ep',bl:'Episoden',cls:'t-ep',
+    why:'Episoden com missão: usar o padrão que você está treinando 3 vezes com 3 pessoas diferentes. Quinta-feira é o dia de entrar completamente frio — sem preparar nada. Isso treina o músculo de falar sem filtro, que é exatamente o que um war room exige.',
+    steps:['Defina o padrão da semana com a IA antes de entrar.','Missão: usar esse padrão naturalmente com 3 pessoas diferentes, ~4 min cada.','Na quinta-feira: entre sem preparar nada. Fale a primeira coisa que vier.','Não se corrija enquanto fala. O erro faz parte do treino.','Ao final: 1 frase que saiu bem, 1 que travou. Leva para o Anki.'],
+    prompt:`I'm about to join Episoden.
+
+Pattern I'm practicing this week: [PASTE YOUR PATTERN]
+Goal: use it naturally at least 3 times across 3 different conversations.
+
+Give me:
+1. Three different conversation starters — one for each person.
+2. Five natural sentences using this pattern in work/tech contexts.
+3. Three follow-up questions to keep each conversation going.
+4. Two emergency phrases if I freeze.
+
+Context: Platform Security Engineer, remote US company.
+Natural English only. Not textbook.`,
+    pl:'Prompt — entrar no Episoden'
+  },
+  shadow:{
+    name:'Shadowing — fale junto, sem parar',time:'10 min · todo dia',badge:'b-shadow',bl:'Shadowing',cls:'t-shadow',
+    why:'Shadowing treina velocidade de acesso — não conhecimento. Você sabe as palavras mas na pressão demora para acessá-las. 10 min de shadowing por dia durante 30 dias muda isso. É o que separa B1 travado de B1 fluente.',
+    steps:['Escolha 2–3 min de áudio de um dos canais. Sem legenda — sempre.','Primeira vez: só ouça. Sem falar, sem ler. Apenas entenda o contexto geral.','Segunda vez: fale junto em voz alta, 1–2 segundos atrás do falante. Quando perder uma palavra, continue — não volte.','Terceira vez: fale junto de novo. Vai sair melhor sem você ter memorizado nada.','Pare em 10 min. O desconforto de não entender tudo é o treino.'],
+    canais:[
+      {name:'Darknet Diaries',desc:'Histórias reais de hacking e incidentes. 1 apresentador, dicção clara. Perfeito para seu contexto de security.'},
+      {name:'LiveOverflow — YouTube',desc:'Engenheiro de segurança explicando vulnerabilidades. Técnico, direto, vocabulário do seu trabalho.'},
+      {name:'Software Engineering Daily',desc:'Engenheiros em conversas reais sobre sistemas. Ritmo médio, ideal para shadowing.'},
+      {name:'Huberman Lab',desc:'Não é tech mas fala devagar e articulado. Ótimo para começar — ritmo controlado.'},
+      {name:'ThePrimeagen — YouTube',desc:'Engenheiro opinando sobre tech em tempo real. Fala rápido, usa gírias americanas reais. Para quando quiser desafio.'},
+    ],
+    prompt:null,
+    pl:null
+  },
+  anki:{
+    name:'Anki — 5 min de revisão ativa',time:'5 min · qualquer pausa',badge:'b-anki',bl:'Anki',cls:'',
+    why:'Sem revisão espaçada o que você captura some em dias. 5 min diários batem 1 sessão longa por semana.',
+    steps:['Olhe a frente do card e tente falar antes de virar.','Vire e repita em voz alta.','Crie 1 variação com a mesma estrutura.','Pare em 5 min. Todo dia bate sessão longa.'],
+    prompt:null,pl:null
+  },
+  livro:{
+    name:'Livro técnico — 20 min sem traduzir',time:'20 min · 3x por semana',badge:'b-livro',bl:'Leitura',cls:'t-im',
+    why:'Leitura técnica constrói chunking — processar frases inteiras sem traduzir palavra por palavra. 20 min é o limite: mais sem consistência não funciona.',
+    steps:['Leia 20 min sem traduzir cada palavra.','Regra dos 3: só pesquise uma palavra se aparecer 3 vezes.','Ao final, fale 1 min em inglês explicando o que entendeu.','Se encontrar frase útil: 1 card no Anki.','Pare em 20 min.'],
+    prompt:`I'm reading a technical book and didn't understand this:
+
+"[PASTE PARAGRAPH]"
+
+Context: Platform Security Engineer, remote US company.
+
+1. Explain the main idea simply.
+2. Explain terms that matter for my work.
+3. Three natural sentences I could say in a security context.
+4. Anki card only if genuinely useful:
+   Front = work situation / Back = phrase + variation.`,
+    pl:'Prompt — livro técnico'
+  },
+  filme:{
+    name:'Série/filme — legenda em inglês ao dormir',time:'Ao dormir · todo dia',badge:'b-im',bl:'Imersão',cls:'t-im',
+    why:'Input passivo de alta qualidade. A única mudança no que você já faz: legenda em inglês, não português. Sempre.',
+    steps:['Qualquer série ou filme que queira assistir.','Legenda em inglês — sempre.','Se ouvir uma frase boa: anote e cole no prompt.','Não force ficar acordado para estudar. O objetivo é input relaxado.'],
+    prompt:`I was watching [SERIES/MOVIE] and heard this phrase:
+
+"[PASTE HERE]"
+
+1. What it means in plain English.
+2. The tone — casual, direct, sarcastic?
+3. Two similar phrases I could use at work.
+4. Worth adding to Anki? If yes, give me the card.`,
+    pl:'Prompt — frase do filme/série'
+  },
+  sunday:{
+    name:'Domingo — prepare o tema da semana',time:'10 min · à noite',badge:'b-aula',bl:'Aula',cls:'t-aula',
+    why:'10 min no domingo transformam as duas aulas do Professor 2. Sem tema real a hora passa bem mas sem direção.',
+    steps:['O que aconteceu no trabalho essa semana que você precisaria explicar em inglês?','Escreva 2–3 frases sobre isso. Não decore — organize o pensamento.','Esse tema alimenta as aulas de terça e quinta.'],
+    prompt:`Preparing for English conversation classes this week.
+
+Work situation to practice:
+[DESCRIBE]
+
+1. How to introduce this to the teacher naturally.
+2. Five sentences I'll likely need.
+3. Three questions the teacher might ask.`,
+    pl:'Prompt — preparar semana'
+  }
+};
+
+const PLAN={
+  0:[
+    {s:'Aula Professor 1 · 7h',  i:['capture']},
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['filme']}
+  ],
+  1:[
+    {s:'Aula Professor 2 · 8h',  i:['entry','capture']},
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
+  ],
+  2:[
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
+  ],
+  3:[
+    {s:'Aula Professor 2 · 8h',  i:['entry','capture']},
+    {s:'Estudo ativo — Episoden SEM preparação hoje',i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['filme']}
+  ],
+  4:[
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
+  ],
+  5:[
+    {s:'Estudo ativo',           i:['episoden','shadow','anki']},
+    {s:'Imersão',               i:['livro','filme']}
+  ],
+  6:[
+    {s:'Preparar semana',        i:['sunday']},
+    {s:'Estudo ativo',           i:['anki']},
+    {s:'Imersão',               i:['filme']}
+  ]
+};
+
+let state={};
+let cur=(()=>{let d=new Date().getDay();return d===0?6:d-1;})();
+
+function key(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'et_v3_'+s.toISOString().slice(0,10);}
+function load(){try{state=JSON.parse(localStorage.getItem(key())||'{}');}catch(e){state={};}}
+function save(){localStorage.setItem(key(),JSON.stringify(state));}
+function resetWeek(){if(confirm('Zerar a semana?')){const d=state.__deg||1;state={};state.__deg=d;save();render();}}
+function chk(d,id){return!!state[d+'_'+id];}
+function toggle(d,id){state[d+'_'+id]=!state[d+'_'+id];save();render();}
+
+function ds(di){let t=0,c=0;(PLAN[di]||[]).forEach(s=>s.i.forEach(id=>{t++;if(chk(di,id))c++;}));return{t,c};}
+function wp(){let t=0,c=0;[0,1,2,3,4,5,6].forEach(i=>{const s=ds(i);t+=s.t;c+=s.c;});return t?Math.round(c/t*100):0;}
+
+// Escada de confiança
+function setDegrau(n){
+  if(n===0)return; // degrau 1 sempre feito
+  state.__deg=n;save();renderEscada();
+}
+function renderEscada(){
+  const cur=state.__deg||1;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('deg'+i);
+    if(!el)continue;
+    const tags={feito:'tag-feito',ativo:'tag-ativo',bloq:'tag-bloq'};
+    let estado,tag,tagLabel;
+    if(i<cur){estado='feito';tag='tag-feito';tagLabel='feito';}
+    else if(i===cur){estado='ativo';tag='tag-ativo';tagLabel='agora';}
+    else{estado='bloq';tag='tag-bloq';tagLabel='próximo';}
+    el.className='degrau '+estado;
+    el.querySelector('.degrau-num').style.background=estado==='feito'?'var(--green)':estado==='ativo'?'var(--amber)':'var(--dim)';
+    el.querySelector('.degrau-num').style.color=estado==='bloq'?'var(--muted)':'#000';
+    // remove tag antiga e adiciona nova só se for feito ou ativo
+    const txt=el.querySelector('.degrau-text');
+    const oldTag=txt.querySelector('.degrau-tag');
+    if(oldTag)oldTag.remove();
+    if(estado!=='bloq'){
+      const span=document.createElement('span');
+      span.className='degrau-tag '+tag;
+      span.textContent=tagLabel;
+      txt.appendChild(span);
+    }
+  }
+}
+
+function render(){
+  const pct=wp();
+  document.getElementById('wp-fill').style.width=pct+'%';
+  document.getElementById('wp-pct').textContent=pct+'%';
+  renderEscada();
+
+  const nav=document.getElementById('day-tabs');nav.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const s=ds(i),done=s.t>0&&s.c===s.t;
+    const b=document.createElement('button');
+    b.className='dt'+(i===cur?' active':'')+(done?' done':'');
+    b.onclick=()=>{cur=i;render();};
+    b.innerHTML=d+(HAS_AULA[i]&&!done?'<span class="aula-dot"></span>':'');
+    nav.appendChild(b);
+  });
+
+  const s=ds(cur);
+  document.getElementById('day-label').textContent=DAYS[cur]+(HAS_AULA[cur]?' · aula':'');
+  const st=document.getElementById('day-status');
+  if(s.t>0&&s.c===s.t){st.textContent='completo ✓';st.className='day-meta-st done';}
+  else{st.textContent=s.c+'/'+s.t;st.className='day-meta-st';}
+
+  const cont=document.getElementById('tasks-container');cont.innerHTML='';
+  (PLAN[cur]||[]).forEach(sec=>{
+    const lbl=document.createElement('div');lbl.className='sec';lbl.textContent=sec.s;cont.appendChild(lbl);
+    sec.i.forEach(id=>{
+      const t=TASKS[id];if(!t)return;
+      const isChk=chk(cur,id);
+      const row=document.createElement('div');
+      row.className='task'+(isChk?' checked':'')+(t.cls?' '+t.cls:'');
+      row.innerHTML=`
+        <div class="chk" onclick="toggle(${cur},'${id}')">
+          <svg viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg>
+        </div>
+        <div class="task-info" onclick="openM('${id}')">
+          <div class="task-name">${t.name}<span class="badge ${t.badge}">${t.bl}</span></div>
+          <div class="task-time">${t.time}</div>
+        </div>
+        <button class="info-btn" onclick="openM('${id}')">ver</button>`;
+      cont.appendChild(row);
     });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  sections.forEach(s => obs.observe(s));
+  });
+}
+
+function openM(id){
+  const t=TASKS[id];if(!t)return;
+  let h=`<div class="m-title">${t.name}</div><div class="m-sub">${t.time}</div>`;
+  if(t.why)h+=`<div class="m-why">${t.why}</div>`;
+  h+=`<div class="m-label">Como fazer</div><ul class="m-steps">`;
+  t.steps.forEach((s,i)=>h+=`<li><span class="m-n">${i+1}</span><span>${s}</span></li>`);
+  h+=`</ul>`;
+  if(t.canais){
+    h+=`<div class="m-label">Canais para shadowing</div><div class="canais">`;
+    t.canais.forEach(c=>h+=`<div class="canal"><div class="canal-name">${c.name}</div><div class="canal-desc">${c.desc}</div></div>`);
+    h+=`</div>`;
+  }
+  if(t.prompt){
+    h+=`<div class="m-label">${t.pl}</div>`;
+    h+=`<div class="prompt-box">${t.prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+    h+=`<button class="copy-btn" id="cb-${id}" onclick="cp('${id}')">copiar prompt</button>`;
+  }
+  document.getElementById('modal-inner').innerHTML=h;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function cp(id){
+  const t=TASKS[id];if(!t||!t.prompt)return;
+  navigator.clipboard.writeText(t.prompt).then(()=>{
+    const b=document.getElementById('cb-'+id);
+    if(b){b.textContent='copiado ✓';b.classList.add('ok');setTimeout(()=>{b.textContent='copiar prompt';b.classList.remove('ok');},1800);}
+  });
+}
+
+function closeModal(){document.getElementById('overlay').classList.remove('open');}
+function closeOut(e){if(e.target===document.getElementById('overlay'))closeModal();}
+
+load();render();
 </script>
 </body>
 </html>
