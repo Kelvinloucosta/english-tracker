@@ -32,23 +32,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .wp-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease}
 .wp-pct{font-size:12px;font-weight:600;color:var(--green);min-width:30px;text-align:right}
 
-/* ESCADA DE CONFIANÇA */
-.escada{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.85rem}
-.escada-title{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
-.degrau{display:flex;gap:10px;align-items:flex-start;margin-bottom:.5rem;cursor:pointer}
-.degrau:last-child{margin-bottom:0}
-.degrau-num{font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.degrau.ativo .degrau-num{background:var(--amber);color:#000}
-.degrau.feito .degrau-num{background:var(--green);color:#000}
-.degrau.bloq .degrau-num{background:var(--dim);color:var(--muted)}
-.degrau-text{font-size:12px;line-height:1.4}
-.degrau.ativo .degrau-text{color:var(--text)}
-.degrau.feito .degrau-text{color:var(--subdued);text-decoration:line-through}
-.degrau.bloq .degrau-text{color:var(--muted)}
-.degrau-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
-.tag-ativo{background:var(--amber-bg);color:var(--amber)}
-.tag-feito{background:var(--green-bg);color:var(--green)}
-.tag-bloq{background:var(--dim);color:var(--muted)}
+
 
 /* REGRAS */
 .rules{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem}
@@ -150,35 +134,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span class="wp-pct" id="wp-pct">0%</span>
   </div>
 
-  <!-- ESCADA DE CONFIANÇA -->
-  <div class="escada">
-    <div class="escada-title">Escada de confiança — onde você está agora</div>
-    <div class="degrau feito" onclick="setDegrau(0)">
-      <div class="degrau-num">1</div>
-      <div class="degrau-text">Falar com pessoas conhecidas no trabalho <span class="degrau-tag tag-feito">feito</span></div>
-    </div>
-    <div class="degrau" id="deg1" onclick="setDegrau(1)">
-      <div class="degrau-num">2</div>
-      <div class="degrau-text">Episoden sem preparação — entrar frio, falar sem filtro</div>
-    </div>
-    <div class="degrau" id="deg2" onclick="setDegrau(2)">
-      <div class="degrau-num">3</div>
-      <div class="degrau-text">Discord/meetup técnico em inglês com desconhecidos</div>
-    </div>
-    <div class="degrau" id="deg3" onclick="setDegrau(3)">
-      <div class="degrau-num">4</div>
-      <div class="degrau-text">Ouvinte em calls internas que você normalmente não participa</div>
-    </div>
-    <div class="degrau" id="deg4" onclick="setDegrau(4)">
-      <div class="degrau-num">5</div>
-      <div class="degrau-text">1 pergunta por call — qualquer pergunta, mesmo simples</div>
-    </div>
-    <div class="degrau" id="deg5" onclick="setDegrau(5)">
-      <div class="degrau-num">6</div>
-      <div class="degrau-text">War room — entrar, reagir, debater em tempo real</div>
-    </div>
-  </div>
-
   <!-- REGRAS -->
   <div class="rules">
     <div class="rules-title">3 regras do dia</div>
@@ -212,8 +167,25 @@ const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const HAS_AULA=[true,true,false,true,false,false,false];
 
 const TASKS={
+  warmup:{
+    name:'Gravar antes da aula — corrigir 1 coisa e entrar',time:'10 min · antes da aula de segunda',badge:'b-capture',bl:'Aquecimento',cls:'t-aula',
+    why:'Você grava, a IA corrige 1 coisa, você entra na aula já aquecido e com a correção fresca. Isso transforma o começo da aula — em vez de entrar frio, você entra com algo concreto para trabalhar.',
+    steps:['No domingo à noite ou segundaa 06h45: grave 2–3 min falando sobre sua semana ou algo do trabalho.','Ouça uma vez. Anote 1 coisa que saiu torta.','Cole no prompt, pegue a versão correta.','Fale a versão correta em voz alta 3 vezes.','Entre na aula. Se quiser, mencione para o professor: "I was trying to say X and it came out wrong."'],
+    prompt:`I recorded myself speaking English for a few minutes before my class.
+
+This sentence didn't come out right:
+"[PASTE HERE]"
+
+Give me:
+1. The natural correct version only — do not show my wrong version.
+2. Why it sounds more natural in 1 sentence.
+3. Two similar examples I could use at work.
+
+Short. I have a few minutes before class.`,
+    pl:'Prompt — corrigir antes da aula'
+  },
   capture:{
-    name:'Registrar — só a versão correta',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
+    name:'Registrar — só a versão correta do professor',time:'5 min · logo após a aula',badge:'b-capture',bl:'Captura',cls:'t-aula',
     why:'O professor já corrigiu. Sua única tarefa é não deixar isso cair no esquecimento. A versão errada não existe mais — só a correta.',
     steps:['Anote só a versão correta — exatamente como o professor falou.','Escreva 1 exemplo seu com a mesma estrutura.','Crie 1 card no Anki: frente = situação, verso = frase correta + sua variação.','No Episoden de hoje: use essa frase pelo menos 1 vez.'],
     prompt:`My teacher just corrected me. I want to lock in the correct version.
@@ -333,6 +305,7 @@ Work situation to practice:
 
 const PLAN={
   0:[
+    {s:'Antes da aula · 06h45',  i:['warmup']},
     {s:'Aula Professor 1 · 7h',  i:['capture']},
     {s:'Estudo ativo',           i:['episoden','shadow','anki']},
     {s:'Imersão',               i:['filme']}
@@ -372,50 +345,17 @@ let cur=(()=>{let d=new Date().getDay();return d===0?6:d-1;})();
 function key(){const n=new Date(),s=new Date(n);s.setDate(n.getDate()-((n.getDay()+6)%7));return'et_v3_'+s.toISOString().slice(0,10);}
 function load(){try{state=JSON.parse(localStorage.getItem(key())||'{}');}catch(e){state={};}}
 function save(){localStorage.setItem(key(),JSON.stringify(state));}
-function resetWeek(){if(confirm('Zerar a semana?')){const d=state.__deg||1;state={};state.__deg=d;save();render();}}
+function resetWeek(){if(confirm('Zerar a semana?')){state={};save();render();}}
 function chk(d,id){return!!state[d+'_'+id];}
 function toggle(d,id){state[d+'_'+id]=!state[d+'_'+id];save();render();}
 
 function ds(di){let t=0,c=0;(PLAN[di]||[]).forEach(s=>s.i.forEach(id=>{t++;if(chk(di,id))c++;}));return{t,c};}
 function wp(){let t=0,c=0;[0,1,2,3,4,5,6].forEach(i=>{const s=ds(i);t+=s.t;c+=s.c;});return t?Math.round(c/t*100):0;}
 
-// Escada de confiança
-function setDegrau(n){
-  if(n===0)return; // degrau 1 sempre feito
-  state.__deg=n;save();renderEscada();
-}
-function renderEscada(){
-  const cur=state.__deg||1;
-  for(let i=1;i<=5;i++){
-    const el=document.getElementById('deg'+i);
-    if(!el)continue;
-    const tags={feito:'tag-feito',ativo:'tag-ativo',bloq:'tag-bloq'};
-    let estado,tag,tagLabel;
-    if(i<cur){estado='feito';tag='tag-feito';tagLabel='feito';}
-    else if(i===cur){estado='ativo';tag='tag-ativo';tagLabel='agora';}
-    else{estado='bloq';tag='tag-bloq';tagLabel='próximo';}
-    el.className='degrau '+estado;
-    el.querySelector('.degrau-num').style.background=estado==='feito'?'var(--green)':estado==='ativo'?'var(--amber)':'var(--dim)';
-    el.querySelector('.degrau-num').style.color=estado==='bloq'?'var(--muted)':'#000';
-    // remove tag antiga e adiciona nova só se for feito ou ativo
-    const txt=el.querySelector('.degrau-text');
-    const oldTag=txt.querySelector('.degrau-tag');
-    if(oldTag)oldTag.remove();
-    if(estado!=='bloq'){
-      const span=document.createElement('span');
-      span.className='degrau-tag '+tag;
-      span.textContent=tagLabel;
-      txt.appendChild(span);
-    }
-  }
-}
-
 function render(){
   const pct=wp();
   document.getElementById('wp-fill').style.width=pct+'%';
   document.getElementById('wp-pct').textContent=pct+'%';
-  renderEscada();
-
   const nav=document.getElementById('day-tabs');nav.innerHTML='';
   DAYS.forEach((d,i)=>{
     const s=ds(i),done=s.t>0&&s.c===s.t;
