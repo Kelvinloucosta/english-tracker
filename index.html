@@ -1,33 +1,418 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>English — plano simples</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Tracker — Fluency for Life</title>
 <style>
-:root{color-scheme:dark;--bg:#0c1015;--panel:#151b23;--border:#2b3440;--text:#edf1f6;--muted:#a4afbe;--green:#61d8a0;--blue:#8cbcfb}*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;padding:28px 14px}.wrap{max-width:660px;margin:auto}h1{font-size:25px;letter-spacing:-.6px;margin:0 0 7px}p{color:var(--muted);line-height:1.55;margin:0}.lead{margin-bottom:22px}.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin:13px 0}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{font-size:12px;color:var(--green);font-weight:700;letter-spacing:.06em;text-transform:uppercase}.progress{height:7px;border-radius:9px;background:#27323c;overflow:hidden;margin:12px 0 7px}.fill{height:100%;background:var(--green);width:0;transition:width .2s}.small{font-size:12px;color:var(--muted)}.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:17px 0}.day{border:1px solid var(--border);border-radius:11px;background:var(--panel);color:var(--muted);padding:11px 3px;font-weight:700;cursor:pointer}.day.active{border-color:var(--blue);color:var(--text);background:#1e2c40}.day.done{color:var(--green)}.day span{display:block;font-weight:400;font-size:10px;margin-top:4px}.taskhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.taskhead h2{font-size:19px;margin:5px 0 7px}.pill{font-size:12px;color:var(--blue);background:#203147;border-radius:20px;padding:6px 9px;white-space:nowrap}ol{line-height:1.6;color:var(--text);padding-left:21px;margin:14px 0 18px}li{margin:7px 0}button{font:inherit}.action{width:100%;border:0;border-radius:11px;background:var(--green);color:#092018;font-weight:750;padding:12px;cursor:pointer}.action:disabled{background:#2c5547;color:#9cc6b5;cursor:default}.muted{color:var(--muted)}.rules{display:grid;gap:10px;margin-top:12px}.rule{display:flex;gap:9px;align-items:start;font-size:14px;color:var(--muted)}.rule b{color:var(--text)}.reset{background:none;border:0;color:var(--muted);cursor:pointer;font-size:12px}.prompt{font-size:13px;background:#0e141b;padding:12px;border-radius:10px;line-height:1.5;color:#d0dce8}.copy{background:#263445;color:#eaf1f8;border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin-top:10px;cursor:pointer}.foot{margin-top:18px;font-size:12px} @media(max-width:400px){.days{gap:3px}.day{font-size:12px}.day span{font-size:9px}.card{padding:15px}}
+:root {
+  color-scheme: dark;
+  --bg:#0c1015;
+  --panel:#151b23;
+  --border:#2b3440;
+  --text:#edf1f6;
+  --muted:#a4afbe;
+  --green:#61d8a0;
+  --blue:#8cbcfb;
+}
+* { box-sizing:border-box; }
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  margin:0;
+  padding:28px 14px;
+}
+.wrap { max-width:660px; margin:auto; }
+h1 { font-size:25px; margin:0 0 7px; }
+p { color:var(--muted); line-height:1.55; }
+.lead { margin-bottom:22px; }
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin:13px 0;
+}
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.eyebrow {
+  font-size:12px;
+  color:var(--green);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.progress {
+  height:7px;
+  border-radius:9px;
+  background:#27323c;
+  overflow:hidden;
+  margin:12px 0 7px;
+}
+.fill {
+  height:100%;
+  background:var(--green);
+  width:0;
+  transition:width .2s;
+}
+.small { font-size:12px; color:var(--muted); }
+.days {
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:6px;
+  margin:17px 0;
+}
+.day {
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--panel);
+  color:var(--muted);
+  padding:11px 3px;
+  font-weight:700;
+  cursor:pointer;
+}
+.day.active {
+  border-color:var(--blue);
+  color:var(--text);
+  background:#1e2c40;
+}
+.day.done { color:var(--green); }
+.day span {
+  display:block;
+  font-size:10px;
+  font-weight:400;
+  margin-top:4px;
+}
+.taskhead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.taskhead h2 {
+  font-size:19px;
+  margin:5px 0 7px;
+}
+.pill {
+  font-size:12px;
+  color:var(--blue);
+  background:#203147;
+  border-radius:20px;
+  padding:6px 9px;
+  white-space:nowrap;
+}
+ol {
+  line-height:1.6;
+  padding-left:21px;
+  margin:14px 0 18px;
+}
+li { margin:7px 0; }
+button { font:inherit; }
+.action {
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:var(--green);
+  color:#092018;
+  font-weight:750;
+  padding:12px;
+  cursor:pointer;
+}
+.muted { color:var(--muted); }
+.rules { display:grid; gap:10px; margin-top:12px; }
+.rule {
+  display:flex;
+  gap:9px;
+  font-size:14px;
+  color:var(--muted);
+}
+.rule b { color:var(--text); }
+.reset {
+  background:none;
+  border:0;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:12px;
+}
+.prompt {
+  font-size:13px;
+  background:#0e141b;
+  padding:12px;
+  border-radius:10px;
+  line-height:1.5;
+  color:#d0dce8;
+}
+.copy {
+  background:#263445;
+  color:#eaf1f8;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:9px 12px;
+  margin-top:10px;
+  cursor:pointer;
+}
+.foot { margin-top:18px; font-size:12px; }
+
+@media(max-width:400px) {
+  .days { gap:3px; }
+  .day { font-size:12px; }
+  .day span { font-size:9px; }
+  .card { padding:15px; }
+}
 </style>
 </head>
-<body><main class="wrap">
-<div class="eyebrow">English for life</div><h1>Seu plano simples de inglês</h1><p class="lead">Conversar, entender e reagir naturalmente. Sem Anki, sem culpa e sem tarefas acumuladas.</p>
-<section class="card"><div class="top"><strong>Esta semana</strong><button class="reset" id="reset">Recomeçar semana</button></div><div class="progress"><div class="fill" id="fill"></div></div><div class="small" id="status">0 de 5 sessões concluídas</div></section>
-<nav class="days" id="days" aria-label="Escolher dia"></nav>
-<section class="card" id="detail" aria-live="polite"></section>
-<section class="card"><strong>Três regras para continuar</strong><div class="rules"><div class="rule">✓ <span><b>Sem obrigação diária:</b> dia corrido? Pule, sem compensar.</span></div><div class="rule">✓ <span><b>Não pare para corrigir tudo:</b> primeiro termine de falar.</span></div><div class="rule">✓ <span><b>Tradução liberada quando precisar:</b> especialmente para não errar no trabalho.</span></div></div></section>
-<section class="card"><strong>Prompt pronto para ChatGPT Voice</strong><div class="prompt" id="prompt">Let's have a natural conversation about everyday life. Ask me one question at a time, and follow up based on what I say. Use natural American English. Don't correct or interrupt me while I'm speaking. At the end, tell me my two most important recurring mistakes, give me natural alternatives, and ask me to try again. Avoid technical or work topics unless I bring them up.</div><button class="copy" id="copy">Copiar prompt</button></section>
-<p class="foot">Experimente por 14 dias. Depois avalie se está mais fácil entender, responder e manter uma conversa. A aula está na terça apenas como exemplo: mantenha seu dia real de aula.</p>
+<body>
+<main class="wrap">
+
+  <div class="eyebrow">English for life</div>
+  <h1>Seu plano simples de inglês</h1>
+  <p class="lead">
+    Conversar, entender e reagir naturalmente.
+    Sem Anki, sem culpa e sem tarefas acumuladas.
+  </p>
+
+  <section class="card">
+    <div class="top">
+      <strong>Esta semana</strong>
+      <button class="reset" id="reset">
+        Recomeçar semana
+      </button>
+    </div>
+    <div class="progress">
+      <div class="fill" id="fill"></div>
+    </div>
+    <div class="small" id="status">
+      0 de 5 sessões concluídas
+    </div>
+  </section>
+
+  <nav class="days" id="days"></nav>
+
+  <section class="card" id="detail"></section>
+
+  <section class="card">
+    <strong>Três regras para continuar</strong>
+    <div class="rules">
+      <div class="rule">
+        ✓ <span><b>Sem obrigação diária:</b>
+        dia corrido? Pule, sem compensar.</span>
+      </div>
+      <div class="rule">
+        ✓ <span><b>Não corrija tudo enquanto fala:</b>
+        primeiro termine seu raciocínio.</span>
+      </div>
+      <div class="rule">
+        ✓ <span><b>Tradução liberada quando precisar:</b>
+        especialmente para evitar erros no trabalho.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <strong>Prompt para ChatGPT Voice</strong>
+    <div class="prompt" id="prompt">Let's have a natural conversation about everyday life. Ask me one question at a time, and follow up based on what I say. Use natural American English. Don't correct or interrupt me while I'm speaking. At the end, tell me my two most important recurring mistakes, give me natural alternatives, and ask me to try again. Avoid technical or work topics unless I bring them up.</div>
+    <button class="copy" id="copy">
+      Copiar prompt
+    </button>
+  </section>
+
+  <p class="foot">
+    Experimente por 14 dias. Depois avalie se está
+    mais fácil entender, responder e manter uma conversa.
+    Mantenha a aula no dia em que ela já acontece.
+  </p>
+
 </main>
+
 <script>
-const plan=[
-{day:'Seg',title:'Listening ativo',time:'15 min',steps:['Escolha um áudio ou vídeo de conversa cotidiana de 2–3 minutos.','Ouça sem legenda e tente entender a ideia geral.','Confira com transcrição ou legenda em inglês.','Ouça novamente e diga, em inglês, o que entendeu.']},
-{day:'Ter',title:'Aula com professor',time:'1 hora',steps:['Peça uma conversa sobre situações da vida, não só trabalho.','Treine perguntas inesperadas, histórias e opiniões.','No final, peça feedback sobre só dois erros recorrentes.']},
-{day:'Qua',title:'Episoden',time:'15 min',steps:['Converse com uma pessoa, sem roteiro.','Fale sobre família, filmes, viagens ou experiências.','Faça perguntas de volta. Se travar, explique de outro jeito e continue.']},
-{day:'Qui',title:'Listening + ChatGPT Voice',time:'20 min',steps:['Ouça por 5 minutos um trecho curto de conversa e confira o que entendeu.','Converse por 12 minutos no ChatGPT Voice sobre temas cotidianos.','Use os últimos 3 minutos para corrigir e repetir duas estruturas úteis.']},
-{day:'Sex',title:'Livre',time:'Sem tarefa',steps:['Descanse. Não há nada para recuperar.']},
-{day:'Sáb',title:'Episoden',time:'15 min',steps:['Entre sem preparar assunto.','Converse com uma pessoa e faça pelo menos duas perguntas de volta.','Priorize continuar falando, não a perfeição.']},
-{day:'Dom',title:'Livre',time:'Sem tarefa',steps:['Descanse. Se quiser ver algo em inglês por prazer, ótimo — mas não é uma obrigação.']}
+const plan = [
+  {
+    day:'Seg',
+    title:'Listening ativo',
+    time:'15 min',
+    steps:[
+      'Escolha um áudio ou vídeo de conversa cotidiana de 2–3 minutos.',
+      'Ouça sem legenda e tente entender a ideia geral.',
+      'Confira com transcrição ou legenda em inglês.',
+      'Ouça novamente e diga, em inglês, o que entendeu.'
+    ]
+  },
+  {
+    day:'Ter',
+    title:'Aula com professor',
+    time:'1 hora',
+    steps:[
+      'Peça uma conversa sobre situações da vida, não só trabalho.',
+      'Treine perguntas inesperadas, histórias e opiniões.',
+      'No final, peça feedback sobre dois erros recorrentes.'
+    ]
+  },
+  {
+    day:'Qua',
+    title:'Episoden',
+    time:'15 min',
+    steps:[
+      'Converse com uma pessoa, sem roteiro.',
+      'Fale sobre família, filmes, viagens ou experiências.',
+      'Faça perguntas de volta. Se travar, explique de outro jeito.'
+    ]
+  },
+  {
+    day:'Qui',
+    title:'Listening + ChatGPT Voice',
+    time:'20 min',
+    steps:[
+      'Ouça por 5 minutos um trecho curto de conversa.',
+      'Converse por 12 minutos no ChatGPT Voice.',
+      'Use 3 minutos para corrigir e repetir duas estruturas úteis.'
+    ]
+  },
+  {
+    day:'Sex',
+    title:'Livre',
+    time:'Sem tarefa',
+    steps:[
+      'Descanse. Não há nada para recuperar.'
+    ]
+  },
+  {
+    day:'Sáb',
+    title:'Episoden',
+    time:'15 min',
+    steps:[
+      'Entre sem preparar assunto.',
+      'Faça pelo menos duas perguntas de volta.',
+      'Priorize continuar falando, não a perfeição.'
+    ]
+  },
+  {
+    day:'Dom',
+    title:'Livre',
+    time:'Sem tarefa',
+    steps:[
+      'Descanse. Se quiser assistir algo em inglês por prazer, ótimo.'
+    ]
+  }
 ];
-const monday=()=>{let d=new Date(),t=new Date(d.getFullYear(),d.getMonth(),d.getDate());t.setDate(t.getDate()-(t.getDay()+6)%7);return [t.getFullYear(),String(t.getMonth()+1).padStart(2,'0'),String(t.getDate()).padStart(2,'0')].join('-')};
-const key='english-simple-v1-'+monday();let checked={};try{checked=JSON.parse(localStorage.getItem(key)||'{}')}catch{}let current=(new Date().getDay()+6)%7;
-const active=[0,1,2,3,5];function render(){const count=active.filter(i=>checked[i]).length;document.getElementById('fill').style.width=(count/active.length*100)+'%';document.getElementById('status').textContent=count+' de 5 sessões concluídas';document.getElementById('days').innerHTML=plan.map((p,i)=>`<button class="day ${current===i?'active':''} ${checked[i]?'done':''}" data-day="${i}" aria-pressed="${current===i}">${p.day}<span>${checked[i]?'✓':active.includes(i)?'●':'—'}</span></button>`).join('');const p=plan[current];const isActive=active.includes(current);document.getElementById('detail').innerHTML=`<div class="taskhead"><div><div class="eyebrow">${p.day}</div><h2>${p.title}</h2></div><div class="pill">${p.time}</div></div><ol>${p.steps.map(s=>`<li>${s}</li>`).join('')}</ol>${isActive?`<button class="action" id="toggle">${checked[current]?'✓ Concluído — desfazer':'Marcar como feito'}</button>`:''}`;document.querySelectorAll('[data-day]').forEach(b=>b.addEventListener('click',()=>{current=+b.dataset.day;render()}));document.getElementById('toggle')?.addEventListener('click',()=>{checked[current]=!checked[current];localStorage.setItem(key,JSON.stringify(checked));render()})}
-document.getElementById('reset').addEventListener('click',()=>{if(confirm('Zerar os registros desta semana?')){checked={};localStorage.setItem(key,'{}');render()}});document.getElementById('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.getElementById('prompt').textContent);document.getElementById('copy').textContent='Copiado ✓'}catch{document.getElementById('copy').textContent='Selecione e copie o texto acima'}});render();
-</script></body></html>
+
+function monday() {
+  const d = new Date();
+  const t = new Date(
+    d.getFullYear(), d.getMonth(), d.getDate()
+  );
+  t.setDate(t.getDate() - (t.getDay()+6)%7);
+  return [
+    t.getFullYear(),
+    String(t.getMonth()+1).padStart(2,'0'),
+    String(t.getDate()).padStart(2,'0')
+  ].join('-');
+}
+
+const key = 'english-simple-v1-' + monday();
+let checked = {};
+
+try {
+  checked = JSON.parse(localStorage.getItem(key) || '{}');
+} catch(e) {
+  checked = {};
+}
+
+let current = (new Date().getDay()+6)%7;
+const active = [0,1,2,3,5];
+
+function render() {
+  const count = active.filter(i => checked[i]).length;
+
+  document.getElementById('fill').style.width =
+    (count/active.length*100) + '%';
+
+  document.getElementById('status').textContent =
+    count + ' de 5 sessões concluídas';
+
+  document.getElementById('days').innerHTML =
+    plan.map((p,i) => `
+      <button class="day
+        ${current===i?'active':''}
+        ${checked[i]?'done':''}"
+        data-day="${i}">
+        ${p.day}
+        <span>
+          ${checked[i]?'✓':active.includes(i)?'●':'—'}
+        </span>
+      </button>
+    `).join('');
+
+  const p = plan[current];
+  const isActive = active.includes(current);
+
+  document.getElementById('detail').innerHTML = `
+    <div class="taskhead">
+      <div>
+        <div class="eyebrow">${p.day}</div>
+        <h2>${p.title}</h2>
+      </div>
+      <div class="pill">${p.time}</div>
+    </div>
+    <ol>
+      ${p.steps.map(s=>`<li>${s}</li>`).join('')}
+    </ol>
+    ${isActive?`
+      <button class="action" id="toggle">
+        ${checked[current]?
+          '✓ Concluído — desfazer':
+          'Marcar como feito'}
+      </button>
+    `:''}
+  `;
+
+  document.querySelectorAll('[data-day]').forEach(b => {
+    b.addEventListener('click', () => {
+      current = +b.dataset.day;
+      render();
+    });
+  });
+
+  document.getElementById('toggle')?.addEventListener(
+    'click', () => {
+      checked[current] = !checked[current];
+      localStorage.setItem(key,JSON.stringify(checked));
+      render();
+    }
+  );
+}
+
+document.getElementById('reset').addEventListener(
+  'click', () => {
+    if(confirm('Zerar os registros desta semana?')) {
+      checked = {};
+      localStorage.setItem(key,'{}');
+      render();
+    }
+  }
+);
+
+document.getElementById('copy').addEventListener(
+  'click', async () => {
+    try {
+      await navigator.clipboard.writeText(
+        document.getElementById('prompt').textContent
+      );
+      document.getElementById('copy').textContent =
+        'Copiado ✓';
+    } catch(e) {
+      document.getElementById('copy').textContent =
+        'Selecione e copie o texto acima';
+    }
+  }
+);
+
+render();
+</script>
+</body>
+</html>
