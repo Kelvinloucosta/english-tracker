@@ -1,418 +1,861 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>English Tracker — Fluency for Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   color-scheme: dark;
-  --bg:#0c1015;
-  --panel:#151b23;
-  --border:#2b3440;
-  --text:#edf1f6;
-  --muted:#a4afbe;
-  --green:#61d8a0;
-  --blue:#8cbcfb;
+
+  --bg:#080A0D;
+  --bg-glow:#0E1318;
+  --surface:#10141A;
+  --surface-2:#151A21;
+  --surface-3:#1B222B;
+  --line:rgba(255,255,255,.07);
+  --line-strong:rgba(255,255,255,.13);
+
+  --text:#E9EEF4;
+  --text-dim:#B4BFCC;
+  --muted:#7D8898;
+  --faint:#56606E;
+
+  --accent:#4ADE9B;
+  --accent-deep:#0F3B2C;
+  --accent-soft:rgba(74,222,155,.12);
+  --blue:#8AB4FF;
+  --blue-soft:rgba(138,180,255,.12);
+  --amber:#F2C97E;
+
+  --r-sm:10px;
+  --r-md:14px;
+  --r-lg:20px;
+
+  --ff:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ff-serif:"Instrument Serif",Georgia,serif;
 }
-* { box-sizing:border-box; }
-body {
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+
+body{
+  margin:0;
+  padding:0;
   background:var(--bg);
   color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-  margin:0;
-  padding:28px 14px;
+  font-family:var(--ff);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"cv11","ss01";
 }
-.wrap { max-width:660px; margin:auto; }
-h1 { font-size:25px; margin:0 0 7px; }
-p { color:var(--muted); line-height:1.55; }
-.lead { margin-bottom:22px; }
-.card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  margin:13px 0;
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(900px 420px at 18% -8%, rgba(74,222,155,.07), transparent 70%),
+    radial-gradient(800px 400px at 92% 4%, rgba(138,180,255,.055), transparent 72%);
+  z-index:0;
 }
-.top {
+
+.wrap{
+  position:relative;
+  z-index:1;
+  max-width:760px;
+  margin:0 auto;
+  padding:44px 20px 72px;
+}
+
+/* ---------- typography ---------- */
+.eyebrow{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.eyebrow.blue{color:var(--blue);}
+.eyebrow.dim{color:var(--faint);}
+
+h1{
+  font-family:var(--ff-serif);
+  font-weight:400;
+  font-size:clamp(34px,7vw,46px);
+  line-height:1.08;
+  letter-spacing:-.015em;
+  margin:14px 0 0;
+}
+h1 em{font-style:italic;color:var(--accent);}
+
+.lead{
+  color:var(--text-dim);
+  font-size:16px;
+  max-width:46ch;
+  margin:14px 0 0;
+}
+.lead b{color:var(--text);font-weight:500;}
+
+h2{font-size:21px;font-weight:600;letter-spacing:-.01em;margin:0;}
+h3{font-size:14px;font-weight:600;letter-spacing:.02em;margin:0;}
+
+.hr{
+  height:1px;
+  border:0;
+  margin:38px 0;
+  background:linear-gradient(90deg,var(--line-strong),transparent);
+}
+
+/* ---------- cards ---------- */
+.card{
+  position:relative;
+  background:linear-gradient(180deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:22px;
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 18px 40px -28px rgba(0,0,0,.9);
+}
+.card + .card{margin-top:14px;}
+
+/* ---------- overview ---------- */
+.overview{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:26px;
+  align-items:center;
+}
+
+.ring{position:relative;width:104px;height:104px;flex:none;}
+.ring svg{transform:rotate(-90deg);display:block;}
+.ring .track{stroke:rgba(255,255,255,.07);}
+.ring .bar{
+  stroke:var(--accent);
+  stroke-linecap:round;
+  transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 6px rgba(74,222,155,.35));
+}
+.ring .label{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-content:center;
+  text-align:center;
+}
+.ring .num{
+  font-size:26px;
+  font-weight:600;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.ring .den{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.04em;}
+
+.ov-body{min-width:0;}
+.ov-title{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.ov-msg{color:var(--text-dim);font-size:14px;margin:8px 0 14px;}
+.ov-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
+.stat{background:var(--surface);padding:11px 13px;}
+.stat .k{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--faint);
+  font-weight:600;
+}
+.stat .v{
+  font-size:16px;
+  font-weight:600;
+  font-variant-numeric:tabular-nums;
+  margin-top:3px;
+  letter-spacing:-.01em;
+}
+.stat .v small{font-size:11px;font-weight:500;color:var(--muted);margin-left:1px;}
+
+/* ---------- week rail ---------- */
+.rail-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
+  margin:30px 0 12px;
 }
-.eyebrow {
-  font-size:12px;
-  color:var(--green);
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-}
-.progress {
-  height:7px;
-  border-radius:9px;
-  background:#27323c;
-  overflow:hidden;
-  margin:12px 0 7px;
-}
-.fill {
-  height:100%;
-  background:var(--green);
-  width:0;
-  transition:width .2s;
-}
-.small { font-size:12px; color:var(--muted); }
-.days {
+.days{
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
-  gap:6px;
-  margin:17px 0;
+  gap:7px;
 }
-.day {
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:var(--panel);
-  color:var(--muted);
-  padding:11px 3px;
-  font-weight:700;
+.day{
+  appearance:none;
+  font:inherit;
+  text-align:center;
   cursor:pointer;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  color:var(--muted);
+  padding:11px 2px 10px;
+  transition:border-color .18s,background .18s,color .18s,transform .18s;
 }
-.day.active {
-  border-color:var(--blue);
-  color:var(--text);
-  background:#1e2c40;
-}
-.day.done { color:var(--green); }
-.day span {
+.day:hover{border-color:var(--line-strong);color:var(--text-dim);transform:translateY(-1px);}
+.day .d{font-size:13px;font-weight:600;letter-spacing:.01em;}
+.day .mark{
   display:block;
-  font-size:10px;
-  font-weight:400;
-  margin-top:4px;
+  margin:7px auto 0;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:rgba(255,255,255,.14);
+  transition:background .18s,box-shadow .18s;
 }
-.taskhead {
+.day.rest .mark{background:transparent;border:1px solid rgba(255,255,255,.16);}
+.day.done{color:var(--text);border-color:rgba(74,222,155,.3);background:linear-gradient(180deg,rgba(74,222,155,.1),rgba(74,222,155,.03));}
+.day.done .mark{background:var(--accent);box-shadow:0 0 0 3px rgba(74,222,155,.14);}
+.day.sel{
+  color:var(--text);
+  border-color:var(--blue);
+  background:linear-gradient(180deg,rgba(138,180,255,.14),rgba(138,180,255,.04));
+}
+.day.today .d::after{
+  content:"";
+  display:block;
+  width:14px;
+  height:2px;
+  border-radius:2px;
+  background:var(--blue);
+  margin:4px auto -2px;
+}
+.day:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+
+/* ---------- detail ---------- */
+.detail{margin-top:14px;}
+.detail-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.tag{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  border-radius:999px;
+  padding:6px 11px;
+  white-space:nowrap;
+  border:1px solid var(--line-strong);
+  color:var(--text-dim);
+  background:var(--surface-3);
+}
+.tag.time{color:var(--blue);border-color:rgba(138,180,255,.28);background:var(--blue-soft);}
+.tag.rest{color:var(--amber);border-color:rgba(242,201,126,.25);background:rgba(242,201,126,.1);}
+
+.focus{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:9px;
+}
+.focus::before{
+  content:"";
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);
+}
+
+.steps{
+  list-style:none;
+  counter-reset:s;
+  padding:0;
+  margin:20px 0 0;
+  display:grid;
+  gap:1px;
+  background:var(--line);
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+.steps li{
+  counter-increment:s;
+  background:var(--surface);
+  padding:13px 15px 13px 46px;
+  position:relative;
+  font-size:14.5px;
+  color:var(--text-dim);
+}
+.steps li::before{
+  content:counter(s);
+  position:absolute;
+  left:14px;
+  top:13px;
+  width:20px;height:20px;
+  border-radius:50%;
+  background:var(--surface-3);
+  border:1px solid var(--line-strong);
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+  display:grid;
+  place-content:center;
+  font-variant-numeric:tabular-nums;
+}
+.steps.rest li{padding-left:15px;color:var(--muted);}
+.steps.rest li::before{display:none;}
+
+.action{
+  margin-top:18px;
+  width:100%;
+  font:inherit;
+  font-size:14.5px;
+  font-weight:600;
+  cursor:pointer;
+  border-radius:var(--r-md);
+  padding:13px;
+  border:1px solid transparent;
+  background:var(--accent);
+  color:#062015;
+  transition:filter .18s,background .18s,color .18s,border-color .18s;
+}
+.action:hover{filter:brightness(1.07);}
+.action.undo{
+  background:var(--surface-3);
+  color:var(--text-dim);
+  border-color:var(--line-strong);
+}
+.action:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+
+.ghost{
+  appearance:none;
+  font:inherit;
+  font-size:12.5px;
+  font-weight:500;
+  cursor:pointer;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 13px;
+  transition:color .18s,border-color .18s,background .18s;
+}
+.ghost:hover{color:var(--text);border-color:var(--line-strong);background:var(--surface-3);}
+.ghost:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+
+/* ---------- rules ---------- */
+.rules{display:grid;gap:12px;margin-top:18px;}
+.rule{display:flex;gap:13px;align-items:flex-start;}
+.rule .ic{
+  flex:none;
+  width:26px;height:26px;
+  border-radius:8px;
+  display:grid;place-content:center;
+  background:var(--accent-soft);
+  border:1px solid rgba(74,222,155,.22);
+  color:var(--accent);
+  font-size:13px;
+  font-weight:700;
+}
+.rule p{margin:0;font-size:14.5px;color:var(--muted);}
+.rule b{color:var(--text);font-weight:600;display:block;font-size:14.5px;margin-bottom:1px;}
+
+/* ---------- prompt ---------- */
+.prompt{
+  margin-top:16px;
+  background:#0A0E13;
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:16px;
+  font-size:13.5px;
+  line-height:1.62;
+  color:#C9D6E4;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  white-space:pre-wrap;
+}
+.prompt-foot{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.hint{font-size:12.5px;color:var(--faint);}
+
+/* ---------- experiment ---------- */
+.exp-bar{
+  height:6px;
+  border-radius:99px;
+  background:rgba(255,255,255,.07);
+  overflow:hidden;
+  margin:14px 0 9px;
+}
+.exp-fill{
+  height:100%;
+  width:0;
+  border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),var(--accent));
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+}
+.exp-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted);}
+
+footer{
+  margin-top:40px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+  font-size:13px;
+  color:var(--faint);
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  gap:10px;
+  gap:14px;
+  flex-wrap:wrap;
 }
-.taskhead h2 {
-  font-size:19px;
-  margin:5px 0 7px;
-}
-.pill {
-  font-size:12px;
-  color:var(--blue);
-  background:#203147;
-  border-radius:20px;
-  padding:6px 9px;
-  white-space:nowrap;
-}
-ol {
-  line-height:1.6;
-  padding-left:21px;
-  margin:14px 0 18px;
-}
-li { margin:7px 0; }
-button { font:inherit; }
-.action {
-  width:100%;
-  border:0;
-  border-radius:11px;
-  background:var(--green);
-  color:#092018;
-  font-weight:750;
-  padding:12px;
-  cursor:pointer;
-}
-.muted { color:var(--muted); }
-.rules { display:grid; gap:10px; margin-top:12px; }
-.rule {
-  display:flex;
-  gap:9px;
-  font-size:14px;
-  color:var(--muted);
-}
-.rule b { color:var(--text); }
-.reset {
-  background:none;
-  border:0;
-  color:var(--muted);
-  cursor:pointer;
-  font-size:12px;
-}
-.prompt {
-  font-size:13px;
-  background:#0e141b;
-  padding:12px;
-  border-radius:10px;
-  line-height:1.5;
-  color:#d0dce8;
-}
-.copy {
-  background:#263445;
-  color:#eaf1f8;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:9px 12px;
-  margin-top:10px;
-  cursor:pointer;
-}
-.foot { margin-top:18px; font-size:12px; }
 
-@media(max-width:400px) {
-  .days { gap:3px; }
-  .day { font-size:12px; }
-  .day span { font-size:9px; }
-  .card { padding:15px; }
+@media(max-width:560px){
+  .wrap{padding:34px 15px 60px;}
+  .card{padding:18px;}
+  .overview{grid-template-columns:1fr;gap:20px;}
+  .ring{margin:0 auto;}
+  .ov-title{justify-content:center;text-align:center;}
+  .ov-msg{text-align:center;}
+  .days{gap:5px;}
+  .day{padding:10px 1px 9px;}
+  .day .d{font-size:11.5px;}
+  .detail-top{flex-direction:column;align-items:flex-start;gap:10px;}
+  .steps li{padding-left:42px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;}
 }
 </style>
 </head>
 <body>
 <main class="wrap">
 
-  <div class="eyebrow">English for life</div>
-  <h1>Seu plano simples de inglês</h1>
-  <p class="lead">
-    Conversar, entender e reagir naturalmente.
-    Sem Anki, sem culpa e sem tarefas acumuladas.
-  </p>
+  <header>
+    <div class="eyebrow">English for life</div>
+    <h1>Seu plano simples de <em>inglês</em></h1>
+    <p class="lead">
+      Conversar, entender e reagir naturalmente.
+      <b>Sem Anki, sem culpa e sem tarefas acumuladas.</b>
+    </p>
+  </header>
 
-  <section class="card">
-    <div class="top">
-      <strong>Esta semana</strong>
-      <button class="reset" id="reset">
-        Recomeçar semana
-      </button>
+  <hr class="hr">
+
+  <!-- OVERVIEW -->
+  <section class="card overview" aria-label="Progresso da semana">
+    <div class="ring">
+      <svg width="104" height="104" viewBox="0 0 104 104" aria-hidden="true">
+        <circle class="track" cx="52" cy="52" r="45" fill="none" stroke-width="8"></circle>
+        <circle id="ringBar" class="bar" cx="52" cy="52" r="45" fill="none" stroke-width="8"
+                stroke-dasharray="282.74" stroke-dashoffset="282.74"></circle>
+      </svg>
+      <div class="label">
+        <div class="num" id="ringNum">0</div>
+        <div class="den">de 5</div>
+      </div>
     </div>
-    <div class="progress">
-      <div class="fill" id="fill"></div>
-    </div>
-    <div class="small" id="status">
-      0 de 5 sessões concluídas
+
+    <div class="ov-body">
+      <div class="ov-title">
+        <h2>Esta semana</h2>
+        <button class="ghost" id="reset">Recomeçar semana</button>
+      </div>
+      <p class="ov-msg" id="ovMsg">Nenhuma sessão marcada ainda. Comece pelo dia de hoje.</p>
+      <div class="ov-stats">
+        <div class="stat">
+          <div class="k">Sessões</div>
+          <div class="v" id="stSessions">0<small>/5</small></div>
+        </div>
+        <div class="stat">
+          <div class="k">Tempo feito</div>
+          <div class="v" id="stTime">0<small>min</small></div>
+        </div>
+        <div class="stat">
+          <div class="k">Semana de</div>
+          <div class="v" id="stWeek">—</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <nav class="days" id="days"></nav>
+  <!-- WEEK RAIL -->
+  <div class="rail-head">
+    <div class="eyebrow dim">Semana</div>
+    <div class="hint">Use ← → para navegar</div>
+  </div>
+  <nav class="days" id="days" aria-label="Dias da semana"></nav>
 
-  <section class="card" id="detail"></section>
+  <!-- DETAIL -->
+  <section class="card detail" id="detail" aria-live="polite"></section>
 
+  <hr class="hr">
+
+  <!-- RULES -->
   <section class="card">
-    <strong>Três regras para continuar</strong>
+    <div class="eyebrow blue">Método</div>
+    <h2 style="margin-top:8px;">Três regras para continuar</h2>
     <div class="rules">
       <div class="rule">
-        ✓ <span><b>Sem obrigação diária:</b>
-        dia corrido? Pule, sem compensar.</span>
+        <div class="ic">✓</div>
+        <p><b>Sem obrigação diária</b>Dia corrido? Pule, sem compensar depois.</p>
       </div>
       <div class="rule">
-        ✓ <span><b>Não corrija tudo enquanto fala:</b>
-        primeiro termine seu raciocínio.</span>
+        <div class="ic">✓</div>
+        <p><b>Não corrija tudo enquanto fala</b>Primeiro termine seu raciocínio; o ajuste vem no fim.</p>
       </div>
       <div class="rule">
-        ✓ <span><b>Tradução liberada quando precisar:</b>
-        especialmente para evitar erros no trabalho.</span>
+        <div class="ic">✓</div>
+        <p><b>Tradução liberada quando precisar</b>Especialmente para evitar erros no trabalho.</p>
       </div>
     </div>
   </section>
 
+  <!-- PROMPT -->
   <section class="card">
-    <strong>Prompt para ChatGPT Voice</strong>
+    <div class="eyebrow blue">Ferramenta</div>
+    <h2 style="margin-top:8px;">Prompt para ChatGPT Voice</h2>
     <div class="prompt" id="prompt">Let's have a natural conversation about everyday life. Ask me one question at a time, and follow up based on what I say. Use natural American English. Don't correct or interrupt me while I'm speaking. At the end, tell me my two most important recurring mistakes, give me natural alternatives, and ask me to try again. Avoid technical or work topics unless I bring them up.</div>
-    <button class="copy" id="copy">
-      Copiar prompt
-    </button>
+    <div class="prompt-foot">
+      <button class="ghost" id="copy">Copiar prompt</button>
+      <span class="hint" id="copyHint">Cole no início da conversa por voz.</span>
+    </div>
   </section>
 
-  <p class="foot">
-    Experimente por 14 dias. Depois avalie se está
-    mais fácil entender, responder e manter uma conversa.
-    Mantenha a aula no dia em que ela já acontece.
-  </p>
+  <!-- EXPERIMENT -->
+  <section class="card">
+    <div class="eyebrow dim">Experimento</div>
+    <h2 style="margin-top:8px;">14 dias, depois avalie</h2>
+    <div class="exp-bar"><div class="exp-fill" id="expFill"></div></div>
+    <div class="exp-row">
+      <span id="expDay">Dia 1 de 14</span>
+      <button class="ghost" id="expReset" style="padding:4px 10px;font-size:11.5px;">Reiniciar ciclo</button>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin:14px 0 0;">
+      No fim do ciclo, avalie uma coisa só: ficou mais fácil entender,
+      responder e manter uma conversa? Mantenha a aula no dia em que ela já acontece.
+    </p>
+  </section>
+
+  <footer>
+    <span>English Tracker · Fluency for Life</span>
+    <span>Progresso salvo neste navegador</span>
+  </footer>
 
 </main>
 
 <script>
-const plan = [
-  {
-    day:'Seg',
-    title:'Listening ativo',
-    time:'15 min',
-    steps:[
-      'Escolha um áudio ou vídeo de conversa cotidiana de 2–3 minutos.',
-      'Ouça sem legenda e tente entender a ideia geral.',
-      'Confira com transcrição ou legenda em inglês.',
-      'Ouça novamente e diga, em inglês, o que entendeu.'
-    ]
-  },
-  {
-    day:'Ter',
-    title:'Aula com professor',
-    time:'1 hora',
-    steps:[
-      'Peça uma conversa sobre situações da vida, não só trabalho.',
-      'Treine perguntas inesperadas, histórias e opiniões.',
-      'No final, peça feedback sobre dois erros recorrentes.'
-    ]
-  },
-  {
-    day:'Qua',
-    title:'Episoden',
-    time:'15 min',
-    steps:[
-      'Converse com uma pessoa, sem roteiro.',
-      'Fale sobre família, filmes, viagens ou experiências.',
-      'Faça perguntas de volta. Se travar, explique de outro jeito.'
-    ]
-  },
-  {
-    day:'Qui',
-    title:'Listening + ChatGPT Voice',
-    time:'20 min',
-    steps:[
-      'Ouça por 5 minutos um trecho curto de conversa.',
-      'Converse por 12 minutos no ChatGPT Voice.',
-      'Use 3 minutos para corrigir e repetir duas estruturas úteis.'
-    ]
-  },
-  {
-    day:'Sex',
-    title:'Livre',
-    time:'Sem tarefa',
-    steps:[
-      'Descanse. Não há nada para recuperar.'
-    ]
-  },
-  {
-    day:'Sáb',
-    title:'Episoden',
-    time:'15 min',
-    steps:[
-      'Entre sem preparar assunto.',
-      'Faça pelo menos duas perguntas de volta.',
-      'Priorize continuar falando, não a perfeição.'
-    ]
-  },
-  {
-    day:'Dom',
-    title:'Livre',
-    time:'Sem tarefa',
-    steps:[
-      'Descanse. Se quiser assistir algo em inglês por prazer, ótimo.'
-    ]
-  }
-];
+(function(){
+  "use strict";
 
-function monday() {
-  const d = new Date();
-  const t = new Date(
-    d.getFullYear(), d.getMonth(), d.getDate()
-  );
-  t.setDate(t.getDate() - (t.getDay()+6)%7);
-  return [
-    t.getFullYear(),
-    String(t.getMonth()+1).padStart(2,'0'),
-    String(t.getDate()).padStart(2,'0')
-  ].join('-');
-}
+  var plan = [
+    {
+      day:"Seg", full:"Segunda", title:"Listening ativo", time:"15 min", minutes:15,
+      focus:"Compreensão", rest:false,
+      steps:[
+        "Escolha um áudio ou vídeo de conversa cotidiana de 2–3 minutos.",
+        "Ouça sem legenda e tente entender a ideia geral.",
+        "Confira com transcrição ou legenda em inglês.",
+        "Ouça novamente e diga, em inglês, o que entendeu."
+      ]
+    },
+    {
+      day:"Ter", full:"Terça", title:"Aula com professor", time:"1 hora", minutes:60,
+      focus:"Conversa guiada", rest:false,
+      steps:[
+        "Peça uma conversa sobre situações da vida, não só trabalho.",
+        "Treine perguntas inesperadas, histórias e opiniões.",
+        "No final, peça feedback sobre dois erros recorrentes."
+      ]
+    },
+    {
+      day:"Qua", full:"Quarta", title:"Episoden", time:"15 min", minutes:15,
+      focus:"Conversa livre", rest:false,
+      steps:[
+        "Converse com uma pessoa, sem roteiro.",
+        "Fale sobre família, filmes, viagens ou experiências.",
+        "Faça perguntas de volta. Se travar, explique de outro jeito."
+      ]
+    },
+    {
+      day:"Qui", full:"Quinta", title:"Listening + ChatGPT Voice", time:"20 min", minutes:20,
+      focus:"Misto", rest:false,
+      steps:[
+        "Ouça por 5 minutos um trecho curto de conversa.",
+        "Converse por 12 minutos no ChatGPT Voice.",
+        "Use 3 minutos para corrigir e repetir duas estruturas úteis."
+      ]
+    },
+    {
+      day:"Sex", full:"Sexta", title:"Livre", time:"Sem tarefa", minutes:0,
+      focus:"Descanso", rest:true,
+      steps:["Descanse. Não há nada para recuperar."]
+    },
+    {
+      day:"Sáb", full:"Sábado", title:"Episoden", time:"15 min", minutes:15,
+      focus:"Conversa livre", rest:false,
+      steps:[
+        "Entre sem preparar assunto.",
+        "Faça pelo menos duas perguntas de volta.",
+        "Priorize continuar falando, não a perfeição."
+      ]
+    },
+    {
+      day:"Dom", full:"Domingo", title:"Livre", time:"Sem tarefa", minutes:0,
+      focus:"Descanso", rest:true,
+      steps:["Descanse. Se quiser assistir algo em inglês por prazer, ótimo."]
+    }
+  ];
 
-const key = 'english-simple-v1-' + monday();
-let checked = {};
-
-try {
-  checked = JSON.parse(localStorage.getItem(key) || '{}');
-} catch(e) {
-  checked = {};
-}
-
-let current = (new Date().getDay()+6)%7;
-const active = [0,1,2,3,5];
-
-function render() {
-  const count = active.filter(i => checked[i]).length;
-
-  document.getElementById('fill').style.width =
-    (count/active.length*100) + '%';
-
-  document.getElementById('status').textContent =
-    count + ' de 5 sessões concluídas';
-
-  document.getElementById('days').innerHTML =
-    plan.map((p,i) => `
-      <button class="day
-        ${current===i?'active':''}
-        ${checked[i]?'done':''}"
-        data-day="${i}">
-        ${p.day}
-        <span>
-          ${checked[i]?'✓':active.includes(i)?'●':'—'}
-        </span>
-      </button>
-    `).join('');
-
-  const p = plan[current];
-  const isActive = active.includes(current);
-
-  document.getElementById('detail').innerHTML = `
-    <div class="taskhead">
-      <div>
-        <div class="eyebrow">${p.day}</div>
-        <h2>${p.title}</h2>
-      </div>
-      <div class="pill">${p.time}</div>
-    </div>
-    <ol>
-      ${p.steps.map(s=>`<li>${s}</li>`).join('')}
-    </ol>
-    ${isActive?`
-      <button class="action" id="toggle">
-        ${checked[current]?
-          '✓ Concluído — desfazer':
-          'Marcar como feito'}
-      </button>
-    `:''}
-  `;
-
-  document.querySelectorAll('[data-day]').forEach(b => {
-    b.addEventListener('click', () => {
-      current = +b.dataset.day;
-      render();
-    });
+  var activeDays = [];
+  var totalMinutes = 0;
+  plan.forEach(function(p,i){
+    if(!p.rest){ activeDays.push(i); totalMinutes += p.minutes; }
   });
 
-  document.getElementById('toggle')?.addEventListener(
-    'click', () => {
-      checked[current] = !checked[current];
-      localStorage.setItem(key,JSON.stringify(checked));
+  var CIRC = 2 * Math.PI * 45;
+
+  // ---------- storage helpers ----------
+  function pad(n){ return String(n).padStart(2,"0"); }
+
+  function mondayKey(){
+    var d = new Date();
+    var t = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    t.setDate(t.getDate() - ((t.getDay() + 6) % 7));
+    return t.getFullYear() + "-" + pad(t.getMonth()+1) + "-" + pad(t.getDate());
+  }
+
+  function readStore(name, fallback){
+    try{
+      var raw = localStorage.getItem(name);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  }
+
+  function writeStore(name, value){
+    try{ localStorage.setItem(name, JSON.stringify(value)); }catch(e){}
+  }
+
+  var weekStart = mondayKey();
+  var weekKey = "english-tracker-v2-" + weekStart;
+  var cycleKey = "english-tracker-cycle-v2";
+
+  var checked = readStore(weekKey, {}) || {};
+  var cycleStart = readStore(cycleKey, null);
+
+  function todayStamp(){
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+  }
+
+  if(!cycleStart){
+    cycleStart = todayStamp();
+    writeStore(cycleKey, cycleStart);
+  }
+
+  // ---------- dom ----------
+  var elDays    = document.getElementById("days");
+  var elDetail  = document.getElementById("detail");
+  var elRingBar = document.getElementById("ringBar");
+  var elRingNum = document.getElementById("ringNum");
+  var elOvMsg   = document.getElementById("ovMsg");
+  var elSess    = document.getElementById("stSessions");
+  var elTime    = document.getElementById("stTime");
+  var elWeek    = document.getElementById("stWeek");
+  var elExpFill = document.getElementById("expFill");
+  var elExpDay  = document.getElementById("expDay");
+
+  var todayIndex = (new Date().getDay() + 6) % 7;
+  var selected = todayIndex;
+
+  function doneCount(){
+    return activeDays.filter(function(i){ return checked[i]; }).length;
+  }
+
+  function doneMinutes(){
+    return activeDays.reduce(function(sum,i){
+      return sum + (checked[i] ? plan[i].minutes : 0);
+    },0);
+  }
+
+  function weekLabel(){
+    var parts = weekStart.split("-");
+    return parts[2] + "/" + parts[1];
+  }
+
+  function message(n){
+    if(n === 0) return "Nenhuma sessão marcada ainda. Comece pelo dia de hoje.";
+    if(n === activeDays.length) return "Semana completa. Nada acumulado para a próxima.";
+    if(n >= 3) return "Ritmo bom. Faltam " + (activeDays.length - n) + " sessões — sem pressa.";
+    return n + " de " + activeDays.length + " feitas. Siga no dia que couber na rotina.";
+  }
+
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+    });
+  }
+
+  // ---------- render ----------
+  function renderOverview(){
+    var n = doneCount();
+    elRingNum.textContent = n;
+    elRingBar.setAttribute("stroke-dashoffset", String(CIRC - (n / activeDays.length) * CIRC));
+    elOvMsg.textContent = message(n);
+    elSess.innerHTML = n + "<small>/" + activeDays.length + "</small>";
+    elTime.innerHTML = doneMinutes() + "<small>min</small>";
+    elWeek.textContent = weekLabel();
+  }
+
+  function renderDays(){
+    elDays.innerHTML = plan.map(function(p,i){
+      var cls = ["day"];
+      if(p.rest) cls.push("rest");
+      if(checked[i]) cls.push("done");
+      if(i === selected) cls.push("sel");
+      if(i === todayIndex) cls.push("today");
+      return '<button class="' + cls.join(" ") + '" data-day="' + i + '"' +
+             ' aria-pressed="' + (i === selected) + '"' +
+             ' aria-label="' + p.full + ' — ' + escapeHTML(p.title) + '">' +
+             '<span class="d">' + p.day + '</span>' +
+             '<span class="mark" aria-hidden="true"></span>' +
+             '</button>';
+    }).join("");
+  }
+
+  function renderDetail(){
+    var p = plan[selected];
+    var isDone = !!checked[selected];
+    var timeClass = p.rest ? "tag rest" : "tag time";
+
+    var html =
+      '<div class="detail-top">' +
+        '<div>' +
+          '<div class="eyebrow' + (p.rest ? " dim" : "") + '">' + p.full +
+            (selected === todayIndex ? " · hoje" : "") + '</div>' +
+          '<h2 style="margin-top:7px;">' + escapeHTML(p.title) + '</h2>' +
+          '<div class="focus">' + escapeHTML(p.focus) + '</div>' +
+        '</div>' +
+        '<div class="' + timeClass + '">' + escapeHTML(p.time) + '</div>' +
+      '</div>' +
+      '<ol class="steps' + (p.rest ? " rest" : "") + '">' +
+        p.steps.map(function(s){ return "<li>" + escapeHTML(s) + "</li>"; }).join("") +
+      "</ol>";
+
+    if(!p.rest){
+      html += '<button class="action' + (isDone ? " undo" : "") + '" id="toggle">' +
+              (isDone ? "✓ Concluído — desfazer" : "Marcar como feito") +
+              "</button>";
+    }
+
+    elDetail.innerHTML = html;
+
+    var btn = document.getElementById("toggle");
+    if(btn){
+      btn.addEventListener("click", function(){
+        checked[selected] = !checked[selected];
+        if(!checked[selected]) delete checked[selected];
+        writeStore(weekKey, checked);
+        render();
+      });
+    }
+  }
+
+  function renderCycle(){
+    var start = new Date(cycleStart + "T00:00:00");
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var diff = Math.floor((today - start) / 86400000);
+    if(isNaN(diff) || diff < 0) diff = 0;
+
+    var dayNum = diff + 1;
+    if(dayNum > 14){
+      elExpDay.textContent = "Ciclo concluído · dia " + dayNum;
+      elExpFill.style.width = "100%";
+    }else{
+      elExpDay.textContent = "Dia " + dayNum + " de 14";
+      elExpFill.style.width = (dayNum / 14 * 100) + "%";
+    }
+  }
+
+  function render(){
+    renderOverview();
+    renderDays();
+    renderDetail();
+    renderCycle();
+  }
+
+  // ---------- events ----------
+  elDays.addEventListener("click", function(ev){
+    var btn = ev.target.closest("[data-day]");
+    if(!btn) return;
+    selected = Number(btn.dataset.day);
+    render();
+  });
+
+  document.addEventListener("keydown", function(ev){
+    var tag = (ev.target.tagName || "").toLowerCase();
+    if(tag === "input" || tag === "textarea") return;
+    if(ev.key === "ArrowRight"){
+      selected = (selected + 1) % plan.length;
+      render();
+    }else if(ev.key === "ArrowLeft"){
+      selected = (selected + plan.length - 1) % plan.length;
       render();
     }
-  );
-}
+  });
 
-document.getElementById('reset').addEventListener(
-  'click', () => {
-    if(confirm('Zerar os registros desta semana?')) {
+  document.getElementById("reset").addEventListener("click", function(){
+    if(confirm("Zerar os registros desta semana?")){
       checked = {};
-      localStorage.setItem(key,'{}');
+      writeStore(weekKey, checked);
       render();
     }
-  }
-);
+  });
 
-document.getElementById('copy').addEventListener(
-  'click', async () => {
-    try {
-      await navigator.clipboard.writeText(
-        document.getElementById('prompt').textContent
-      );
-      document.getElementById('copy').textContent =
-        'Copiado ✓';
-    } catch(e) {
-      document.getElementById('copy').textContent =
-        'Selecione e copie o texto acima';
+  document.getElementById("expReset").addEventListener("click", function(){
+    if(confirm("Reiniciar o ciclo de 14 dias a partir de hoje?")){
+      cycleStart = todayStamp();
+      writeStore(cycleKey, cycleStart);
+      renderCycle();
     }
-  }
-);
+  });
 
-render();
+  var copyBtn = document.getElementById("copy");
+  var copyHint = document.getElementById("copyHint");
+  copyBtn.addEventListener("click", function(){
+    var text = document.getElementById("prompt").textContent;
+    function ok(){
+      copyBtn.textContent = "Copiado ✓";
+      copyHint.textContent = "Pronto para colar.";
+      setTimeout(function(){
+        copyBtn.textContent = "Copiar prompt";
+        copyHint.textContent = "Cole no início da conversa por voz.";
+      }, 2200);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, function(){
+        copyHint.textContent = "Selecione e copie o texto acima.";
+      });
+    }else{
+      copyHint.textContent = "Selecione e copie o texto acima.";
+    }
+  });
+
+  render();
+})();
 </script>
 </body>
 </html>
